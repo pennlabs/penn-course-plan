@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
-import Sections from "./sections_display";
+import './styles/App.css';
+import Sections from "./components/selector/Sections";
 
 class App extends Component {
   render() {
