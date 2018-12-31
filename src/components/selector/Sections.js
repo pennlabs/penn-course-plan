@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import 'bulma/css/bulma.css'
 import {sections_data_a, section_info_a} from '../../sections_data'
 import SectionInfoDisplay from './SectionInfoDisplay'
 import SectionList from './SectionList'

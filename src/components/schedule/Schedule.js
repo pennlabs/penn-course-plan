@@ -2,11 +2,68 @@ import React, { Component } from 'react';
 import Line from './Line'
 import Block from './Block'
 
+
+//possible color classes (corresponds with CSS classes)
+const top_colors_recitation_save = ["red", "orange", "pink"];
+const top_colors_other_save = ["blue", "aqua", "green", "sea", "indigo"];
+
+//available color classes
+let top_colors_recitation = [];
+let top_colors_other = [];
+
+//makes all recitation colors available
+const reset_recitation_colors = function(){
+  top_colors_recitation = top_colors_recitation_save.slice();
+};
+
+//makes all other colors available
+const reset_other_colors = function(){
+  top_colors_other = top_colors_other_save.slice();
+};
+
+//dictionary associating class name with color
+let class_colors = {};
+
+//makes all colors available
+const reset_colors = function (){
+  reset_recitation_colors();
+  reset_other_colors();
+  class_colors = {};
+};
+
+//generates a color from a given day of the week, hour, and course name
+const generate_color = function (day, hour, name) {
+  var temp_color =  class_colors[name];
+  if(temp_color !== undefined){
+    return temp_color;
+  }else {
+    let chosen_list = null;
+    if (parseInt(name.substring(name.length - 3, name.length)) >= 100) {
+      chosen_list = top_colors_recitation;
+      if (chosen_list.length === 0) {
+        reset_recitation_colors();
+        chosen_list = top_colors_recitation;
+      }
+    } else {
+      chosen_list = top_colors_other;
+      if (chosen_list.length === 0) {
+        reset_other_colors();
+        chosen_list = top_colors_other;
+      }
+    }
+    const index = (["M", "T", "W", "H", "F"].indexOf(day) % 2 + Math.round(hour * 2)) % chosen_list.length;
+    const result = chosen_list[index];
+    chosen_list.splice(index, 1);
+    class_colors[name] = result;
+    return result;
+  }
+};
+
 export default class Schedule extends Component {
   constructor(props) {
       super(props);
       this.state = {
-        schedData: []
+        schedData: JSON.parse("{\"term\":\"2019A\",\"meetings\":[{\"fullID\":\"PSCI-207-001-TR135\",\"idDashed\":\"PSCI-207-001\",\"idSpaced\":\"PSCI 207 001\",\"hourLength\":1.5,\"meetDay\":\"TR\",\"meetHour\":13.5,\"meetLoc\":\" \",\"SchedAsscSecs\":[]},{\"fullID\":\"PSCI-181-001-MW11\",\"idDashed\":\"PSCI-181-001\",\"idSpaced\":\"PSCI 181 001\",\"hourLength\":1,\"meetDay\":\"MW\",\"meetHour\":11,\"meetLoc\":\" \",\"SchedAsscSecs\":[\"PSCI-181-201\",\"PSCI-181-202\",\"PSCI-181-203\",\"PSCI-181-204\",\"PSCI-181-205\",\"PSCI-181-206\",\"PSCI-181-207\",\"PSCI-181-208\",\"PSCI-181-209\"]},{\"fullID\":\"PSCI-181-208-R15\",\"idDashed\":\"PSCI-181-208\",\"idSpaced\":\"PSCI 181 208\",\"hourLength\":1,\"meetDay\":\"R\",\"meetHour\":15,\"meetLoc\":\" \",\"SchedAsscSecs\":[\"PSCI-181-001\"]},{\"fullID\":\"CLST-027-401-MW12\",\"idDashed\":\"CLST-027-401\",\"idSpaced\":\"CLST 027 401\",\"hourLength\":1,\"meetDay\":\"MW\",\"meetHour\":12,\"meetLoc\":\" \",\"SchedAsscSecs\":[\"CLST-027-402\",\"CLST-027-405\",\"CLST-027-406\",\"CLST-027-409\",\"CLST-027-410\",\"CLST-027-412\"]},{\"fullID\":\"CLST-027-402-R9\",\"idDashed\":\"CLST-027-402\",\"idSpaced\":\"CLST 027 402\",\"hourLength\":1,\"meetDay\":\"R\",\"meetHour\":9,\"meetLoc\":\" \",\"SchedAsscSecs\":[\"CLST-027-401\"]},{\"fullID\":\"STAT-430-001-MW9\",\"idDashed\":\"STAT-430-001\",\"idSpaced\":\"STAT 430 001\",\"hourLength\":1.5,\"meetDay\":\"MW\",\"meetHour\":9,\"meetLoc\":\" \",\"SchedAsscSecs\":[]},{\"fullID\":\"CIS-530-001-MW135\",\"idDashed\":\"CIS-530-001\",\"idSpaced\":\"CIS 530 001\",\"hourLength\":1.5,\"meetDay\":\"MW\",\"meetHour\":13.5,\"meetLoc\":\"WLNT 401B\",\"SchedAsscSecs\":[]}],\"colorPalette\":[\"#e74c3c\",\"#f1c40f\",\"#3498db\",\"#9b59b6\",\"#e67e22\",\"#2ecc71\",\"#95a5a6\",\"#FF73FD\",\"#73F1FF\",\"#CA75FF\",\"#1abc9c\",\"#F64747\",\"#ecf0f1\"],\"locAdded\":false}")
       };
   }
 
@@ -78,20 +135,6 @@ export default class Schedule extends Component {
               lines.push(<Line key={h} y={toppos}/>);
               timeblocks.push(hourtext);
           }
-      }
-      
-      // Define the color map
-      var colorMap = {};
-      var colorinc = 0;
-      var colorPal = this.state.schedData.colorPalette;
-      if(courseSched) {
-          courseSched.forEach(function (sec) {
-              var secID = sec.idDashed;
-              if (!colorMap[secID]) {
-                  colorMap[secID] = colorPal[colorinc];
-                  colorinc++;
-              }
-          });
       }
 
       function GenMeetBlocks(sec) {
@@ -167,7 +210,6 @@ export default class Schedule extends Component {
           schedBlocks.forEach(function(n){
               if(n.letterday.indexOf(weekday) !== -1){
                   let newObj = JSON.parse(JSON.stringify(n));
-                  console.log(newObj);
                   newObj.letterday = weekday;
                   dayblocks.push(AddSchedAttr(newObj));
               }
@@ -189,7 +231,7 @@ export default class Schedule extends Component {
       let blocks = [];
       for (let i = 0; i < schedBlocks.length; i++) {
           const block = schedBlocks[i];
-          let showWarning = angular.element(document.body).scope().sched.CrossCheck(block.asscsecs);
+          let showWarning = false // TODO: Check for associated section
           blocks.push(<Block topC={block.topc} id={block.id}
                                   assignedClass={block.class} letterDay={block.letterday}
                                   key={i} y={block.top} x={block.left} width={block.width}
