@@ -5,8 +5,7 @@ import Sections from "./components/selector/Sections";
 import Schedule from './components/schedule/Schedule'
 
 class ScheduleModifier {
-    // a class that provides a method for broadcasting and receiving
-    // changes to a schedule
+    // a class that provides methods for broadcasting and receiving changes to a schedule
     constructor(scheduleId) {
         this.onAddListeners = [];
         this.onRemListeners = [];
@@ -21,7 +20,6 @@ class ScheduleModifier {
         this.save = function(){
           localStorage.setItem("schedules", JSON.stringify(schedules));
         };
-
         this.save = this.save.bind(this);
 
         this.addSchedItem = this.addSchedItem.bind(this);
@@ -29,7 +27,6 @@ class ScheduleModifier {
     }
 
     addSchedItem(item) {
-        console.log(item);
         this.schedule.meetings.push(item);
         this.schedule.colorPalette.push("black");
         this.onAddListeners.forEach(function (listener) {
@@ -39,7 +36,14 @@ class ScheduleModifier {
     }
 
     removeSchedItem(item) {
-        const index = this.schedule.meetings.indexOf(item);
+        let index = -1;
+        for(let i = 0; i < this.schedule.meetings.length; i++){
+            const meeting = this.schedule.meetings[i];
+            if(meeting.idDashed === item.idDashed){
+                index = i;
+                break;
+            }
+        }
         this.schedule.meetings.splice(index, 1);
         this.schedule.colorPalette.splice(index, 1);
         this.onRemListeners.forEach(function (listener) {

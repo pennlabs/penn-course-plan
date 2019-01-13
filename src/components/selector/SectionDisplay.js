@@ -1,112 +1,130 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 
 
 export default class SectionDisplay extends Component {
-  constructor(props) {
-      super(props);
-      this.section = this.props.section;
-      this.getAddRemoveIcon = this.getAddRemoveIcon.bind(this);
-      SectionDisplay.getPcaButton = SectionDisplay.getPcaButton.bind(this);
-      this.getInstructorReview = this.getInstructorReview.bind(this);
-      this.openSection = function () {
-      }
-  }
+    constructor(props) {
+        super(props);
+        this.section = this.props.section;
+        this.getAddRemoveIcon = this.getAddRemoveIcon.bind(this);
+        this.getInstructorReview = this.getInstructorReview.bind(this);
+        this.onSchedChange = this.onSchedChange.bind(this);
+        SectionDisplay.getPcaButton = SectionDisplay.getPcaButton.bind(this);
+        props.scheduleModifier.onAddListeners.push(this.onSchedChange);
+        props.scheduleModifier.onRemListeners.push(this.onSchedChange);
+        this.openSection = function () {
+        }
+    }
 
-  getAddRemoveIcon() {
-      let className = "fa";
-      const scheduleModifier = this.props.scheduleModifier;
-      const schedSections = scheduleModifier.schedule.meetings;
-      const add = schedSections.indexOf(this.section.idDashed) === -1;
-      if (add) {
-          className += " fa-plus";
-      } else{
-          className += " fa-times";
-      }
-      let onClick = undefined;
+    onSchedChange(item){
+        if(item === undefined || item.idDashed === this.section.idDashed) {
+            this.forceUpdate()
+        }
+    }
 
-      const section = this.section;
-      if(add) {
-          onClick = function () {
-              scheduleModifier.addSchedItem(section.fullSchedInfo[0]);
-          };
-      }else{
-          onClick = function () {
-              scheduleModifier.removeSchedItem(section);
-          };
-      }
+    getAddRemoveIcon() {
+        let className = "fa";
+        const scheduleModifier = this.props.scheduleModifier;
+        const schedSections = scheduleModifier.schedule.meetings;
+        let add = true;
+        for (let i = 0; i < schedSections.length; i++) {
+            let schedSection = schedSections[i];
+            if (schedSection.idDashed === this.section.idDashed) {
+                add = false;
+                break;
+            }
+        }
+        if (add) {
+            className += " fa-plus";
+        } else {
+            className += " fa-times";
+        }
+        let onClick = undefined;
 
-      return <i className={className}
-                onClick={onClick}/>;
-  }
+        const section = this.section;
+        if (add) {
+            onClick = function () {
+                console.log("Adding: ", section);
+                scheduleModifier.addSchedItem(section.fullSchedInfo[0]);
+            };
+        } else {
+            onClick = function () {
+                console.log("Removing: ", section);
+                scheduleModifier.removeSchedItem(section.fullSchedInfo[0]);
+            };
+        }
 
-  static getPcaButton() {
-      const onClick = function () {
-      };
-      return <i className={"fa fa-bell-o tooltip"}
-                onClick={onClick}
-                title="Penn Course Alert"/>;
-  }
+        return <i className={className}
+                  onClick={onClick}/>;
+    }
 
-  getInstructorReview() {
-      const bgColor = "rgba(46, 204, 113," + this.section.pcrIShade + ")";
-      return <span className={"PCR Inst"}
-                   style={{background: bgColor, color: this.section.pcrIColor}}
-                   onClick={this.openSection}>{this.section.revs.cI}</span>;
-  }
+    static getPcaButton() {
+        const onClick = function () {
+        };
+        return <i className={"fa fa-bell-o tooltip"}
+                  onClick={onClick}
+                  title="Penn Course Alert"/>;
+    }
 
-  static justSection(s) {
-    return s.substring(s.lastIndexOf(' ') + 1)
-  }
+    getInstructorReview() {
+        const bgColor = "rgba(46, 204, 113," + this.section.pcrIShade + ")";
+        return <span className={"PCR Inst"}
+                     style={{background: bgColor, color: this.section.pcrIColor}}
+                     onClick={this.openSection}>{this.section.revs.cI}</span>;
+    }
 
-  static stripTime(s) {
-    s = s.replace(' to ', '-');
-    s = s.replace('on', '');
-    return s
-  }
+    static justSection(s) {
+        return s.substring(s.lastIndexOf(' ') + 1)
+    }
 
-  render() {
-      let className = this.section.actType;
-      if(this.section === this.section.idSpaced.replace(' ', '').replace(' ', '')){
-          className += " activeItem";
-      }
-      /*if((!$scope.sched.SecOverlap(this.section) && $scope.schedSections.indexOf(this.section.idDashed) === -1)){
-          className += "hideSec";
-      }*/
-      return <li
-          id={this.section.idDashed}
-          className={className}>
-          <div className={"columns is-gapless"}>
+    static stripTime(s) {
+        s = s.replace(' to ', '-');
+        s = s.replace('on', '');
+        return s
+    }
 
-              <div className={"column is-one-fifth"}>
-                  {this.getAddRemoveIcon()}
-                  <span className={"statusClass " + (this.section.isOpen ? "openSec" : "closedSec")}
-                        onClick={this.openSection}>
+    render() {
+        let className = this.section.actType;
+        if (this.section === this.section.idSpaced.replace(' ', '').replace(' ', '')) {
+            className += " activeItem";
+        }
+        /*if((!$scope.sched.SecOverlap(this.section) && $scope.schedSections.indexOf(this.section.idDashed) === -1)){
+            className += "hideSec";
+        }*/
+        return <li
+            id={this.section.idDashed}
+            className={className}>
+            <div className={"columns is-gapless"}>
+
+                <div className={"column is-one-fifth"}>
+                    {this.getAddRemoveIcon()}
+                    <span className={"statusClass " + (this.section.isOpen ? "openSec" : "closedSec")}
+                          onClick={this.openSection}>
                       {(!this.section.isOpen) && SectionDisplay.getPcaButton()}
                   </span>
-              </div>
+                </div>
 
-              <div className="column is-one-fifth">
-                  {this.getInstructorReview()}
-              </div>
+                <div className="column is-one-fifth">
+                    {this.getInstructorReview()}
+                </div>
 
-              <div className={"column is-one-fifth"} style={{marginLeft: "0.4rem"}}>
+                <div className={"column is-one-fifth"} style={{marginLeft: "0.4rem"}}>
                   <span className="sectionText"
                         onClick={this.openSection}>
                       {
                           SectionDisplay.justSection(this.section.idSpaced)
                       }
                   </span>
-              </div>
+                </div>
 
-              <div className={"column"}>
+                <div className={"column"}>
                   <span className={"sectionText"}
                         onClick={this.openSection}>
                       {
                           SectionDisplay.stripTime(this.section.timeInfo)
                       }
                   </span>
-              </div>
-          </div>
-      </li>
-  }
+                </div>
+            </div>
+        </li>
+    }
 }

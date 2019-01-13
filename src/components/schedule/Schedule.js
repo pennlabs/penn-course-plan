@@ -147,7 +147,6 @@ export default class Schedule extends Component {
             var blocks = [];
             var meetLetterDay = sec.meetDay; // On which day does this meeting take place?
             var meetRoom = sec.meetLoc;
-            console.log(sec);
             var newid = sec.idDashed + '-' + meetLetterDay + sec.meetHour.toString().replace(".", "");
             var asscsecs = sec.SchedAsscSecs;
 
@@ -242,6 +241,7 @@ export default class Schedule extends Component {
                                assignedClass={block.class} letterDay={block.letterday}
                                key={i} y={block.top} x={block.left} width={block.width}
                                height={block.height} name={block.name}
+                               scheduleModifier = {this.props.scheduleModifier}
                                showWarning={showWarning}/>);
         }
         if (blocks.length === 0) {

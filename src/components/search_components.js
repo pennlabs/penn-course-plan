@@ -56,14 +56,12 @@ class SearchResults extends React.Component{
                     }
                 })
             }));
-            console.log(this.state.searchResults);
         }else{
             this.setState(state => ({
                 searchResults: new_results.sort((a, b) => {
                     return scale * (a.revs[courseSort] - b.revs[courseSort])
                 })
             }));
-            console.log(this.state.searchResults);
         }
     }
 
