@@ -25,7 +25,7 @@ export default class Sections extends Component {
                   <div className={"tooltip column is-one-fifth"} title={"Section ID"}>Sect</div>
                   <div className={"tooltip column"} title={"Meeting Time"}>Time</div>
               </div>
-              {this.state.sections && <SectionList key = {this.iteration} sections={this.state.sections}/>}
+              {this.state.sections && <SectionList scheduleModifier = {this.props.scheduleModifier} key = {this.iteration} sections={this.state.sections}/>}
           </div>
           {this.state.sectionInfo && <SectionInfoDisplay key = {this.iteration + 1} sectionInfo={this.state.sectionInfo}/>}
       </div>;

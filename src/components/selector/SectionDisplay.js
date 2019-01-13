@@ -6,7 +6,7 @@ export default class SectionDisplay extends Component {
       super(props);
       this.section = this.props.section;
       this.getAddRemoveIcon = this.getAddRemoveIcon.bind(this);
-      this.getPcaButton = this.getPcaButton.bind(this);
+      SectionDisplay.getPcaButton = SectionDisplay.getPcaButton.bind(this);
       this.getInstructorReview = this.getInstructorReview.bind(this);
       this.openSection = function () {
       }
@@ -14,19 +14,32 @@ export default class SectionDisplay extends Component {
 
   getAddRemoveIcon() {
       let className = "fa";
-      const schedSections = [];
-      if (schedSections.indexOf(this.section.idDashed) === -1) {
+      const scheduleModifier = this.props.scheduleModifier;
+      const schedSections = scheduleModifier.schedule.meetings;
+      const add = schedSections.indexOf(this.section.idDashed) === -1;
+      if (add) {
           className += " fa-plus";
-      } else if (schedSections.indexOf(this.section.idDashed) > -1) {
+      } else{
           className += " fa-times";
       }
-      const onClick = function () {
-      };
+      let onClick = undefined;
+
+      const section = this.section;
+      if(add) {
+          onClick = function () {
+              scheduleModifier.addSchedItem(section.fullSchedInfo[0]);
+          };
+      }else{
+          onClick = function () {
+              scheduleModifier.removeSchedItem(section);
+          };
+      }
+
       return <i className={className}
                 onClick={onClick}/>;
   }
 
-  getPcaButton() {
+  static getPcaButton() {
       const onClick = function () {
       };
       return <i className={"fa fa-bell-o tooltip"}
@@ -41,13 +54,13 @@ export default class SectionDisplay extends Component {
                    onClick={this.openSection}>{this.section.revs.cI}</span>;
   }
 
-  justSection(s) {
+  static justSection(s) {
     return s.substring(s.lastIndexOf(' ') + 1)
   }
 
-  stripTime(s) {
-    s = s.replace(' to ', '-')
-    s = s.replace('on', '')
+  static stripTime(s) {
+    s = s.replace(' to ', '-');
+    s = s.replace('on', '');
     return s
   }
 
@@ -68,7 +81,7 @@ export default class SectionDisplay extends Component {
                   {this.getAddRemoveIcon()}
                   <span className={"statusClass " + (this.section.isOpen ? "openSec" : "closedSec")}
                         onClick={this.openSection}>
-                      {(!this.section.isOpen) && this.getPcaButton()}
+                      {(!this.section.isOpen) && SectionDisplay.getPcaButton()}
                   </span>
               </div>
 
@@ -80,7 +93,7 @@ export default class SectionDisplay extends Component {
                   <span className="sectionText"
                         onClick={this.openSection}>
                       {
-                          this.justSection(this.section.idSpaced)
+                          SectionDisplay.justSection(this.section.idSpaced)
                       }
                   </span>
               </div>
@@ -89,7 +102,7 @@ export default class SectionDisplay extends Component {
                   <span className={"sectionText"}
                         onClick={this.openSection}>
                       {
-                          this.stripTime(this.section.timeInfo)
+                          SectionDisplay.stripTime(this.section.timeInfo)
                       }
                   </span>
               </div>

@@ -3,10 +3,10 @@ import React, { Component } from 'react';
 export default class SectionInfoDisplay extends Component {
   constructor(props) {
       super(props);
-      this.getStar = this.getStar.bind(this);
+      SectionInfoDisplay.getStar = SectionInfoDisplay.getStar.bind(this);
   }
 
-  getStar(){
+  static getStar(){
       let className = "fa fa-star";
       /*if($scope.starSections.indexOf($scope.currentSectionDashed) === -1){
           className += "-o";
@@ -67,7 +67,7 @@ export default class SectionInfoDisplay extends Component {
       return <div id="SectionInfo">
           {this.props.sectionInfo.fullID && (<p style={{fontSize: "1.25em"}}>
               {(this.props.sectionInfo.fullID + "-" + this.props.sectionInfo.title)}
-              {(this.props.sectionInfo.associatedSections !== undefined) && this.getStar()}
+              {(this.props.sectionInfo.associatedSections !== undefined) && SectionInfoDisplay.getStar()}
           </p>)}
           {timeInfoDisplay}
           {this.props.sectionInfo.instructor && <p>
