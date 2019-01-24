@@ -3,6 +3,7 @@ import './styles/App.css';
 import 'bulma/css/bulma.css'
 import Sections from "./components/selector/Sections";
 import Schedule from './components/schedule/Schedule'
+import {sections_data_a} from "./sections_data";
 
 class ScheduleModifier {
     // a class that provides methods for broadcasting and receiving changes to a schedule
@@ -54,6 +55,36 @@ class ScheduleModifier {
 
 }
 
+class SectionInfoModifier {
+    // a class that provides methods for broadcasting and receiving changes to the section info and sections list display
+
+    constructor(){
+        this.sectionList = sections_data_a;
+        this.sectionInfo = undefined;
+        this.sectionInfoChangeListeners = [];
+        this.sectionListChangeListeners = [];
+    }
+
+    setSectionInfo(sectionInfo){
+        this.sectionInfo = sectionInfo;
+        this.sectionInfoChangeListeners.forEach(function(listener){
+            listener(sectionInfo);
+        });
+    }
+
+    setSectionList(sectionList){
+        this.sectionList = sectionList;
+        this.sectionListChangeListeners.forEach(function(listener){
+            listener(sectionList);
+        });
+    }
+
+
+
+
+
+}
+
 class App extends Component {
     constructor(props) {
         super(props);
@@ -61,18 +92,19 @@ class App extends Component {
 
     render() {
         const scheduleModifier = new ScheduleModifier(this.props.scheduleSelected);
+        const sectionInfoModifier = new SectionInfoModifier();
         return (
             <div className="App">
                 <div className="columns">
                     <div className="column is-one-fifth">
                     </div>
                     <div className="column is-one-fifth">
-                        <Sections scheduleModifier={scheduleModifier}/>
+                        <Sections scheduleModifier={scheduleModifier} sectionInfoModifier={sectionInfoModifier}/>
                     </div>
                     <div id="InfoPanel" className="column">
                         <div id="SchedGraph" className="box">
                             <div id="Schedule" style={{position: 'relative'}}>
-                                <Schedule scheduleModifier={scheduleModifier}/>
+                                <Schedule scheduleModifier={scheduleModifier} sectionInfoModifier={sectionInfoModifier}/>
                             </div>
                         </div>
                     </div>

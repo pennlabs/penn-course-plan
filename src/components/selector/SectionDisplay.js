@@ -11,8 +11,6 @@ export default class SectionDisplay extends Component {
         SectionDisplay.getPcaButton = SectionDisplay.getPcaButton.bind(this);
         props.scheduleModifier.onAddListeners.push(this.onSchedChange);
         props.scheduleModifier.onRemListeners.push(this.onSchedChange);
-        this.openSection = function () {
-        }
     }
 
     onSchedChange(item){
@@ -69,7 +67,7 @@ export default class SectionDisplay extends Component {
         const bgColor = "rgba(46, 204, 113," + this.section.pcrIShade + ")";
         return <span className={"PCR Inst"}
                      style={{background: bgColor, color: this.section.pcrIColor}}
-                     onClick={this.openSection}>{this.section.revs.cI}</span>;
+                     onClick={this.props.openSection}>{this.section.revs.cI}</span>;
     }
 
     static justSection(s) {
@@ -98,7 +96,7 @@ export default class SectionDisplay extends Component {
                 <div className={"column is-one-fifth"}>
                     {this.getAddRemoveIcon()}
                     <span className={"statusClass " + (this.section.isOpen ? "openSec" : "closedSec")}
-                          onClick={this.openSection}>
+                          onClick={this.props.openSection}>
                       {(!this.section.isOpen) && SectionDisplay.getPcaButton()}
                   </span>
                 </div>
@@ -109,7 +107,7 @@ export default class SectionDisplay extends Component {
 
                 <div className={"column is-one-fifth"} style={{marginLeft: "0.4rem"}}>
                   <span className="sectionText"
-                        onClick={this.openSection}>
+                        onClick={this.props.openSection}>
                       {
                           SectionDisplay.justSection(this.section.idSpaced)
                       }
@@ -118,7 +116,7 @@ export default class SectionDisplay extends Component {
 
                 <div className={"column"}>
                   <span className={"sectionText"}
-                        onClick={this.openSection}>
+                        onClick={this.props.openSection}>
                       {
                           SectionDisplay.stripTime(this.section.timeInfo)
                       }
