@@ -1,5 +1,8 @@
 const getSchedule = (state = {}, scheduleId) => (
-    JSON.parse(localStorage.getItem("schedules"))[scheduleId]
+    {
+        ...state,
+        scheduleSelected: scheduleId
+    }
 );
 
 const createSchedule = (state = {}, scheduleName) => (
