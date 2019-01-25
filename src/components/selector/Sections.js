@@ -13,7 +13,6 @@ export default class Sections extends Component {
           self.setState({sectionList: sectionList});
       });
       props.sectionInfoModifier.sectionInfoChangeListeners.push(function(sectionInfo){
-          console.log(sectionInfo);
           self.setState({sectionInfo: sectionInfo});
       });
       this.iteration = 0;

@@ -19,7 +19,7 @@ export default class SectionInfoDisplay extends Component {
   }
 
   render() {
-      console.log("Rendering section info");
+      console.log("Rendering section info", this.props.sectionInfo);
       //const $scope = angular.element(document.body).scope();
       let timeInfoDisplay = undefined;
       if (this.props.sectionInfo.timeInfo) {

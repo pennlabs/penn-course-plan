@@ -8,7 +8,7 @@ export default class SectionList extends Component {
       for (let i = 0; i < this.props.sections.length; i++) {
           let section = this.props.sections[i];
           sections.push(<SectionDisplay scheduleModifier = {this.props.scheduleModifier} section={section} key={i}
-          openSection={function(){self.props.sectionInfoModifier.setSectionInfo(section);console.log(section);}}/>);
+          openSection={function(){self.props.sectionInfoModifier.setSectionInfo(section);}}/>);
           /*if (($scope.showAct === section.actType || $scope.showAct === 'noFilter') &&
               (section.isOpen || $scope.showClosed) &&
               ($scope.currentCourse || $scope.starSections.indexOf(section.idDashed) > -1)) {

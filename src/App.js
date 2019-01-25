@@ -3,7 +3,7 @@ import './styles/App.css';
 import 'bulma/css/bulma.css'
 import Sections from "./components/selector/Sections";
 import Schedule from './components/schedule/Schedule'
-import {sections_data_a} from "./sections_data";
+import {section_info_a, sections_data_a} from "./sections_data";
 
 class ScheduleModifier {
     // a class that provides methods for broadcasting and receiving changes to a schedule
@@ -60,7 +60,7 @@ class SectionInfoModifier {
 
     constructor(){
         this.sectionList = sections_data_a;
-        this.sectionInfo = undefined;
+        this.sectionInfo = section_info_a;
         this.sectionInfoChangeListeners = [];
         this.sectionListChangeListeners = [];
     }
