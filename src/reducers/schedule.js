@@ -1,7 +1,7 @@
 import {generateDefaultSchedule} from "./index";
 import {ADD_SCHED_ITEM, CHANGE_SCHEDULE, CREATE_SCHEDULE, REMOVE_SCHED_ITEM} from "../actions";
 
-const scheduleChange = (state = {}, action) => {
+const schedule = (state = {}, action) => {
     switch (action.type) {
         case CREATE_SCHEDULE:
             return {
@@ -17,25 +17,14 @@ const scheduleChange = (state = {}, action) => {
                 ...state,
                 scheduleSelected: action.scheduleId
             };
-        default:
-            return {
-                ...state,
-            }
-    }
-};
-
-const addRemoveScheduleItem = (state, action) => {
-    const {type, meeting} = action;
-    const activeSchedule = state.scheduleSelected;
-    switch (type) {
         case ADD_SCHED_ITEM:
             return {
                 ...state,
                 schedules: {
                     ...state.schedules,
-                    [activeSchedule]: {
-                        ...state[activeSchedule],
-                        meetings: [...state.meetings, meeting]
+                    [state.scheduleId]: {
+                        ...state[state.scheduleId],
+                        meetings: [...state.meetings, action.courseObj]
                     }
                 }
             };
@@ -44,13 +33,15 @@ const addRemoveScheduleItem = (state, action) => {
                 ...state,
                 schedules: {
                     ...state.schedules,
-                    [activeSchedule]: {
-                        ...state[activeSchedule],
-                        meetings: state.meetings.filter(m => m.idDashed !== meeting.idDashed)
+                    [state.scheduleId]: {
+                        ...state[state.scheduleId],
+                        meetings: state.meetings.filter(m => m.idDashed !== action.courseObj.idDashed)
                     }
                 }
             };
         default:
-            return state
+            return {
+                ...state,
+            }
     }
 };
