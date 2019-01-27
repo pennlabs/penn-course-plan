@@ -1,6 +1,11 @@
 import {OPEN_SECTION_INFO, UPDATE_SEARCH} from "../actions";
 
-const handleSections = (state = {}, action) => {
+const initialState = {
+    sections: [],
+    sectionInfo: undefined,
+};
+
+export const sections = (state = initialState, action) => {
     switch (action.type) {
         case OPEN_SECTION_INFO:
             return {

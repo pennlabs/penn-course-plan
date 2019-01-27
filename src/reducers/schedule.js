@@ -1,7 +1,24 @@
-import {generateDefaultSchedule} from "./index";
 import {ADD_SCHED_ITEM, CHANGE_SCHEDULE, CREATE_SCHEDULE, REMOVE_SCHED_ITEM} from "../actions";
 
-const schedule = (state = {}, action) => {
+const DEFAULT_SCHEDULE_NAME = "Schedule";
+const initialLocalStorageData = localStorage.getItem("schedules");
+
+const generateDefaultSchedule = () => (
+    {
+        term: "2019A",
+        meetings: [],
+        colorPalette: [],
+        LocAdded: false
+    }
+);
+
+const initialState = {
+    schedules: typeof initialLocalStorageData === "undefined" ? {[DEFAULT_SCHEDULE_NAME]: generateDefaultSchedule()} :
+        JSON.parse(initialLocalStorageData),
+    scheduleSelected: DEFAULT_SCHEDULE_NAME
+};
+
+export const schedule = (state = initialState, action) => {
     switch (action.type) {
         case CREATE_SCHEDULE:
             return {
