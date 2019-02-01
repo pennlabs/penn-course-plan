@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import Line from './Line'
 import Block from './Block'
+import connect from "react-redux/es/connect/connect";
 
 
 //possible color classes (corresponds with CSS classes)
@@ -12,12 +13,12 @@ let top_colors_recitation = [];
 let top_colors_other = [];
 
 //makes all recitation colors available
-const reset_recitation_colors = function () {
+const reset_recitation_colors = () => {
     top_colors_recitation = top_colors_recitation_save.slice();
 };
 
 //makes all other colors available
-const reset_other_colors = function () {
+const resetOtherColors = () => {
     top_colors_other = top_colors_other_save.slice();
 };
 
@@ -25,15 +26,15 @@ const reset_other_colors = function () {
 let class_colors = {};
 
 //makes all colors available
-const reset_colors = function () {
+const resetColors = () => {
     reset_recitation_colors();
-    reset_other_colors();
+    resetOtherColors();
     class_colors = {};
 };
 
 //generates a color from a given day of the week, hour, and course name
-const generate_color = function (day, hour, name) {
-    var temp_color = class_colors[name];
+const generate_color = (day, hour, name) => {
+    let temp_color = class_colors[name];
     if (temp_color !== undefined) {
         return temp_color;
     } else {
@@ -47,7 +48,7 @@ const generate_color = function (day, hour, name) {
         } else {
             chosen_list = top_colors_other;
             if (chosen_list.length === 0) {
-                reset_other_colors();
+                resetOtherColors();
                 chosen_list = top_colors_other;
             }
         }
@@ -59,29 +60,10 @@ const generate_color = function (day, hour, name) {
     }
 };
 
-export default class Schedule extends Component {
-    constructor(props) {
-        super(props);
-
-        this.updateSchedData = this.updateSchedData.bind(this);
-
-        props.scheduleModifier.onAddListeners.push(this.updateSchedData);
-        props.scheduleModifier.onRemListeners.push(this.updateSchedData);
-
-        // saves a deep copy of the schedule to state
-        this.state = {
-            schedData: JSON.parse(JSON.stringify(props.scheduleModifier.schedule))
-        };
-
-    }
-
-    updateSchedData(_) {
-        console.log("New sched data!");
-        this.setState({schedData: JSON.parse(JSON.stringify(this.props.scheduleModifier.schedule))});
-    }
+class Schedule extends Component {
 
     render() {
-        const courseSched = this.state.schedData.meetings;
+        const courseSched = this.props.schedData.meetings;
         let weekdays = ['M', 'T', 'W', 'R', 'F'];
         let fullWeekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
         let startHour = 10; // start at 10
@@ -183,7 +165,7 @@ export default class Schedule extends Component {
             return block;
         }
 
-        reset_colors();
+        resetColors();
 
         meetBlocks.forEach(function (b) {
             schedBlocks.push(b);
@@ -241,7 +223,6 @@ export default class Schedule extends Component {
                                assignedClass={block.class} letterDay={block.letterday}
                                key={i} y={block.top} x={block.left} width={block.width}
                                height={block.height} name={block.name}
-                               scheduleModifier = {this.props.scheduleModifier}
                                showWarning={showWarning}/>);
         }
         if (blocks.length === 0) {
@@ -264,6 +245,12 @@ export default class Schedule extends Component {
         }
     }
 }
+
+const mapStateToProps = (state) => (
+    {schedData: state.schedules[state.scheduleSelected]}
+);
+
+export default connect(mapStateToProps)(Schedule);
 
 const EmptySchedule = () => (
     <div>

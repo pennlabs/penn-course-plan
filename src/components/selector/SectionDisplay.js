@@ -9,14 +9,6 @@ export default class SectionDisplay extends Component {
         this.getInstructorReview = this.getInstructorReview.bind(this);
         this.onSchedChange = this.onSchedChange.bind(this);
         SectionDisplay.getPcaButton = SectionDisplay.getPcaButton.bind(this);
-        props.scheduleModifier.onAddListeners.push(this.onSchedChange);
-        props.scheduleModifier.onRemListeners.push(this.onSchedChange);
-    }
-
-    onSchedChange(item){
-        if(item === undefined || item.idDashed === this.section.idDashed) {
-            this.forceUpdate()
-        }
     }
 
     getAddRemoveIcon() {
@@ -42,12 +34,12 @@ export default class SectionDisplay extends Component {
         if (add) {
             onClick = function () {
                 console.log("Adding: ", section);
-                scheduleModifier.addSchedItem(section.fullSchedInfo[0]);
+                this.props.addSchedItem(section.fullSchedInfo[0]);
             };
         } else {
             onClick = function () {
                 console.log("Removing: ", section);
-                scheduleModifier.removeSchedItem(section.fullSchedInfo[0]);
+                this.props.removeSchedItem(section.fullSchedInfo[0]);
             };
         }
 
