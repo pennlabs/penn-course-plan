@@ -63,6 +63,9 @@ const generate_color = (day, hour, name) => {
 class Schedule extends Component {
 
     render() {
+        if (!this.props.schedData) {
+            return EmptySchedule();
+        }
         const courseSched = this.props.schedData.meetings;
         let weekdays = ['M', 'T', 'W', 'R', 'F'];
         let fullWeekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
@@ -247,7 +250,7 @@ class Schedule extends Component {
 }
 
 const mapStateToProps = (state) => (
-    {schedData: state.schedules[state.scheduleSelected]}
+    {schedData: state.schedules? state.schedules[state.scheduleSelected] : undefined}
 );
 
 export default connect(mapStateToProps)(Schedule);

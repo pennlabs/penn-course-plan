@@ -1,7 +1,6 @@
 import {ADD_SCHED_ITEM, CHANGE_SCHEDULE, CREATE_SCHEDULE, REMOVE_SCHED_ITEM} from "../actions";
 
 const DEFAULT_SCHEDULE_NAME = "Schedule";
-const initialLocalStorageData = localStorage.getItem("schedules");
 
 const generateDefaultSchedule = () => (
     {
@@ -13,8 +12,7 @@ const generateDefaultSchedule = () => (
 );
 
 const initialState = {
-    schedules: typeof initialLocalStorageData === "undefined" ? {[DEFAULT_SCHEDULE_NAME]: generateDefaultSchedule()} :
-        JSON.parse(initialLocalStorageData),
+    schedules: {[DEFAULT_SCHEDULE_NAME]: generateDefaultSchedule()},
     scheduleSelected: DEFAULT_SCHEDULE_NAME
 };
 

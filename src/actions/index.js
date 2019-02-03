@@ -4,6 +4,7 @@ export const UPDATE_SEARCH = "UPDATE_SEARCH";
 export const OPEN_SECTION_INFO = "OPEN_SECTION_INFO";
 export const CHANGE_SCHEDULE = "CHANGE_SCHEDULE";
 export const CREATE_SCHEDULE = "CREATE_SCHEDULE";
+export const UPDATE_SECTIONS = "UPDATE_SECTIONS";
 
 export const changeSchedule = scheduleId => (
     {
@@ -26,10 +27,17 @@ export const removeSchedItem = courseObj => (
     }
 );
 
-export const updateSearch = searchTerm => (
+export const updateSearch = searchResults => (
     {
         type: UPDATE_SEARCH,
-        searchTerm
+        searchResults
+    }
+);
+
+export const updateSections = sections => (
+    {
+        type : UPDATE_SECTIONS,
+        sections
     }
 );
 
