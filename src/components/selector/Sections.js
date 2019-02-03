@@ -18,8 +18,8 @@ const mapDispatchToProps = (dispatch) => (
 
 const mapStateToProps = (state) => (
     {
-        sectionInfo: state? state.sectionInfo : undefined,
-        sections: state? state.sections: undefined
+        sectionInfo: state ? state.sections.sectionInfo : undefined,
+        sections: state ? state.sections.sections : undefined
     }
 );
 
@@ -51,11 +51,14 @@ class Sections extends Component {
                     <div className={"tooltip column"} title={"Meeting Time"}>Time</div>
                 </div>
                 {this.props.sections && <SectionList key={this.iteration} sections={this.props.sections}
-                                               onSectionClicked={(sectionInfo) => {
-                                                   self.setState({sectionInfo: sectionInfo})
-                                               }}/>}
+                                                     addSchedItem={this.props.addSchedItem}
+                                                     removeSchedItem={this.props.removeSchedItem}
+                                                     onSectionClicked={(sectionInfo) => {
+                                                         self.setState({sectionInfo: sectionInfo})
+                                                     }}/>}
             </div>
-            {this.props.sectionInfo && <SectionInfoDisplay key={this.iteration + 1} sectionInfo={this.props.sectionInfo}/>}
+            {this.props.sectionInfo &&
+            <SectionInfoDisplay key={this.iteration + 1} sectionInfo={this.props.sectionInfo}/>}
         </div>;
     }
 

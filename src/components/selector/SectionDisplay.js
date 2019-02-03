@@ -7,14 +7,14 @@ export default class SectionDisplay extends Component {
         this.section = this.props.section;
         this.getAddRemoveIcon = this.getAddRemoveIcon.bind(this);
         this.getInstructorReview = this.getInstructorReview.bind(this);
-        this.onSchedChange = this.onSchedChange.bind(this);
         SectionDisplay.getPcaButton = SectionDisplay.getPcaButton.bind(this);
     }
 
     getAddRemoveIcon() {
         let className = "fa";
         const scheduleModifier = this.props.scheduleModifier;
-        const schedSections = scheduleModifier.schedule.meetings;
+        const schedSections = [];
+        //TODO: insert actual schedSections
         let add = true;
         for (let i = 0; i < schedSections.length; i++) {
             let schedSection = schedSections[i];
@@ -32,7 +32,7 @@ export default class SectionDisplay extends Component {
 
         const section = this.section;
         if (add) {
-            onClick = function () {
+            onClick = () => {
                 console.log("Adding: ", section);
                 this.props.addSchedItem(section.fullSchedInfo[0]);
             };

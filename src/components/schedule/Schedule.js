@@ -62,6 +62,10 @@ const generate_color = (day, hour, name) => {
 
 class Schedule extends Component {
 
+    constructor(props){
+        super(props);
+    }
+
     render() {
         if (!this.props.schedData) {
             return EmptySchedule();
@@ -127,6 +131,8 @@ class Schedule extends Component {
                 timeblocks.push(hourtext);
             }
         }
+
+        console.log("Rendering schedule ", this.props.meetings);
 
         function GenMeetBlocks(sec) {
             var blocks = [];
@@ -249,9 +255,12 @@ class Schedule extends Component {
     }
 }
 
-const mapStateToProps = (state) => (
-    {schedData: state.schedules? state.schedules[state.scheduleSelected] : undefined}
-);
+const mapStateToProps = (state) => {
+    console.log(state);
+    return {
+        schedData: state.schedules ? state.schedules[state.scheduleSelected] : undefined
+    };
+};
 
 export default connect(mapStateToProps)(Schedule);
 

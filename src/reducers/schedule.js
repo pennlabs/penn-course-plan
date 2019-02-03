@@ -39,7 +39,7 @@ export const schedule = (state = initialState, action) => {
                     ...state.schedules,
                     [state.scheduleId]: {
                         ...state[state.scheduleId],
-                        meetings: [...state.meetings, action.courseObj]
+                        meetings: [...state.schedules[state.scheduleId].meetings, ...action.courseObj]
                     }
                 }
             };
