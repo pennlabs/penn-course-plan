@@ -20,10 +20,10 @@ export const addSchedItem = courseObj => (
     }
 );
 
-export const removeSchedItem = courseObj => (
+export const removeSchedItem = idDashed => (
     {
-        type: ADD_SCHED_ITEM,
-        courseObj
+        type: REMOVE_SCHED_ITEM,
+        idDashed
     }
 );
 

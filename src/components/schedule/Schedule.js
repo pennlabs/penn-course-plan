@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import Line from './Line'
 import Block from './Block'
 import connect from "react-redux/es/connect/connect";
+import {removeSchedItem} from "../../actions";
 
 
 //possible color classes (corresponds with CSS classes)
@@ -232,7 +233,8 @@ class Schedule extends Component {
                                assignedClass={block.class} letterDay={block.letterday}
                                key={i} y={block.top} x={block.left} width={block.width}
                                height={block.height} name={block.name}
-                               showWarning={showWarning}/>);
+                               showWarning={showWarning}
+                               removeSchedItem={this.props.removeSchedItem}/>);
         }
         if (blocks.length === 0) {
             return <EmptySchedule/>
@@ -262,7 +264,13 @@ const mapStateToProps = (state) => {
     };
 };
 
-export default connect(mapStateToProps)(Schedule);
+const mapDispatchToProps = (dispatch) => (
+    {
+        removeSchedItem : idDashed => dispatch(removeSchedItem(idDashed))
+    }
+);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Schedule);
 
 const EmptySchedule = () => (
     <div>

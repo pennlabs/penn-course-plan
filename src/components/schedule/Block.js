@@ -7,6 +7,7 @@ export default class Block extends Component {
         if (this.props.showWarning) {
             warning = null;
         }
+        const removeSchedItem = this.props.removeSchedItem;
         return <div className={"SchedBlock_container " + this.props.letterDay + " " + this.props.topC}
                     style={{
                         left: this.props.x + "%",
@@ -22,7 +23,7 @@ export default class Block extends Component {
                 }}>
                 <div className={"CloseX"} style={{width: 100 + "%", height: 100 + "%"}}><span
                     onClick={e => {
-                        this.props.scheduleModifier.removeSchedItem(this.props.id);
+                        removeSchedItem(this.props.id);
                         e.stopPropagation();
                         console.log('block removed', this.props.name)
                     }}>X</span></div>

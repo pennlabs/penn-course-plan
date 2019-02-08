@@ -44,13 +44,14 @@ export const schedule = (state = initialState, action) => {
                 }
             };
         case REMOVE_SCHED_ITEM:
+            console.log("ID Dashed", action.idDashed);
             return {
                 ...state,
                 schedules: {
                     ...state.schedules,
-                    [state.scheduleId]: {
-                        ...state[state.scheduleId],
-                        meetings: state.meetings.filter(m => m.idDashed !== action.courseObj.idDashed)
+                    [state.scheduleSelected]: {
+                        ...state[state.scheduleSelected],
+                        meetings: state.schedules[state.scheduleSelected].meetings.filter(m => m.fullID !== action.idDashed)
                     }
                 }
             };
