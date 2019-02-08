@@ -1,5 +1,8 @@
 import React, {Component} from 'react';
 
+function SecOverlap() {
+    // todo: copy over from PCS
+}
 
 export default class SectionDisplay extends Component {
     constructor(props) {

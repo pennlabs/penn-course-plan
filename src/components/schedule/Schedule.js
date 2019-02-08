@@ -129,7 +129,7 @@ class Schedule extends Component {
                     hourtext += "AM";
                 }
                 lines.push(<Line key={h} y={toppos}/>);
-                timeblocks.push(hourtext);
+                timeblocks.push(<div className="TimeBlock" style={{top:toppos+"%"}}>{hourtext}</div>);
             }
         }
 
@@ -252,9 +252,16 @@ class Schedule extends Component {
                 </div>;
                 weekdays.push(label);
             }
-            return <div>
-                {weekdays}
-                <div id={"SchedGrid"}>{lines}{blocks}</div>
+            return <div id={"SchedGraph"} className={"box"}>
+                <div id={"TimeCol"} style={{position:"relative"}}>
+                    {timeblocks}
+                </div>
+                <div id="Schedule" style={{position: 'relative'}}>
+                    {weekdays}
+                    <div id={"SchedGrid"}>
+                        {lines}{blocks}
+                    </div>
+                </div>
             </div>;
         }
     }

@@ -31,11 +31,7 @@ class App extends Component {
                             <Sections/>
                         </div>
                         <div id="InfoPanel" className="column">
-                            <div id="SchedGraph" className="box">
-                                <div id="Schedule" style={{position: 'relative'}}>
-                                    <Schedule/>
-                                </div>
-                            </div>
+                            <Schedule/>
                         </div>
                     </div>
                 </div>
