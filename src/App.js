@@ -15,8 +15,6 @@ store.subscribe(() =>{
     localStorage.setItem("coursePlanState", JSON.stringify(store.getState()));
 });
 
-console.log(store.getState());
-
 class App extends Component {
     constructor(props) {
         super(props);

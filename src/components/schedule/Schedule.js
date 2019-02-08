@@ -63,7 +63,7 @@ const generate_color = (day, hour, name) => {
 
 class Schedule extends Component {
 
-    constructor(props){
+    constructor(props) {
         super(props);
     }
 
@@ -133,16 +133,14 @@ class Schedule extends Component {
             }
         }
 
-        console.log("Rendering schedule ", this.props.meetings);
-
         function GenMeetBlocks(sec) {
-            var blocks = [];
-            var meetLetterDay = sec.meetDay; // On which day does this meeting take place?
-            var meetRoom = sec.meetLoc;
-            var newid = sec.idDashed + '-' + meetLetterDay + sec.meetHour.toString().replace(".", "");
-            var asscsecs = sec.SchedAsscSecs;
+            const blocks = [];
+            const meetLetterDay = sec.meetDay; // On which day does this meeting take place?
+            const meetRoom = sec.meetLoc;
+            const newid = sec.idDashed + '-' + meetLetterDay + sec.meetHour.toString().replace(".", "");
+            const asscsecs = sec.SchedAsscSecs;
 
-            var newblock = {
+            const newblock = {
                 'class': sec.idDashed,
                 'letterday': meetLetterDay,
                 'id': newid,
@@ -151,7 +149,9 @@ class Schedule extends Component {
                 'name': sec.idSpaced,
                 'room': meetRoom,
                 'asscsecs': asscsecs,
-                "topc": "blue"
+                "topc": "blue",
+                'showWarning': asscsecs.filter(value => -1 !==
+                    courseSched.map((course) => course.idDashed).indexOf(value)).length === 0
             };
             blocks.push(newblock);
             return blocks;
@@ -165,6 +165,8 @@ class Schedule extends Component {
                 meetBlocks = meetBlocks.concat(GenMeetBlocks(sec));
             });
         }
+
+        console.log(meetBlocks);
 
         function AddSchedAttr(block) {
             block.left = weekdays.indexOf(block.letterday) * percentWidth;
@@ -208,6 +210,7 @@ class Schedule extends Component {
                 if (n.letterday.indexOf(weekday) !== -1) {
                     let newObj = JSON.parse(JSON.stringify(n));
                     newObj.letterday = weekday;
+                    newObj.showWarning = n.showWarning;
                     dayblocks.push(AddSchedAttr(newObj));
                 }
             });
@@ -228,12 +231,12 @@ class Schedule extends Component {
         let blocks = [];
         for (let i = 0; i < schedBlocks.length; i++) {
             const block = schedBlocks[i];
-            let showWarning = false; // TODO: Check for associated section
+            // TODO: Check for associated section
             blocks.push(<Block topC={block.topc} id={block.id}
                                assignedClass={block.class} letterDay={block.letterday}
                                key={i} y={block.top} x={block.left} width={block.width}
                                height={block.height} name={block.name}
-                               showWarning={showWarning}
+                               showWarning={block.showWarning}
                                removeSchedItem={this.props.removeSchedItem}/>);
         }
         if (blocks.length === 0) {
@@ -266,7 +269,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => (
     {
-        removeSchedItem : idDashed => dispatch(removeSchedItem(idDashed))
+        removeSchedItem: idDashed => dispatch(removeSchedItem(idDashed))
     }
 );
 

@@ -31,3 +31,23 @@ export const sections = (state = initialState, action) => {
             };
     }
 };
+
+//FIXME: Old code for getting section info
+/*
+PCS.factory('UpdateSectionInfo', ['httpService', function(httpService){
+    var retObj = {};
+    retObj.getSectionInfo = function(section) {
+        ga('send', 'event', 'Search', 'sectSearch', section);
+        return httpService.get('/Search?searchType=courseIDSearch&resultType=sectSearch&searchParam='+section).then(function(data) {
+            return data;
+        }, function(err) {
+            if (!err.config.timeout.$$state.value) {
+                ErrorAlert(err); //  If there's an error, show an error dialog
+            } else {
+                return {};
+            }
+        });
+    };
+    return retObj;
+}]);
+*/

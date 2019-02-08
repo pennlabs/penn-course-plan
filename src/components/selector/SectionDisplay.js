@@ -24,12 +24,10 @@ export default class SectionDisplay extends Component {
         const section = this.section;
         if (!this.props.inSchedule) {
             onClick = () => {
-                console.log("Adding: ", section);
                 addSchedItem(section.fullSchedInfo[0]);
             };
         } else {
             onClick = function () {
-                console.log("Removing: ", section);
                 removeSchedItem(section.fullSchedInfo[0].fullID);
             };
         }

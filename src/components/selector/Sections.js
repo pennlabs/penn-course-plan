@@ -52,16 +52,14 @@ class Sections extends Component {
                     <div className={"tooltip column"} title={"Meeting Time"}>Time</div>
                 </div>
                 {this.props.sections && <SectionList
+                    sectionInfo={this.props.sectionInfo}
+                    updateSectionInfo={this.props.updateSectionInfo}
                     scheduleContains={(sectionID) => {
-                        console.log(sectionID);
                         return this.props.scheduleMeetings.map((section) => section.idDashed).indexOf(sectionID) !== -1
                     }}
                     key={this.iteration} sections={this.props.sections}
                     addSchedItem={this.props.addSchedItem}
-                    removeSchedItem={this.props.removeSchedItem}
-                    onSectionClicked={(sectionInfo) => {
-                        self.setState({sectionInfo: sectionInfo})
-                    }}/>}
+                    removeSchedItem={this.props.removeSchedItem}/>}
             </div>
             {this.props.sectionInfo &&
             <SectionInfoDisplay key={this.iteration + 1} sectionInfo={this.props.sectionInfo}/>}

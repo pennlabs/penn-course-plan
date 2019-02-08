@@ -44,7 +44,6 @@ export const schedule = (state = initialState, action) => {
                 }
             };
         case REMOVE_SCHED_ITEM:
-            console.log("ID Dashed", action.idDashed);
             return {
                 ...state,
                 schedules: {

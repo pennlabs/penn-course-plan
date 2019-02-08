@@ -4,7 +4,7 @@ export default class Block extends Component {
     render() {
         let warning = <div className={"NeedAssc"}
                            title={"Registration is required for an associated section."}><b>!</b></div>;
-        if (this.props.showWarning) {
+        if (!this.props.showWarning) {
             warning = null;
         }
         const removeSchedItem = this.props.removeSchedItem;
@@ -25,7 +25,6 @@ export default class Block extends Component {
                     onClick={e => {
                         removeSchedItem(this.props.id);
                         e.stopPropagation();
-                        console.log('block removed', this.props.name)
                     }}>X</span></div>
                 {warning}
                 <span className={"SecName"}>{this.props.name}</span>
