@@ -12,18 +12,9 @@ export default class SectionDisplay extends Component {
 
     getAddRemoveIcon() {
         let className = "fa";
-        const scheduleModifier = this.props.scheduleModifier;
-        const schedSections = [];
-        //TODO: insert actual schedSections
-        let add = true;
-        for (let i = 0; i < schedSections.length; i++) {
-            let schedSection = schedSections[i];
-            if (schedSection.idDashed === this.section.idDashed) {
-                add = false;
-                break;
-            }
-        }
-        if (add) {
+        const addSchedItem = this.props.addSchedItem;
+        const removeSchedItem = this.props.removeSchedItem;
+        if (!this.props.inSchedule) {
             className += " fa-plus";
         } else {
             className += " fa-times";
@@ -31,15 +22,15 @@ export default class SectionDisplay extends Component {
         let onClick = undefined;
 
         const section = this.section;
-        if (add) {
+        if (!this.props.inSchedule) {
             onClick = () => {
                 console.log("Adding: ", section);
-                this.props.addSchedItem(section.fullSchedInfo[0]);
+                addSchedItem(section.fullSchedInfo[0]);
             };
         } else {
             onClick = function () {
                 console.log("Removing: ", section);
-                this.props.removeSchedItem(section.fullSchedInfo[0]);
+                removeSchedItem(section.fullSchedInfo[0].fullID);
             };
         }
 

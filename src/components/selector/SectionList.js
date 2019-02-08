@@ -8,6 +8,7 @@ export default class SectionList extends Component {
       for (let i = 0; i < this.props.sections.length; i++) {
           let section = this.props.sections[i];
           sections.push(<SectionDisplay
+              inSchedule={this.props.scheduleContains(section.idDashed)}
               addSchedItem = {this.props.addSchedItem}
               removeSchedItem = {this.props.removeSchedItem}
               section={section} key={i}
