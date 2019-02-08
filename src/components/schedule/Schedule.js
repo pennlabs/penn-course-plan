@@ -258,7 +258,7 @@ class Schedule extends Component {
 const mapStateToProps = (state) => {
     console.log(state);
     return {
-        schedData: state.schedules ? state.schedules[state.scheduleSelected] : undefined
+        schedData: state.schedule.schedules[state.schedule.scheduleSelected]
     };
 };
 

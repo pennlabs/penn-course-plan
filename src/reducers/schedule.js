@@ -37,9 +37,9 @@ export const schedule = (state = initialState, action) => {
                 ...state,
                 schedules: {
                     ...state.schedules,
-                    [state.scheduleId]: {
-                        ...state[state.scheduleId],
-                        meetings: [...state.schedules[state.scheduleId].meetings, ...action.courseObj]
+                    [state.scheduleSelected]: {
+                        ...state[state.scheduleSelected],
+                        meetings: [action.courseObj]
                     }
                 }
             };
