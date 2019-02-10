@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import * as React from "react";
 
-class OutClickable extends Component{
+class OutClickable extends React.Component{
     // a component that you can "click out" of
     //requires that ref={this.setWrapperRef} is added as an attribute
     constructor(props){
@@ -25,7 +25,7 @@ class OutClickable extends Component{
 
 }
 
-class Dropdown extends OutClickable{
+export class Dropdown extends OutClickable{
     constructor(props) {
         super(props);
         let starting_activity = -1;
@@ -81,7 +81,7 @@ class Dropdown extends OutClickable{
                 addition = " is-active";
             }
             const selected_contents = this.props.contents[i];
-            a_list.push(<a value={this.props.contents[i]} onClick={function () {
+            a_list.push(<a onClick={() => {
                 if(selected_contents.length > 1){
                     //this means that a function for onclick is provided
                     selected_contents[1]();
@@ -136,7 +136,7 @@ class ToggleButton extends OutClickable{
     }
 
     render(){
-        return <Button ref={this.setWrapperRef} className={"toggle_button "+this.state.active}>{this.props.name}</Button>;
+        return <button ref={this.setWrapperRef} className={"toggle_button "+this.state.active}>{this.props.name}</button>;
     }
 
 }

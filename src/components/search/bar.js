@@ -1,35 +1,22 @@
 import * as React from "react";
+import {Dropdown} from "../dropdown";
 
-export class SearchBar extends React.Component{
+export class SearchBar extends React.Component {
 
     render() {
         return <div id={"searchbar"} className={"level"}>
 			<span className={"level-left"}>
 
 				<div id={"searchSelectContainer"}>
-					<div id={"searchSelect"} className={"dropdown"}>
-						<div
-                            className={"dropdown-trigger"}>
-							<button className={"button"} aria-haspopup={"true"}
-                                    aria-controls={"dropdown-menu"}>
-								<span>
-									<span
-                                        className={"selected_name"}>Search By</span>
-								<span className={"icon is-small"}><i
-                                    className={"fa fa-angle-down"} aria-hidden={"true"}/>
-								</span>
-								</span>
-							</button>
-						</div>
-						<div
-                            className={"dropdown-menu"} role={"menu"}>
-							<div className={"dropdown-content"}>
-                    <a className={"dropdown-item is-active"}>Course ID</a>
-                    <a className={"dropdown-item"}>Keywords</a>
-                    <a className={"dropdown-item"}>Instructor</a>
-                </div>
-                </div>
-                </div>
+                    <Dropdown id={"searchSelect"} update_label={true} def_active={0} def_text={"Search By"}
+                              contents={[
+                                  ["Course ID", () => {
+                                  }],
+                                  ["Keywords", () => {
+                                  }],
+                                  ["Instructor", () => {
+                                  }]
+                              ]}/>
                 </div>
 
 				<form className={"ng-valid ng-dirty ng-valid-parse ng-submitted"}>
@@ -39,23 +26,21 @@ export class SearchBar extends React.Component{
                            placeholder={"Search for a department, course, or section"} autoFocus={"autofocus"}/>
 				</form>
 				<div id="filter_search_toggler" onClick="toggle_filter_search_display(this);"
-                     style={{backgroundImage:"url(&quot;/css/filter_a.png&quot;)"}}>
+                     style={{backgroundImage: "url(/src/assets/filter_a.png&quot;)"}}>
 				</div>
 			</span>
 
             <span className="level-right">
 
-				<div id="scheduleOptionsContainer"><div id="scheduleDropdown" className="dropdown"><div
-                    className="dropdown-trigger"><button className="button" aria-haspopup="true"
-                                                         aria-controls="dropdown-menu"><span><span
-                    className="selected_name">Schedule Options</span><span className="icon is-small"><i
-                    className="fa fa-angle-down" aria-hidden="true"/></span></span></button></div><div
-                    className="dropdown-menu" role="menu"><div className="dropdown-content"><a
-                    className="dropdown-item">New</a><a className="dropdown-item">Download</a> <a
-                    className="dropdown-item">Duplicate</a>
-					<a className="dropdown-item">Rename</a>
-					<a className="dropdown-item">Clear</a>
-					<a className="dropdown-item">Delete</a></div></div></div></div>
+				<div id="scheduleOptionsContainer">
+					<Dropdown id = {"scheduleDropdown"} def_text = {"Schedule Options"} contents = {[["New",()=>{}],
+                        ["Download",()=>{}],
+                        ["Duplicate",()=>{}],
+                        ["Rename",()=>{}],
+                        ["Clear",()=>{}],
+                        ["Delete",()=>{}]
+                    ]}/>
+				</div>
 				<button className="button"><span>Show Stars</span></button>
 				<a className="button" href="#UploadModal" id="ImportButton" onClick="ga('send', 'event', 'UI interaction', 'import');
 																				  activate_modal(document.getElementById('UploadModal'))">
