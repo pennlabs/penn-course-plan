@@ -7,7 +7,9 @@ import {section_info_a, sections_data_a} from "./sections_data";
 import Provider from "react-redux/es/components/Provider";
 import {createStore} from "redux";
 import coursePlanApp from "./reducers";
-import {SearchResults} from "./components/search_components"
+import {SearchResults} from "./components/search/search_results"
+import {SearchBar} from "./components/search/bar"
+
 
 const previousState = localStorage.getItem("coursePlanState");
 const store = createStore(coursePlanApp, previousState ? JSON.parse(previousState) : undefined);
@@ -24,6 +26,7 @@ class App extends Component {
     render() {
         return (
             <Provider store = {store}>
+                <SearchBar/>
                 <div className="App">
                     <div className="columns" id={"courses_and_sections"}>
                         <div className={"column is-two-fifths"}>
