@@ -34,7 +34,7 @@ class Sections extends Component {
     render() {
         this.iteration++;
         const self = this;
-        return <div id={"SectionsContainer"}>
+        return <div id={"SectionCol"} className={"box column is-half"}>
             <div id={"Sections"}>
                 <div className="columns is-gapless"
                      style={{

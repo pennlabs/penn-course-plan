@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import SectionDisplay from './SectionDisplay'
+import {section_info_a} from "../../sections_data";
 
 export default class SectionList extends Component {
     render() {
@@ -14,7 +15,7 @@ export default class SectionList extends Component {
                 removeSchedItem={this.props.removeSchedItem}
                 section={section} key={i}
                 openSection={() => {
-                    updateSectionInfo(section);
+                    updateSectionInfo(section_info_a);
                 }}/>);
             /*if (($scope.showAct === section.actType || $scope.showAct === 'noFilter') &&
                 (section.isOpen || $scope.showClosed) &&
