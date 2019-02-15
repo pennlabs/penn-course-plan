@@ -3,8 +3,8 @@ import React, {Component} from 'react';
 class SearchFilter extends Component{
 
     render() {
-        return <div id="FilterSearch" className="content_dropdown box">
-            <div className="FilterPanel" style={{width : "60%"}}>
+        return this.props.show ? <div id="FilterSearch" className="content_dropdown box">
+            <div className="FilterPanel" style={{width: "60%"}}>
                 <div className="FilterBlock">
                     <div id="reqTypes">
                         <span>College</span>
@@ -17,7 +17,7 @@ class SearchFilter extends Component{
             <div className="FilterPanel" style="width:40%;">
                 <div className="FilterBlock">
                     <input type="checkbox" id="closedCheck" value="ClosedSec" checked/>
-                        Show closed sections
+                    Show closed sections
                 </div>
 
                 <div className="FilterBlock">
@@ -59,7 +59,10 @@ class SearchFilter extends Component{
                     </select>
                 </div>
             </div>
-        </div>;
+        </div> : undefined;
     }
-
 }
+
+const mapStateToProps = (state) => ({show : state.sections.showSearchFilter});
+
+export default connect(mapStateToProps)(SearchFilter);

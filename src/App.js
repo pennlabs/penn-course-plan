@@ -40,6 +40,7 @@ class App extends Component {
                         </div>
                     </div>
                 </div>
+                <SearchFilter/>
             </Provider>
         );
     }
