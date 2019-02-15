@@ -1,5 +1,5 @@
 import * as React from "react";
-import {SearchResult} from "./search_result";
+import {SearchResult} from "./results";
 
 let searchResultsPane = null;
 

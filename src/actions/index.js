@@ -5,6 +5,7 @@ export const OPEN_SECTION_INFO = "OPEN_SECTION_INFO";
 export const CHANGE_SCHEDULE = "CHANGE_SCHEDULE";
 export const CREATE_SCHEDULE = "CREATE_SCHEDULE";
 export const UPDATE_SECTIONS = "UPDATE_SECTIONS";
+export const TOGGLE_SEARCH_FILTER = "TOGGLE_SEARCH_FILTER";
 
 export const changeSchedule = scheduleId => (
     {
@@ -55,3 +56,8 @@ export const createSchedule = scheduleName => (
     }
 );
 
+export const toggleSearchFilterShown = () => (
+    {
+        type: TOGGLE_SEARCH_FILTER
+    }
+);

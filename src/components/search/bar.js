@@ -1,7 +1,15 @@
-import * as React from "react";
+import React, {Component} from 'react';
 import {Dropdown} from "../dropdown";
+import connect from "react-redux/es/connect/connect";
+import {toggleSearchFilterShown} from "../../actions";
 
-export class SearchBar extends React.Component {
+class SearchBar extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {searchFilterOpened: false};
+    }
+
 
     render() {
         return <div id={"searchbar"} className={"level"}>
@@ -25,20 +33,24 @@ export class SearchBar extends React.Component {
                            name={"courseSearch"} autoComplete={"off"}
                            placeholder={"Search for a department, course, or section"} autoFocus={"autofocus"}/>
 				</form>
-				<div id="filter_search_toggler" onClick="toggle_filter_search_display(this);"
-                     style={{backgroundImage: "url(/src/assets/filter_a.png&quot;)"}}>
-				</div>
+                {this.searchToggler()}
 			</span>
 
             <span className="level-right">
 
 				<div id="scheduleOptionsContainer">
-					<Dropdown id = {"scheduleDropdown"} def_text = {"Schedule Options"} contents = {[["New",()=>{}],
-                        ["Download",()=>{}],
-                        ["Duplicate",()=>{}],
-                        ["Rename",()=>{}],
-                        ["Clear",()=>{}],
-                        ["Delete",()=>{}]
+					<Dropdown id={"scheduleDropdown"} def_text={"Schedule Options"} contents={[["New", () => {
+                    }],
+                        ["Download", () => {
+                        }],
+                        ["Duplicate", () => {
+                        }],
+                        ["Rename", () => {
+                        }],
+                        ["Clear", () => {
+                        }],
+                        ["Delete", () => {
+                        }]
                     ]}/>
 				</div>
 				<button className="button"><span>Show Stars</span></button>
@@ -79,4 +91,19 @@ export class SearchBar extends React.Component {
             ;
     }
 
+    searchToggler() {
+        const self = this;
+        const selectedBackground = this.state.searchFilterOpened ? "images/filter_b.png" : "images/filter_a.png";
+        return <div id="filter_search_toggler"
+                    onClick={() => {
+                        self.setState({searchFilterOpened: !self.state.searchFilterOpened});
+                        this.props.toggleSearchFilterShown();
+                    }}
+                    style={{backgroundImage: "url(" + selectedBackground + ")"}}>
+        </div>;
+    }
+
 }
+
+const mapDispatchToProps = (dispatch) => ({toggleSearchFilterShown : () => dispatch(toggleSearchFilterShown())});
+export default connect(null, mapDispatchToProps)(SearchBar);

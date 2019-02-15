@@ -3,12 +3,12 @@ import './styles/App.css';
 import 'bulma/css/bulma.css'
 import Sections from "./components/selector/Sections";
 import Schedule from './components/schedule/Schedule'
-import {section_info_a, sections_data_a} from "./sections_data";
 import Provider from "react-redux/es/components/Provider";
 import {createStore} from "redux";
 import coursePlanApp from "./reducers";
-import {SearchResults} from "./components/search/search_results"
-import {SearchBar} from "./components/search/bar"
+import {SearchResults} from "./components/search/result"
+import SearchBar from "./components/search/bar"
+
 
 
 const previousState = localStorage.getItem("coursePlanState");
