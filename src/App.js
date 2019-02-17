@@ -14,6 +14,7 @@ import SearchFilter from "./components/search/filter"
 
 const previousState = localStorage.getItem("coursePlanState");
 const previousStateJSON = previousState ? JSON.parse(previousState): undefined;
+
 if (previousStateJSON !== undefined) {
     previousStateJSON.sections.showSearchFilter = false;
 }
