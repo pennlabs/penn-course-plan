@@ -5,7 +5,8 @@ const initialState = {
     sections: sections_data_a,
     searchResults: [],
     sectionInfo: undefined,
-    showSearchFilter: false
+    showSearchFilter: false,
+    searchFilterLocation: undefined
 };
 
 export const sections = (state = initialState, action) => {
@@ -29,7 +30,8 @@ export const sections = (state = initialState, action) => {
         case TOGGLE_SEARCH_FILTER:
             return {
                 ...state,
-                showSearchFilter : ! state.showSearchFilter
+                showSearchFilter : ! state.showSearchFilter,
+                showSearchFilterLocation :  action.location
             };
         default:
             return {
@@ -37,23 +39,3 @@ export const sections = (state = initialState, action) => {
             };
     }
 };
-
-//FIXME: Old code for getting section info
-/*
-PCS.factory('UpdateSectionInfo', ['httpService', function(httpService){
-    var retObj = {};
-    retObj.getSectionInfo = function(section) {
-        ga('send', 'event', 'Search', 'sectSearch', section);
-        return httpService.get('/Search?searchType=courseIDSearch&resultType=sectSearch&searchParam='+section).then(function(data) {
-            return data;
-        }, function(err) {
-            if (!err.config.timeout.$$state.value) {
-                ErrorAlert(err); //  If there's an error, show an error dialog
-            } else {
-                return {};
-            }
-        });
-    };
-    return retObj;
-}]);
-*/

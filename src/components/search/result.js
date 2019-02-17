@@ -14,7 +14,6 @@ export class SearchResults extends React.Component {
     }
 
     render() {
-        console.log("Re-rendering");
         let items = [];
         for (let i = 0; i < this.state.searchResults.length; i++) {
             const searchResult = this.state.searchResults[i];

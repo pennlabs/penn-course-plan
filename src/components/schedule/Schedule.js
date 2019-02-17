@@ -166,8 +166,6 @@ class Schedule extends Component {
             });
         }
 
-        console.log(meetBlocks);
-
         function AddSchedAttr(block) {
             block.left = weekdays.indexOf(block.letterday) * percentWidth;
             block.top = (block.startHr - startHour) * halfScale + 9; // determine top spacing based on time from startHour (offset for prettiness)
@@ -268,7 +266,6 @@ class Schedule extends Component {
 }
 
 const mapStateToProps = (state) => {
-    console.log(state);
     return {
         schedData: state.schedule.schedules[state.schedule.scheduleSelected]
     };

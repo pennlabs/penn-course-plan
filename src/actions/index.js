@@ -56,8 +56,9 @@ export const createSchedule = scheduleName => (
     }
 );
 
-export const toggleSearchFilterShown = () => (
+export const toggleSearchFilterShown = location => (
     {
-        type: TOGGLE_SEARCH_FILTER
+        type: TOGGLE_SEARCH_FILTER,
+        location
     }
 );

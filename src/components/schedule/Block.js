@@ -19,7 +19,6 @@ export default class Block extends Component {
                 className={"SchedBlock " + this.props.letterDay + " " + this.props.topC + " " + this.props.assignedClass}
                 id={this.props.id}
                 onClick={() => {
-                    console.log('block clicked', this.props.name)
                 }}>
                 <div className={"CloseX"} style={{width: 100 + "%", height: 100 + "%"}}><span
                     onClick={e => {

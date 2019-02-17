@@ -94,10 +94,12 @@ class SearchBar extends Component {
     searchToggler() {
         const self = this;
         const selectedBackground = this.state.searchFilterOpened ? "images/filter_b.png" : "images/filter_a.png";
+        let node = undefined;
         return <div id="filter_search_toggler"
+                    ref = {c => node = c}
                     onClick={() => {
                         self.setState({searchFilterOpened: !self.state.searchFilterOpened});
-                        this.props.toggleSearchFilterShown();
+                        this.props.toggleSearchFilterShown(node.getBoundingClientRect());
                     }}
                     style={{backgroundImage: "url(" + selectedBackground + ")"}}>
         </div>;
@@ -105,5 +107,6 @@ class SearchBar extends Component {
 
 }
 
-const mapDispatchToProps = (dispatch) => ({toggleSearchFilterShown : () => dispatch(toggleSearchFilterShown())});
-export default connect(null, mapDispatchToProps)(SearchBar);
+const mapStateToProps = (state) => ({});
+const mapDispatchToProps = (dispatch) => ({toggleSearchFilterShown : rect => dispatch(toggleSearchFilterShown(rect))});
+export default connect(mapStateToProps, mapDispatchToProps)(SearchBar);

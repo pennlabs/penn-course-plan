@@ -8,11 +8,16 @@ import {createStore} from "redux";
 import coursePlanApp from "./reducers";
 import {SearchResults} from "./components/search/result"
 import SearchBar from "./components/search/bar"
+import SearchFilter from "./components/search/filter"
 
 
 
 const previousState = localStorage.getItem("coursePlanState");
-const store = createStore(coursePlanApp, previousState ? JSON.parse(previousState) : undefined);
+const previousStateJSON = previousState ? JSON.parse(previousState): undefined;
+if (previousStateJSON !== undefined) {
+    previousStateJSON.sections.showSearchFilter = false;
+}
+const store = createStore(coursePlanApp, previousStateJSON);
 
 store.subscribe(() =>{
     localStorage.setItem("coursePlanState", JSON.stringify(store.getState()));

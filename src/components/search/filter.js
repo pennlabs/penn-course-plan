@@ -1,9 +1,12 @@
 import React, {Component} from 'react';
+import connect from "react-redux/es/connect/connect";
 
 class SearchFilter extends Component{
 
     render() {
-        return this.props.show ? <div id="FilterSearch" className="content_dropdown box">
+        return this.props.show ? <div id="FilterSearch" className="content_dropdown box" style={this.props.location ? {opacity: 1,
+            visibility : "visible", left : (1.5 * this.props.location.left - this.props.location.right) + "px",
+            top : (this.props.location.bottom + 10) + "px"} : {}}>
             <div className="FilterPanel" style={{width: "60%"}}>
                 <div className="FilterBlock">
                     <div id="reqTypes">
@@ -14,7 +17,7 @@ class SearchFilter extends Component{
                 </div>
             </div>
 
-            <div className="FilterPanel" style="width:40%;">
+            <div className="FilterPanel">
                 <div className="FilterBlock">
                     <input type="checkbox" id="closedCheck" value="ClosedSec" checked/>
                     Show closed sections
@@ -36,8 +39,7 @@ class SearchFilter extends Component{
                         <option value="ONL">Online Course</option>
                     </select>
 
-                    <select id="credSelect"
-                            onChange="ga('send', 'event', 'UI interaction', 'credit');">
+                    <select id="credSelect">
                         <option value="noFilter">Filter by CU</option>
                         <option value="0.5">0.5 CU</option>
                         <option value="1">1 CU</option>
@@ -59,10 +61,10 @@ class SearchFilter extends Component{
                     </select>
                 </div>
             </div>
-        </div> : undefined;
+        </div> : <div></div>;
     }
 }
 
-const mapStateToProps = (state) => ({show : state.sections.showSearchFilter});
+const mapStateToProps = (state) => ({show : state.sections.showSearchFilter, location: state.sections.showSearchFilterLocation});
 
 export default connect(mapStateToProps)(SearchFilter);

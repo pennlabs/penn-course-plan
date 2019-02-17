@@ -382,6 +382,7 @@ ul {
 
 .FilterPanel {
     height: 100%;
+    width: 40%;
     background-color: white;
     float: left;
     display: inline-block;
