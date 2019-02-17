@@ -1,10 +1,24 @@
 import React, {Component} from 'react';
 import connect from "react-redux/es/connect/connect";
+import {OutClickable} from "../dropdown";
+import {toggleSearchFilterShown} from "../../actions";
 
-class SearchFilter extends Component{
+class SearchFilter extends OutClickable{
+
+    constructor(props) {
+        super(props);
+        this.collapse = this.collapse.bind(this);
+    }
+
+
+    collapse() {
+        console.log("collapsing", this.props);
+        this.props.initiateCollapse();
+    }
 
     render() {
-        return this.props.show ? <div id="FilterSearch" className="content_dropdown box" style={this.props.location ? {opacity: 1,
+        return this.props.show ? <div id="FilterSearch" className="content_dropdown box"
+                                      ref={this.setWrapperRef} style={this.props.location ? {opacity: 1,
             visibility : "visible", left : (1.5 * this.props.location.left - this.props.location.right) + "px",
             top : (this.props.location.bottom + 10) + "px"} : {}}>
             <div className="FilterPanel" style={{width: "60%"}}>
@@ -61,10 +75,12 @@ class SearchFilter extends Component{
                     </select>
                 </div>
             </div>
-        </div> : <div></div>;
+        </div> : <div/>;
     }
 }
 
 const mapStateToProps = (state) => ({show : state.sections.showSearchFilter, location: state.sections.showSearchFilterLocation});
 
-export default connect(mapStateToProps)(SearchFilter);
+const mapDispatchToProps = dispatch => ({initiateCollapse : () => dispatch(toggleSearchFilterShown())});
+
+export default connect(mapStateToProps, mapDispatchToProps)(SearchFilter);

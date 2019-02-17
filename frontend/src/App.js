@@ -46,7 +46,7 @@ class App extends Component {
                         </div>
                     </div>
                 </div>
-                <SearchFilter/>
+                <SearchFilter allowed={["filter_search_toggler"]}/>
             </Provider>
         );
     }
