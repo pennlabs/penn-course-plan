@@ -11,16 +11,15 @@ import SearchBar from "./components/search/bar"
 import SearchFilter from "./components/search/filter"
 
 
-
 const previousState = localStorage.getItem("coursePlanState");
-const previousStateJSON = previousState ? JSON.parse(previousState): undefined;
+const previousStateJSON = previousState ? JSON.parse(previousState) : undefined;
 
 if (previousStateJSON !== undefined) {
     previousStateJSON.sections.showSearchFilter = false;
 }
 const store = createStore(coursePlanApp, previousStateJSON);
 
-store.subscribe(() =>{
+store.subscribe(() => {
     localStorage.setItem("coursePlanState", JSON.stringify(store.getState()));
 });
 
@@ -31,7 +30,7 @@ class App extends Component {
 
     render() {
         return (
-            <Provider store = {store}>
+            <Provider store={store}>
                 <nav className="navbar is-link" role="navigation">
                     <div className="navbar-brand">
                         <div className="navbar-item nav-header">
@@ -48,9 +47,9 @@ class App extends Component {
                                 Feedback
                             </a>
                             <a className="navbar-item"
-                               style={{paddingRight:"0.5em"}}>About</a>
+                               style={{paddingRight: "0.5em"}}>About</a>
                             <a className="navbar-item"
-                               style={{paddingRight:"0.5em"}}>Help</a>
+                               style={{paddingRight: "0.5em"}}>Help</a>
                         </div>
                     </div>
                 </nav>
@@ -69,6 +68,18 @@ class App extends Component {
                     </div>
                 </div>
                 <SearchFilter allowed={["filter_search_toggler"]}/>
+                <footer className="footer">
+                    <span className="arrow_container"><i className="fa fa-angle-up"/></span>
+                    <div className="container">
+                        <div className="content has-text-centered">
+                            <p style={{fontSize:"0.8rem"}}>
+                                Made with <span className="icon is-small" style={{color:"#F56F71"}}><i
+                                className="fa fa-heart"/></span> by <a href="https://github.com/benb116">Ben
+                                Bernstein </a> and <a href="http://pennlabs.org" target="_blank">Penn Labs</a>
+                            </p>
+                        </div>
+                    </div>
+                </footer>
             </Provider>
         );
     }
