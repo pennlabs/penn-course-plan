@@ -57,6 +57,18 @@ class Sections extends Component {
                     scheduleContains={(sectionID) => {
                         return this.props.scheduleMeetings.map((section) => section.idDashed).indexOf(sectionID) !== -1
                     }}
+                    overlaps = {(meeting) => {
+                        let meetingTimes = [];
+                        meeting.fullSchedInfo.forEach((meetingInfo) => {
+                            meetingTimes = meetingTimes.concat(generateMeetingTimes(meetingInfo));
+                        });
+                        let otherMeetingTimes = [];
+                        this.props.scheduleMeetings.forEach((meetingInfo) => {
+                            otherMeetingTimes = otherMeetingTimes.concat(generateMeetingTimes(meetingInfo));
+                        });
+                        console.log(meetingTimes, otherMeetingTimes);
+                        return meetingTimeIntersection(otherMeetingTimes, meetingTimes);
+                    }}
                     key={this.iteration} sections={this.props.sections}
                     addSchedItem={this.props.addSchedItem}
                     removeSchedItem={this.props.removeSchedItem}/>}
@@ -67,6 +79,34 @@ class Sections extends Component {
     }
 
 }
+
+// generates a list of meeting times in the form [day, start hour, end hour] from a meetingInfo object
+const generateMeetingTimes = (meetingInfo)=>{
+    const meetingTimes = [];
+    for (let i = 0; i < meetingInfo.meetDay.length; i++) {
+        meetingTimes.push([meetingInfo.meetDay[i], meetingInfo.meetHour, meetingInfo.meetHour + meetingInfo.hourLength]);
+    }
+    return meetingTimes;
+};
+
+//finds intersections between meeting times
+const meetingTimeIntersection = (meetingTimesA, meetingTimesB) => {
+    for(let i = 0; i < meetingTimesA.length; i ++) {
+        for (let j = 0; j < meetingTimesB.length; j ++) {
+            const meetingA = meetingTimesA[i];
+            const meetingB = meetingTimesB[j];
+            if (meetingA[0] !== meetingB[0]) {
+                continue;
+            }
+            const rangeUnion = [Math.max(meetingA[1], meetingB[1]), Math.min(meetingA[2], meetingB[2])];
+            if (rangeUnion[0] < rangeUnion[1]) {
+                console.log(rangeUnion);
+                return true;
+            }
+        }
+        return false;
+    }
+};
 
 export default connect(
     mapStateToProps,

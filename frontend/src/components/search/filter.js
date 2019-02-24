@@ -17,9 +17,11 @@ class SearchFilter extends OutClickable{
     }
 
     render() {
-        return this.props.show ? <div id="FilterSearch" className="content_dropdown box"
-                                      ref={this.setWrapperRef} style={this.props.location ? {opacity: 1,
-            visibility : "visible", left : (1.5 * this.props.location.left - this.props.location.right) + "px",
+        let visibility = this.props.show ? "visible" : "hidden";
+        let opacity = this.props.show? 1 : 0;
+        return <div id="FilterSearch" className="content_dropdown box"
+                                      ref={this.setWrapperRef} style={this.props.location ? {opacity: opacity,
+            visibility : visibility, left : (1.5 * this.props.location.left - this.props.location.right) + "px",
             top : (this.props.location.bottom + 10) + "px"} : {}}>
             <div className="FilterPanel" style={{width: "60%"}}>
                 <div className="FilterBlock">
@@ -75,7 +77,7 @@ class SearchFilter extends OutClickable{
                     </select>
                 </div>
             </div>
-        </div> : <div/>;
+        </div> ;
     }
 }
 

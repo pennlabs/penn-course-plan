@@ -6,7 +6,7 @@ import Schedule from './components/schedule/Schedule'
 import Provider from "react-redux/es/components/Provider";
 import {createStore} from "redux";
 import coursePlanApp from "./reducers";
-import {SearchResults} from "./components/search/result"
+import {SearchResults} from "./components/search/search_results"
 import SearchBar from "./components/search/bar"
 import SearchFilter from "./components/search/filter"
 

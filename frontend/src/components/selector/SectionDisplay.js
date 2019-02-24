@@ -1,8 +1,5 @@
 import React, {Component} from 'react';
 
-function SecOverlap() {
-    // todo: copy over from PCS
-}
 
 export default class SectionDisplay extends Component {
     constructor(props) {
@@ -42,7 +39,7 @@ export default class SectionDisplay extends Component {
     static getPcaButton() {
         const onClick = function () {
         };
-        return <i className={"fa fa-bell-o tooltip"}
+        return <i className={"far fa-bell"}
                   onClick={onClick}
                   title="Penn Course Alert"/>;
     }
@@ -68,6 +65,10 @@ export default class SectionDisplay extends Component {
         let className = this.section.actType;
         if (this.section === this.section.idSpaced.replace(' ', '').replace(' ', '')) {
             className += " activeItem";
+        }
+        if(this.props.overlap){
+            className += "hideSec";
+            console.log("hideSEc");
         }
         /*if((!$scope.sched.SecOverlap(this.section) && $scope.schedSections.indexOf(this.section.idDashed) === -1)){
             className += "hideSec";

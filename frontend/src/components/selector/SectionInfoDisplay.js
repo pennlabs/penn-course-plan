@@ -19,7 +19,6 @@ export default class SectionInfoDisplay extends Component {
   }
 
   render() {
-      //const $scope = angular.element(document.body).scope();
       let timeInfoDisplay = undefined;
       if (this.props.sectionInfo.timeInfo) {
           let meetings = [];

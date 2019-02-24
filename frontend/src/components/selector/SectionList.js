@@ -11,6 +11,7 @@ export default class SectionList extends Component {
             let section = this.props.sections[i];
             sections.push(<SectionDisplay
                 inSchedule={this.props.scheduleContains(section.idDashed)}
+                overlap={this.props.overlaps(section)}
                 addSchedItem={this.props.addSchedItem}
                 removeSchedItem={this.props.removeSchedItem}
                 section={section} key={i}
