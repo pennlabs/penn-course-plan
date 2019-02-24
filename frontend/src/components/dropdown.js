@@ -1,9 +1,9 @@
 import * as React from "react";
 
-class OutClickable extends React.Component{
+export class OutClickable extends React.Component {
     // a component that you can "click out" of
     //requires that ref={this.setWrapperRef} is added as an attribute
-    constructor(props){
+    constructor(props) {
         super(props);
         this.setWrapperRef = this.setWrapperRef.bind(this);
         this.handleClickOutside = this.handleClickOutside.bind(this);
@@ -14,8 +14,15 @@ class OutClickable extends React.Component{
      * Alert if clicked on outside of element
      */
     handleClickOutside(event) {
-        if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
-            this.close_dropdown();
+        if (this.wrapperRef && !this.wrapperRef.contains(event.target)){
+            if (this.props.allowed){
+                const allowedElements = this.props.allowed.map(id => document.getElementById(id));
+                console.log(allowedElements);
+                if (allowedElements.reduce((acc, item) => acc || item.contains(event.target), false)) {
+                    return;
+                }
+            }
+            this.collapse();
         }
     }
 
@@ -25,30 +32,30 @@ class OutClickable extends React.Component{
 
 }
 
-export class Dropdown extends OutClickable{
+export class Dropdown extends OutClickable {
     constructor(props) {
         super(props);
         let starting_activity = -1;
         //if props.def_active is not defined, it is assumed that the dropdown does not control
         //state and instead initiates an action
-        if(props.def_active !== undefined){
+        if (props.def_active !== undefined) {
             starting_activity = props.def_active;
         }
         this.state = {active: false, activity: starting_activity, label_text: props.def_text};
         this.activate_dropdown = this.activate_dropdown.bind(this);
         this.activate_item = this.activate_item.bind(this);
-        this.close_dropdown = this.close_dropdown.bind(this);
+        this.collapse = this.collapse.bind(this);
         this.toggle_dropdown = this.toggle_dropdown.bind(this);
     }
 
-    close_dropdown() {
+    collapse() {
         this.setState(state => ({active: false}));
     }
 
-    toggle_dropdown(){
-        if(this.state.active){
-            this.close_dropdown();
-        }else{
+    toggle_dropdown() {
+        if (this.state.active) {
+            this.collapse();
+        } else {
             this.activate_dropdown();
         }
     }
@@ -59,15 +66,15 @@ export class Dropdown extends OutClickable{
 
     activate_item(i) {
         this.setState(state => ({activity: i}));
-        if(this.props.update_label){
+        if (this.props.update_label) {
             //updates the label for the dropdown if this property is applied in JSX
-            this.setState(state=>({label_text: this.props.contents[i][0]}));
+            this.setState(state => ({label_text: this.props.contents[i][0]}));
         }
-        this.close_dropdown();
+        this.collapse();
         //if no default activity was selected, assumes that the item in the dropdown should not remain highlighted
         //This is because if props.def_active is not defined, it is assumed that the dropdown does not control
         //state and instead initiates an action
-        if(this.props.def_active === undefined){
+        if (this.props.def_active === undefined) {
             this.setState(state => ({activity: -1}));
         }
     }
@@ -82,7 +89,7 @@ export class Dropdown extends OutClickable{
             }
             const selected_contents = this.props.contents[i];
             a_list.push(<a onClick={() => {
-                if(selected_contents.length > 1){
+                if (selected_contents.length > 1) {
                     //this means that a function for onclick is provided
                     selected_contents[1]();
                 }
@@ -94,7 +101,7 @@ export class Dropdown extends OutClickable{
             addition = " is-active";
         }
         return (
-            <div id = {this.props.id} ref={this.setWrapperRef} className={"dropdown" + addition}>
+            <div id={this.props.id} ref={this.setWrapperRef} className={"dropdown" + addition}>
                 <div className={"dropdown-trigger"} onClick={self.toggle_dropdown}>
                     <button className={"button"} aria-haspopup={true} aria-controls={"dropdown-menu"}>
                         <span>
@@ -115,9 +122,9 @@ export class Dropdown extends OutClickable{
     }
 }
 
-class ToggleButton extends OutClickable{
+class ToggleButton extends OutClickable {
     //not a dropdown itself, but interacts with adjacent elements via css
-    constructor(props){
+    constructor(props) {
         super(props);
         this.props = props;
         this.containerHTML = props.parent.innerHTML;
@@ -127,16 +134,17 @@ class ToggleButton extends OutClickable{
 
     }
 
-    activateDropdown(){
-        this.setState(state=>({active:true}));
+    activateDropdown() {
+        this.setState(state => ({active: true}));
     }
 
-    closeDropdown(){
-        this.setState(state=>({active:false}));
+    closeDropdown() {
+        this.setState(state => ({active: false}));
     }
 
-    render(){
-        return <button ref={this.setWrapperRef} className={"toggle_button "+this.state.active}>{this.props.name}</button>;
+    render() {
+        return <button ref={this.setWrapperRef}
+                       className={"toggle_button " + this.state.active}>{this.props.name}</button>;
     }
 
 }
