@@ -9,6 +9,7 @@ import coursePlanApp from "./reducers";
 import {SearchResults} from "./components/search/search_results"
 import SearchBar from "./components/search/bar"
 import SearchFilter from "./components/search/filter"
+import GenericModal from "./components/modals/generic_modal";
 
 
 const previousState = localStorage.getItem("coursePlanState");
@@ -29,8 +30,11 @@ class App extends Component {
     }
 
     render() {
+        const newScheduleInput = <input type={"text"}/>;
         return (
             <Provider store={store}>
+                <GenericModal modalName={"new_schedule_modal"} title={"new schedule"} onSuccess={() => {} }
+                children = {newScheduleInput} successButton={"Ok"}/>
                 <nav className="navbar is-link" role="navigation">
                     <div className="navbar-brand">
                         <div className="navbar-item nav-header">

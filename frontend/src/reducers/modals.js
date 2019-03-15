@@ -1,7 +1,7 @@
 import {CLOSE_MODAL, OPEN_MODAL} from "../actions";
 
 const initialState = {
-    modalShown: null
+    modalShown: "new_schedule_modal"
 };
 
 export const modals = (state = initialState, action) => {
