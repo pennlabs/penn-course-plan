@@ -6,6 +6,8 @@ export const CHANGE_SCHEDULE = "CHANGE_SCHEDULE";
 export const CREATE_SCHEDULE = "CREATE_SCHEDULE";
 export const UPDATE_SECTIONS = "UPDATE_SECTIONS";
 export const TOGGLE_SEARCH_FILTER = "TOGGLE_SEARCH_FILTER";
+export const OPEN_MODAL = "OPEN_MODAL";
+export const CLOSE_MODAL = "CLOSE_MODAL";
 
 export const changeSchedule = scheduleId => (
     {
@@ -60,5 +62,21 @@ export const toggleSearchFilterShown = location => (
     {
         type: TOGGLE_SEARCH_FILTER,
         location
+    }
+);
+
+
+export const openModal = modalShown => (
+    {
+        type: OPEN_MODAL,
+        modalShown
+    }
+);
+
+
+
+export const closeModal = ()=> (
+    {
+        type: CLOSE_MODAL,
     }
 );

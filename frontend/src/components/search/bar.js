@@ -39,8 +39,10 @@ class SearchBar extends Component {
             <span className="level-right">
 
 				<div id="scheduleOptionsContainer">
-					<Dropdown id={"scheduleDropdown"} def_text={"Schedule Options"} contents={[["New", () => {
-                    }],
+					<Dropdown id={"scheduleDropdown"} def_text={"Schedule Options"} contents={[
+                        ["New", () => {
+
+                        }],
                         ["Download", () => {
                         }],
                         ["Duplicate", () => {
@@ -96,7 +98,7 @@ class SearchBar extends Component {
         const selectedBackground = this.state.searchFilterOpened ? "images/filter_b.png" : "images/filter_a.png";
         let node = undefined;
         return <div id="filter_search_toggler"
-                    ref = {c => node = c}
+                    ref={c => node = c}
                     onClick={() => {
                         self.setState({searchFilterOpened: !self.state.searchFilterOpened});
                         this.props.toggleSearchFilterShown(node.getBoundingClientRect());
@@ -108,5 +110,5 @@ class SearchBar extends Component {
 }
 
 const mapStateToProps = (state) => ({});
-const mapDispatchToProps = (dispatch) => ({toggleSearchFilterShown : rect => dispatch(toggleSearchFilterShown(rect))});
+const mapDispatchToProps = (dispatch) => ({toggleSearchFilterShown: rect => dispatch(toggleSearchFilterShown(rect))});
 export default connect(mapStateToProps, mapDispatchToProps)(SearchBar);
