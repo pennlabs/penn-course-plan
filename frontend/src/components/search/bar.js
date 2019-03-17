@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Dropdown} from "../dropdown";
 import connect from "react-redux/es/connect/connect";
 import {toggleSearchFilterShown} from "../../actions";
+import SummaryDropdown from "./summary";
 
 class SearchBar extends Component {
 
@@ -88,6 +89,9 @@ class SearchBar extends Component {
 						</div>
 					  </div>
 					</div>
+
+                    {/* Course summary dropdown */}
+                    <SummaryDropdown/>
 			</span>
         </div>
             ;
