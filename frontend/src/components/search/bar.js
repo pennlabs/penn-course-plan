@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import {Dropdown} from "../dropdown";
 import connect from "react-redux/es/connect/connect";
-import {toggleSearchFilterShown} from "../../actions";
+import {openModal, toggleSearchFilterShown} from "../../actions";
+import {NEW_SCHEDULE_MODAL_NAME} from "../modals/new_schedule_modal";
 
 class SearchBar extends Component {
 
@@ -12,6 +13,7 @@ class SearchBar extends Component {
 
 
     render() {
+        const self = this;
         return <div id={"searchbar"} className={"level"}>
 			<span className={"level-left"}>
 
@@ -41,7 +43,7 @@ class SearchBar extends Component {
 				<div id="scheduleOptionsContainer">
 					<Dropdown id={"scheduleDropdown"} def_text={"Schedule Options"} contents={[
                         ["New", () => {
-
+                            self.props.showNewScheduleModal();
                         }],
                         ["Download", () => {
                         }],
@@ -110,5 +112,8 @@ class SearchBar extends Component {
 }
 
 const mapStateToProps = (state) => ({});
-const mapDispatchToProps = (dispatch) => ({toggleSearchFilterShown: rect => dispatch(toggleSearchFilterShown(rect))});
+const mapDispatchToProps = (dispatch) => ({
+    toggleSearchFilterShown: rect => dispatch(toggleSearchFilterShown(rect)),
+    showNewScheduleModal: () => dispatch(openModal(NEW_SCHEDULE_MODAL_NAME))
+});
 export default connect(mapStateToProps, mapDispatchToProps)(SearchBar);

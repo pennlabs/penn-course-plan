@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import connect from "react-redux/es/connect/connect";
 import {closeModal, openModal} from "../../actions";
 
-
 class GenericModal extends Component {
 
     render() {
@@ -13,11 +12,7 @@ class GenericModal extends Component {
             <div className={"modal-card"}>
                 <header className={"modal-card-head"}>
                     <p className="modal-card-title">{this.props.title}</p>
-                    <button className={"delete"} aria-label={"close"} onClick={
-                        () => {
-                            self.props.close();
-                        }
-                    }/>
+                    <button className={"delete"} aria-label={"close"} onClick={self.props.close}/>
                 </header>
                 <section className="modal-card-body">
                     {self.props.children}
@@ -25,9 +20,9 @@ class GenericModal extends Component {
                 <footer className={"modal-card-foot"}>
 
                     {self.props.successButton && <button className={"button is-success"}
-                                                         onClick={self.props.onSuccess}>{self.props.successButton}
+                                                         onClick={() => {self.props.onSuccess();}}>{self.props.successButton}
                     </button>}
-                    <button className={"button"} onClick={self.close}>Cancel</button>
+                    <button className={"button"} onClick={self.props.close}>Cancel</button>
                 </footer>
             </div>
         </div>
