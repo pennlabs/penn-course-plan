@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 import {Dropdown} from "../dropdown";
 import connect from "react-redux/es/connect/connect";
-import {openModal, toggleSearchFilterShown} from "../../actions";
+import {changeSchedule, openModal, toggleSearchFilterShown} from "../../actions";
 import {NEW_SCHEDULE_MODAL_NAME} from "../modals/new_schedule_modal";
+import SchedulesDropdown from "./SchedulesDropdown";
 
 class SearchBar extends Component {
 
@@ -63,33 +64,9 @@ class SearchBar extends Component {
 					Import
 				</a>
 				<button className="button"><span>Clear Search</span></button>
-				<div className="dropdown" onClick="toggle_activation(this)">
-					  <div className="dropdown-trigger">
-						<button className="button" aria-haspopup="true" aria-controls="dropdown-menu">
-							<span><span className="selected_name">Schedules</span><span className="icon is-small"><i
-                                className={"fa fa-angle-down"}/></span></span>
-
-						</button>
-					  </div>
-					  <div className="dropdown-menu" id="dropdown-menu" role="menu">
-						<div className="dropdown-content ng-pristine ng-untouched ng-valid ng-not-empty"
-                             id="sched-select" role="menu"
-                        >
-						  <a
-                              onClick="activate_dropdown_item(this);change_schedule(this);"
-                              className="dropdown-item ng-binding ng-scope"
-                          >
-							Schedule
-						  </a>
-							<a
-                                onClick="activate_dropdown_item(this);change_schedule(this);"
-                                className="dropdown-item ng-binding ng-scope"
-                            >
-							Imported
-						  </a>
-						</div>
-					  </div>
-					</div>
+				<SchedulesDropdown scheduleNames={this.props.scheduleNames}
+                                   scheduleSelected={this.props.scheduleSelected}
+                                   changeSchedule={this.props.changeSchedule}/>
 			</span>
         </div>
             ;
@@ -111,9 +88,16 @@ class SearchBar extends Component {
 
 }
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => (
+    {
+        scheduleNames: Object.keys(state.schedule.schedules),
+        scheduleSelected: state.schedule.scheduleSelected
+    }
+);
+
 const mapDispatchToProps = (dispatch) => ({
     toggleSearchFilterShown: rect => dispatch(toggleSearchFilterShown(rect)),
-    showNewScheduleModal: () => dispatch(openModal(NEW_SCHEDULE_MODAL_NAME))
+    showNewScheduleModal: () => dispatch(openModal(NEW_SCHEDULE_MODAL_NAME)),
+    changeSchedule: scheduleName => dispatch(changeSchedule(scheduleName))
 });
 export default connect(mapStateToProps, mapDispatchToProps)(SearchBar);
