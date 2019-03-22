@@ -9,7 +9,7 @@ import coursePlanApp from "./reducers";
 import {SearchResults} from "./components/search/search_results"
 import SearchBar from "./components/search/bar"
 import SearchFilter from "./components/search/filter"
-import GenericModal from "./components/modals/generic_modal";
+import GenericModal from "./components/modals/generic_modal_container";
 import NewScheduleModalInterior from "./components/modals/new_schedule_modal";
 
 
@@ -26,9 +26,7 @@ store.subscribe(() => {
 });
 
 const newScheduleModal = <GenericModal modalName={"new_schedule_modal"} title={"new schedule"}
-              onSuccess={() => {
-              }}
-              children={<NewScheduleModalInterior/>} successButton={"Ok"}/>;
+              containedContent={<NewScheduleModalInterior/>} successButton={"Ok"}/>;
 
 class App extends Component {
     constructor(props) {

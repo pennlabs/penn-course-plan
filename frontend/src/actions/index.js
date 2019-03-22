@@ -8,6 +8,7 @@ export const UPDATE_SECTIONS = "UPDATE_SECTIONS";
 export const TOGGLE_SEARCH_FILTER = "TOGGLE_SEARCH_FILTER";
 export const OPEN_MODAL = "OPEN_MODAL";
 export const CLOSE_MODAL = "CLOSE_MODAL";
+export const ACTION_BUTTON_PRESSED = "ACTION_BUTTON_PRESSED";
 
 export const changeSchedule = scheduleId => (
     {
@@ -39,14 +40,14 @@ export const updateSearch = searchResults => (
 
 export const updateSections = sections => (
     {
-        type : UPDATE_SECTIONS,
+        type: UPDATE_SECTIONS,
         sections
     }
 );
 
 export const updateSectionInfo = sectionInfo => (
     {
-        type : OPEN_SECTION_INFO,
+        type: OPEN_SECTION_INFO,
         sectionInfo
     }
 );
@@ -74,9 +75,15 @@ export const openModal = modalShown => (
 );
 
 
-
-export const closeModal = ()=> (
+export const closeModal = () => (
     {
         type: CLOSE_MODAL,
+    }
+);
+
+export const triggerModalAction = (modalAction) => (
+    {
+        type: ACTION_BUTTON_PRESSED,
+        modalAction
     }
 );

@@ -5,7 +5,7 @@ export const NEW_SCHEDULE_MODAL_NAME = "new_schedule_modal";
 const illegalCharacters = /[^a-zA-Z\d\s-_]/;
 
 
-class NewScheduleModalInterior extends Component {
+export default class NewScheduleModalInterior extends Component {
 
     constructor(props) {
         super(props);
@@ -24,11 +24,22 @@ class NewScheduleModalInterior extends Component {
                 this.state.currentName.length > 25 ? "Name is too long" :
                     self.props.existingScheduleNames.indexOf(this.state.currentName) !== -1
                         ? "Schedule with this name already exists" : "";
+        if (this.props.modalActionState === "success") {
+            console.log("Attempted submission");
+            if (feedbackString.length === 0) {
+                console.log("Successful submission");
+                this.props.createNewSchedule(this.state.currentName);
+                this.props.close();
+            } else {
+                console.log("Unsuccessful submission");
+                this.props.triggerModalAction(null);
+            }
+        }
         return <div>
             <input type={"text"} ref={storeInputRef} onKeyUp={(e) => {
                 self.setState({currentName: newScheduleNameInput.value});
-                if (e.key === "Enter" && feedbackString.length === 0) {
-                    alert("Submitting " + self.state.currentName);
+                if (e.key === "Enter") {
+                    self.props.triggerModalAction("success");
                 }
             }}/>
             <div>
@@ -38,8 +49,3 @@ class NewScheduleModalInterior extends Component {
     }
 
 }
-
-const mapStateToProps = (state) => ({
-    existingScheduleNames: Object.keys(state.schedules)
-});
-export default connect(mapStateToProps)(NewScheduleModalInterior);
