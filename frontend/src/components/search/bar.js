@@ -4,6 +4,7 @@ import connect from "react-redux/es/connect/connect";
 import {changeSchedule, openModal, toggleSearchFilterShown} from "../../actions";
 import {NEW_SCHEDULE_MODAL_NAME} from "../modals/new_schedule_modal";
 import SchedulesDropdown from "./SchedulesDropdown";
+import {DELETE_SCHEDULE_MODAL_NAME} from "../modals/delete_schedule_modal";
 
 class SearchBar extends Component {
 
@@ -55,6 +56,7 @@ class SearchBar extends Component {
                         ["Clear", () => {
                         }],
                         ["Delete", () => {
+                            self.props.showDeleteScheduleModal();
                         }]
                     ]}/>
 				</div>
@@ -98,6 +100,7 @@ const mapStateToProps = (state) => (
 const mapDispatchToProps = (dispatch) => ({
     toggleSearchFilterShown: rect => dispatch(toggleSearchFilterShown(rect)),
     showNewScheduleModal: () => dispatch(openModal(NEW_SCHEDULE_MODAL_NAME)),
+    showDeleteScheduleModal: () => dispatch(openModal(DELETE_SCHEDULE_MODAL_NAME)),
     changeSchedule: scheduleName => dispatch(changeSchedule(scheduleName))
 });
 export default connect(mapStateToProps, mapDispatchToProps)(SearchBar);

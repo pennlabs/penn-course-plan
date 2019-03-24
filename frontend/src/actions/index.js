@@ -9,6 +9,14 @@ export const TOGGLE_SEARCH_FILTER = "TOGGLE_SEARCH_FILTER";
 export const OPEN_MODAL = "OPEN_MODAL";
 export const CLOSE_MODAL = "CLOSE_MODAL";
 export const ACTION_BUTTON_PRESSED = "ACTION_BUTTON_PRESSED";
+export const DELETE_SCHEDULE = "DELETE_SCHEDULE";
+
+export const deleteSchedule = scheduleId => (
+    {
+        type: DELETE_SCHEDULE,
+        scheduleId
+    }
+);
 
 export const changeSchedule = scheduleId => (
     {

@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import connect from "react-redux/es/connect/connect";
 
 export const NEW_SCHEDULE_MODAL_NAME = "new_schedule_modal";
 const illegalCharacters = /[^a-zA-Z\d\s-_]/;
