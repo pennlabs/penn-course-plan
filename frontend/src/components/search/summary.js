@@ -82,10 +82,19 @@ class SummaryDropdown extends OutClickable {
         if (this.state.active) {
             addition = " is-active";
         }
+
+        if (data.earlyt > 11) {
+            if (data.earlyt > 12) {
+                data.earlyt -= 12
+            }
+            data.earlyt = data.earlyt + " PM"
+        } else {
+            data.earlyt = data.earlyt + " AM"
+        }
         // console.log(this.state.active);
 
         return (
-            <div className={"dropdown is-right" + addition} ref={this.setWrapperRef}>
+            <div className={"dropdown " + addition} ref={this.setWrapperRef}>
                 <div className={"dropdown-trigger"} onClick={this.toggle_dropdown}>
                     <button className={"button"} aria-haspopup={true} aria-controls={"dropdown-menu"}>
                         <span>
@@ -98,12 +107,10 @@ class SummaryDropdown extends OutClickable {
                 </div>
                 <div className="dropdown-menu" role="menu">
                     <div className="dropdown-content">
-                        {console.log(this.props.sections)}
-                        {console.log(this.props.schedData)}
                         {/* {Remember to check if data.earlyt === initialValue} */}
-                        <p>{data.earlyt}</p>
-                        <p>{data.maxhoursd}</p>
-                        <p>{data.avghr}</p>
+                        <p className={"dropdown-item"}>{"Earliest Class: " + data.earlyt}</p>
+                        <p className={"dropdown-item"}>{"Longest Day: " + data.maxhoursd + " hours"}</p>
+                        <p className={"dropdown-item"}>{"Average Hours/Day: " + data.avghr}</p>
                     </div>
                 </div>
                 
@@ -118,8 +125,7 @@ class SummaryDropdown extends OutClickable {
 
 const mapStateToProps = (state) => {
     return {
-        schedData: state ? state.schedule.schedules[state.schedule.scheduleSelected] : undefined,
-        sections: state ? state.sections.sections : undefined
+        schedData: state ? state.schedule.schedules[state.schedule.scheduleSelected] : undefined
     };
 };
 
