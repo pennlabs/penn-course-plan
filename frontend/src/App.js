@@ -9,7 +9,8 @@ import coursePlanApp from "./reducers";
 import {SearchResults} from "./components/search/search_results"
 import SearchBar from "./components/search/bar"
 import SearchFilter from "./components/search/filter"
-import GenericModal from "./components/modals/generic_modal";
+import GenericModal from "./components/modals/generic_modal_container";
+import NewScheduleModalInterior from "./components/modals/new_schedule_modal";
 
 
 const previousState = localStorage.getItem("coursePlanState");
@@ -24,17 +25,18 @@ store.subscribe(() => {
     localStorage.setItem("coursePlanState", JSON.stringify(store.getState()));
 });
 
+const newScheduleModal = <GenericModal modalName={"new_schedule_modal"} title={"new schedule"}
+              containedContent={<NewScheduleModalInterior/>} successButton={"Ok"}/>;
+
 class App extends Component {
     constructor(props) {
         super(props);
     }
 
     render() {
-        const newScheduleInput = <input type={"text"}/>;
         return (
             <Provider store={store}>
-                <GenericModal modalName={"new_schedule_modal"} title={"new schedule"} onSuccess={() => {} }
-                children = {newScheduleInput} successButton={"Ok"}/>
+                {newScheduleModal}
                 <nav className="navbar is-link" role="navigation">
                     <div className="navbar-brand">
                         <div className="navbar-item nav-header">
@@ -76,8 +78,8 @@ class App extends Component {
                     <span className="arrow_container"><i className="fa fa-angle-up"/></span>
                     <div className="container">
                         <div className="content has-text-centered">
-                            <p style={{fontSize:"0.8rem"}}>
-                                Made with <span className="icon is-small" style={{color:"#F56F71"}}><i
+                            <p style={{fontSize: "0.8rem"}}>
+                                Made with <span className="icon is-small" style={{color: "#F56F71"}}><i
                                 className="fa fa-heart"/></span> by <a href="https://github.com/benb116">Ben
                                 Bernstein </a> and <a href="http://pennlabs.org" target="_blank">Penn Labs</a>
                             </p>

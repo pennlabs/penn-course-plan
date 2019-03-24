@@ -25,7 +25,8 @@ export const schedule = (state = initialState, action) => {
                     ...
                         state.schedules,
                     [action.scheduleName]: generateDefaultSchedule(),
-                }
+                },
+                scheduleSelected: action.scheduleName
             };
         case CHANGE_SCHEDULE:
             return {

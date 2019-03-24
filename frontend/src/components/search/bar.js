@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
 import {Dropdown} from "../dropdown";
 import connect from "react-redux/es/connect/connect";
-import {toggleSearchFilterShown} from "../../actions";
 import SummaryDropdown from "./summary";
+import {changeSchedule, openModal, toggleSearchFilterShown} from "../../actions";
+import {NEW_SCHEDULE_MODAL_NAME} from "../modals/new_schedule_modal";
+import SchedulesDropdown from "./SchedulesDropdown";
 
 class SearchBar extends Component {
 
@@ -13,6 +15,7 @@ class SearchBar extends Component {
 
 
     render() {
+        const self = this;
         return <div id={"searchbar"} className={"level"}>
 			<span className={"level-left"}>
 
@@ -42,7 +45,7 @@ class SearchBar extends Component {
 				<div id="scheduleOptionsContainer">
 					<Dropdown id={"scheduleDropdown"} def_text={"Schedule Options"} contents={[
                         ["New", () => {
-
+                            self.props.showNewScheduleModal();
                         }],
                         ["Download", () => {
                         }],
@@ -90,8 +93,11 @@ class SearchBar extends Component {
 					  </div>
 					</div>
 
-                    {/* Course summary dropdown */}
-                    <SummaryDropdown/>
+                {/* Course summary dropdown */}
+                <SummaryDropdown/>
+				<SchedulesDropdown scheduleNames={this.props.scheduleNames}
+                                   scheduleSelected={this.props.scheduleSelected}
+                                   changeSchedule={this.props.changeSchedule}/>
 			</span>
         </div>
             ;
@@ -113,6 +119,16 @@ class SearchBar extends Component {
 
 }
 
-const mapStateToProps = (state) => ({});
-const mapDispatchToProps = (dispatch) => ({toggleSearchFilterShown: rect => dispatch(toggleSearchFilterShown(rect))});
+const mapStateToProps = (state) => (
+    {
+        scheduleNames: Object.keys(state.schedule.schedules),
+        scheduleSelected: state.schedule.scheduleSelected
+    }
+);
+
+const mapDispatchToProps = (dispatch) => ({
+    toggleSearchFilterShown: rect => dispatch(toggleSearchFilterShown(rect)),
+    showNewScheduleModal: () => dispatch(openModal(NEW_SCHEDULE_MODAL_NAME)),
+    changeSchedule: scheduleName => dispatch(changeSchedule(scheduleName))
+});
 export default connect(mapStateToProps, mapDispatchToProps)(SearchBar);
