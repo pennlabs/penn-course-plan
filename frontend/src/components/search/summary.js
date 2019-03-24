@@ -8,6 +8,7 @@ class SummaryDropdown extends OutClickable {
         this.collapse = this.collapse.bind(this);
         this.toggle_dropdown = this.toggle_dropdown.bind(this);
         this.computeStats = this.computeStats.bind(this);
+        this.parseTime = this.parseTime.bind(this);
         this.state = {active: false};
     }
 
@@ -33,17 +34,13 @@ class SummaryDropdown extends OutClickable {
         // 2. Average difficulty 
         // 3. Earliest start time
         // 4. Latest end time 
-        // 5. Average workload of courses
-        // 6. Max hours a day
-
-        //!!!!! getting Review ratings from SCHEDULE ITEMS in REDUX store
+        // 5. Max hours a day
 
         let data = {
             "avghr" : 0,
             "avgdf" : 0,
             "earlyt" : 100, 
             "latet" : -1, 
-            "avgwork" : 0, 
             "maxhoursd" : 0
         };
 
@@ -58,6 +55,7 @@ class SummaryDropdown extends OutClickable {
         courseList.map(course => {
             data.earlyt = Math.min(data.earlyt, course.meetHour);
             data.latet = Math.max(data.latet, course.meetHour + course.hourLength);
+            data.avgdf += course.revs.cD;
             let meetDay = course.meetDay;
             [...meetDay].forEach(c => {
                 let currNum = dayHoursMap.get(c) ? dayHoursMap.get(c) : 0;
@@ -69,12 +67,24 @@ class SummaryDropdown extends OutClickable {
             data.maxhoursd = Math.max(data.maxhoursd, v);
             data.avghr += v;
         }
-        console.log(dayHoursMap);
+
         data.avghr /= 5;
+        data.avgdf /= numCourses;
 
 
         return data;
     }
+
+    parseTime(time) {
+        if (time > 11) {
+            if (time > 12) {
+                return (time - 12) + " PM";
+            } 
+            return time + " PM";
+        } else {
+            return time + " AM";
+        }
+    } 
 
     render() {
         let addition = "";
@@ -83,15 +93,7 @@ class SummaryDropdown extends OutClickable {
             addition = " is-active";
         }
 
-        if (data.earlyt > 11) {
-            if (data.earlyt > 12) {
-                data.earlyt -= 12
-            }
-            data.earlyt = data.earlyt + " PM"
-        } else {
-            data.earlyt = data.earlyt + " AM"
-        }
-        // console.log(this.state.active);
+
 
         return (
             <div className={"dropdown " + addition} ref={this.setWrapperRef}>
@@ -108,9 +110,11 @@ class SummaryDropdown extends OutClickable {
                 <div className="dropdown-menu" role="menu">
                     <div className="dropdown-content">
                         {/* {Remember to check if data.earlyt === initialValue} */}
-                        <p className={"dropdown-item"}>{"Earliest Class: " + data.earlyt}</p>
+                        <p className={"dropdown-item"}>{"Earliest Class: " + this.parseTime(data.earlyt)}</p>
+                        <p className={"dropdown-item"}>{"Latest Class: " + this.parseTime(data.latet)}</p>
                         <p className={"dropdown-item"}>{"Longest Day: " + data.maxhoursd + " hours"}</p>
                         <p className={"dropdown-item"}>{"Average Hours/Day: " + data.avghr}</p>
+                        <p className={"dropdown-item"}>{"Average Difficulty: " + data.avgdf}</p>
                     </div>
                 </div>
                 
