@@ -1,4 +1,4 @@
-import {ADD_SCHED_ITEM, CHANGE_SCHEDULE, CREATE_SCHEDULE, DELETE_SCHEDULE, REMOVE_SCHED_ITEM} from "../actions";
+import {ADD_SCHED_ITEM, CHANGE_SCHEDULE, CREATE_SCHEDULE, DELETE_SCHEDULE, REMOVE_SCHED_ITEM, RENAME_SCHEDULE} from "../actions";
 
 const DEFAULT_SCHEDULE_NAME = "Schedule";
 
@@ -18,13 +18,24 @@ const initialState = {
 
 const removeSchedule = (scheduleKey, initialSchedule) => {
     const newSchedules = {};
-    Object.keys(initialSchedule).filter(schedName => schedName !== scheduleKey).forEach(schedName => newSchedules[schedName] = initialSchedule[schedName]);
+    Object.keys(initialSchedule).filter(schedName => schedName !== scheduleKey).forEach(schedName =>
+        newSchedules[schedName] = initialSchedule[schedName]);
     return newSchedules;
 };
 
 export const schedule = (state = initialState, action) => {
     console.log(action);
     switch (action.type) {
+        case RENAME_SCHEDULE:
+            return {
+                ...state,
+                schedules: {
+                    ...
+                        removeSchedule(state.scheduleSelected, state.schedules),
+                    [action.scheduleName]: state.schedules[state.scheduleSelected]
+                },
+                scheduleSelected: action.scheduleName
+            };
         case CREATE_SCHEDULE:
             return {
                 ...state,
