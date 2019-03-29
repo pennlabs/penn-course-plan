@@ -47,6 +47,16 @@ export class Dropdown extends OutClickable {
         this.toggle_dropdown = this.toggle_dropdown.bind(this);
     }
 
+    componentWillReceiveProps(props) {
+        let starting_activity = -1;
+        //if props.def_active is not defined, it is assumed that the dropdown does not control
+        //state and instead initiates an action
+        if (props.def_active) {
+            starting_activity = props.def_active;
+        }
+        this.setState({activity: starting_activity, label_text: props.def_text});
+    }
+
     collapse() {
         this.setState(state => ({active: false}));
     }
