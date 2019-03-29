@@ -4,9 +4,18 @@ import {closeModal, createSchedule, deleteSchedule, openModal, triggerModalActio
 
 class ModalContainer extends Component {
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            hasAction: true
+        };
+    }
+
+
     render() {
         const isOpen = this.props.openModal != null && this.props.openModal === this.props.modalName;
         const self = this;
+
         const containedContent = React.Children.map(this.props.containedContent, child =>
             React.cloneElement(child, {
                 existingScheduleNames: this.props.existingScheduleNames,
@@ -14,7 +23,9 @@ class ModalContainer extends Component {
                 modalActionState: this.props.modalActionState,
                 createNewSchedule: this.props.createNewSchedule,
                 deleteSchedule: this.props.deleteSchedule,
-                close: this.props.close
+                close: this.props.close,
+                clearAction: ()=> this.state.hasAction ? self.setState({hasAction: false}) : null,
+                restoreAction: ()=> !this.state.hasAction ? self.setState({hasAction: true}) : null,
             })
         );
         return isOpen && <div className={"modal " + (isOpen ? "is-active" : "")}>
@@ -29,12 +40,13 @@ class ModalContainer extends Component {
                 </section>
                 <footer className={"modal-card-foot"}>
 
-                    {self.props.successButton && <button className={"button is-success"}
-                                                         onClick={() => {
-                                                             self.props.triggerModalAction("success");
-                                                         }}>{self.props.successButton}
+                    {this.state.hasAction && this.props.successButton && <button className={"button is-success"}
+                                                                                 onClick={() => {
+                                                                                     self.props.triggerModalAction("success");
+                                                                                 }}>{self.props.successButton}
                     </button>}
-                    <button className={"button"} onClick={self.props.close}>Cancel</button>
+                    <button className={"button"}
+                            onClick={self.props.close}>{this.state.hasAction ? "Cancel" : "Ok"}</button>
                 </footer>
             </div>
         </div>

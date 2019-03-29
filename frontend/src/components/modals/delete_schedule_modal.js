@@ -16,8 +16,10 @@ class DeleteScheduleModalInterior extends Component {
                 this.props.deleteSchedule();
                 this.props.close();
             }
+            this.props.restoreAction();
             return <div>{"Are you sure you want to delete?"}</div>;
         } else {
+            this.props.clearAction();
             return <div>{"You can't delete your only schedule."}</div>;
         }
     }
