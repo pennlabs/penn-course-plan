@@ -2,10 +2,10 @@ import React, {Component} from 'react';
 import GenericModal from "./generic_modal_container";
 import {validateScheduleName} from "../schedule/schedule_name_validation";
 
-export const NEW_SCHEDULE_MODAL_NAME = "new_schedule_modal";
+export const RENAME_SCHEDULE_MODAL_NAME = "rename_schedule_modal";
 
 
-class NewScheduleModalInterior extends Component {
+class RenameScheduleModalInterior extends Component {
 
     constructor(props) {
         super(props);
@@ -21,7 +21,7 @@ class NewScheduleModalInterior extends Component {
         const feedbackString = validateScheduleName(this.state.currentName, this.props.existingScheduleNames);
         if (this.props.modalActionState === "success") {
             if (feedbackString.length === 0) {
-                this.props.createNewSchedule(this.state.currentName);
+                this.props.renameSchedule(this.state.currentName);
                 this.props.close();
             } else {
                 this.props.triggerModalAction(null);
@@ -42,16 +42,15 @@ class NewScheduleModalInterior extends Component {
 
 }
 
-export default class NewScheduleModal extends Component {
+export default class RenameScheduleModal extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {currentName: ""};
     }
 
     render() {
-        return <GenericModal modalName={"new_schedule_modal"} title={"New Schedule"}
-                             containedContent={[<NewScheduleModalInterior/>]} successButton={"Ok"}/>;
+        return <GenericModal modalName={RENAME_SCHEDULE_MODAL_NAME} title={"Rename Schedule"}
+                             containedContent={[<RenameScheduleModalInterior/>]} successButton={"Ok"}/>;
     }
 
 }

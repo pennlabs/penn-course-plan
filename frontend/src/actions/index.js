@@ -18,9 +18,10 @@ export const deleteSchedule = () => (
     }
 );
 
-export const renameSchedule = () => (
+export const renameSchedule = scheduleName => (
     {
         type: RENAME_SCHEDULE,
+        scheduleName
     }
 );
 

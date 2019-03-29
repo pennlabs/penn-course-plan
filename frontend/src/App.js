@@ -11,6 +11,7 @@ import SearchBar from "./components/search/bar"
 import SearchFilter from "./components/search/filter"
 import NewScheduleModal from "./components/modals/new_schedule_modal";
 import DeleteScheduleModal from "./components/modals/delete_schedule_modal";
+import RenameScheduleModal from "./components/modals/rename_schedule_modal_container";
 
 
 const previousState = localStorage.getItem("coursePlanState");
@@ -21,7 +22,7 @@ if (previousStateJSON !== undefined) {
 }
 const store = createStore(coursePlanApp, previousStateJSON);
 
-store.subscribe(() => {;
+store.subscribe(() => {
     localStorage.setItem("coursePlanState", JSON.stringify(store.getState()));
 });
 
@@ -35,6 +36,7 @@ class App extends Component {
             <Provider store={store}>
                 <NewScheduleModal/>
                 <DeleteScheduleModal/>
+                <RenameScheduleModal/>
                 <nav className="navbar is-link" role="navigation">
                     <div className="navbar-brand">
                         <div className="navbar-item nav-header">
