@@ -17,7 +17,6 @@ export class OutClickable extends React.Component {
         if (this.wrapperRef && !this.wrapperRef.contains(event.target)){
             if (this.props.allowed){
                 const allowedElements = this.props.allowed.map(id => document.getElementById(id));
-                console.log(allowedElements);
                 if (allowedElements.reduce((acc, item) => acc || item.contains(event.target), false)) {
                     return;
                 }

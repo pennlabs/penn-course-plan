@@ -9,9 +9,8 @@ import coursePlanApp from "./reducers";
 import {SearchResults} from "./components/search/search_results"
 import SearchBar from "./components/search/bar"
 import SearchFilter from "./components/search/filter"
-import GenericModal from "./components/modals/generic_modal_container";
-import NewScheduleModalInterior from "./components/modals/new_schedule_modal";
-import DeleteScheduleModalInterior from "./components/modals/delete_schedule_modal";
+import NewScheduleModal from "./components/modals/new_schedule_modal";
+import DeleteScheduleModal from "./components/modals/delete_schedule_modal";
 
 
 const previousState = localStorage.getItem("coursePlanState");
@@ -22,15 +21,9 @@ if (previousStateJSON !== undefined) {
 }
 const store = createStore(coursePlanApp, previousStateJSON);
 
-store.subscribe(() => {
+store.subscribe(() => {;
     localStorage.setItem("coursePlanState", JSON.stringify(store.getState()));
 });
-
-const newScheduleModal = <GenericModal modalName={"new_schedule_modal"} title={"New Schedule"}
-              containedContent={<NewScheduleModalInterior/>} successButton={"Ok"}/>;
-
-const deleteScheduleModal = <GenericModal modalName={"delete_schedule_modal"} title={"Delete Schedule"}
-                                       containedContent={<DeleteScheduleModalInterior/>} successButton={"Ok"}/>;
 
 class App extends Component {
     constructor(props) {
@@ -40,8 +33,8 @@ class App extends Component {
     render() {
         return (
             <Provider store={store}>
-                {newScheduleModal}
-                {deleteScheduleModal}
+                <NewScheduleModal/>
+                <DeleteScheduleModal/>
                 <nav className="navbar is-link" role="navigation">
                     <div className="navbar-brand">
                         <div className="navbar-item nav-header">

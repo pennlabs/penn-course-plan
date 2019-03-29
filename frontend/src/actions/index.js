@@ -11,10 +11,9 @@ export const CLOSE_MODAL = "CLOSE_MODAL";
 export const ACTION_BUTTON_PRESSED = "ACTION_BUTTON_PRESSED";
 export const DELETE_SCHEDULE = "DELETE_SCHEDULE";
 
-export const deleteSchedule = scheduleId => (
+export const deleteSchedule = () => (
     {
         type: DELETE_SCHEDULE,
-        scheduleId
     }
 );
 

@@ -92,10 +92,11 @@ class SearchBar extends Component {
 
 const mapStateToProps = (state) => (
     {
-        scheduleNames: Object.keys(state.schedule.schedules),
+       scheduleNames: Object.keys(state.schedule.schedules),
         scheduleSelected: state.schedule.scheduleSelected
     }
 );
+
 
 const mapDispatchToProps = (dispatch) => ({
     toggleSearchFilterShown: rect => dispatch(toggleSearchFilterShown(rect)),

@@ -66,7 +66,6 @@ class Sections extends Component {
                         this.props.scheduleMeetings.forEach((meetingInfo) => {
                             otherMeetingTimes = otherMeetingTimes.concat(generateMeetingTimes(meetingInfo));
                         });
-                        console.log(meetingTimes, otherMeetingTimes);
                         return meetingTimeIntersection(otherMeetingTimes, meetingTimes);
                     }}
                     key={this.iteration} sections={this.props.sections}
@@ -100,7 +99,6 @@ const meetingTimeIntersection = (meetingTimesA, meetingTimesB) => {
             }
             const rangeUnion = [Math.max(meetingA[1], meetingB[1]), Math.min(meetingA[2], meetingB[2])];
             if (rangeUnion[0] < rangeUnion[1]) {
-                console.log(rangeUnion);
                 return true;
             }
         }

@@ -12,7 +12,6 @@ class SearchFilter extends OutClickable{
 
 
     collapse() {
-        console.log("collapsing", this.props);
         this.props.initiateCollapse();
     }
 

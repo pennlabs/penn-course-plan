@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import connect from "react-redux/es/connect/connect";
-import {closeModal, createSchedule, openModal, triggerModalAction} from "../../actions";
+import {closeModal, createSchedule, deleteSchedule, openModal, triggerModalAction} from "../../actions";
 
 class ModalContainer extends Component {
 
@@ -13,10 +13,11 @@ class ModalContainer extends Component {
                 triggerModalAction: this.props.triggerModalAction,
                 modalActionState: this.props.modalActionState,
                 createNewSchedule: this.props.createNewSchedule,
+                deleteSchedule: this.props.deleteSchedule,
                 close: this.props.close
             })
         );
-        return <div className={"modal " + (isOpen ? "is-active" : "")}>
+        return isOpen && <div className={"modal " + (isOpen ? "is-active" : "")}>
             <div className={"modal-background"}/>
             <div className={"modal-card"}>
                 <header className={"modal-card-head"}>
@@ -49,9 +50,10 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
     close: () => dispatch(closeModal()),
-    open: (modalName) => dispatch(openModal(modalName)),
-    triggerModalAction: (modalAction) => dispatch(triggerModalAction(modalAction)),
-    createNewSchedule: (name) => dispatch(createSchedule(name))
+    open: modalName => dispatch(openModal(modalName)),
+    triggerModalAction: modalAction => dispatch(triggerModalAction(modalAction)),
+    createNewSchedule: name => dispatch(createSchedule(name)),
+    deleteSchedule: () => dispatch(deleteSchedule()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ModalContainer);

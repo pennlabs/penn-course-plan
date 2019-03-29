@@ -19,9 +19,11 @@ const initialState = {
 const removeSchedule = (scheduleKey, initialSchedule) => {
     const newSchedules = {};
     Object.keys(initialSchedule).filter(schedName => schedName !== scheduleKey).forEach(schedName => newSchedules[schedName] = initialSchedule[schedName]);
+    return newSchedules;
 };
 
 export const schedule = (state = initialState, action) => {
+    console.log(action);
     switch (action.type) {
         case CREATE_SCHEDULE:
             return {
@@ -34,10 +36,11 @@ export const schedule = (state = initialState, action) => {
                 scheduleSelected: action.scheduleName
             };
         case DELETE_SCHEDULE:
+            const newSchedule = removeSchedule(state.scheduleSelected, state.schedules);
             return {
                 ...state,
-                schedules: removeSchedule(action.scheduleName ? action.scheduleName : state.scheduleSelected, state.schedules),
-                scheduleSelected: Object.keys(state.schedules)[0]
+                schedules: newSchedule,
+                scheduleSelected: Object.keys(newSchedule)[0]
             };
         case CHANGE_SCHEDULE:
             return {

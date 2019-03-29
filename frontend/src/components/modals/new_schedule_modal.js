@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
+import GenericModal from "./generic_modal_container";
 
 export const NEW_SCHEDULE_MODAL_NAME = "new_schedule_modal";
 const illegalCharacters = /[^a-zA-Z\d\s-_]/;
 
 
-export default class NewScheduleModalInterior extends Component {
+class NewScheduleModalInterior extends Component {
 
     constructor(props) {
         super(props);
@@ -24,13 +25,10 @@ export default class NewScheduleModalInterior extends Component {
                     self.props.existingScheduleNames.indexOf(this.state.currentName) !== -1
                         ? "Schedule with this name already exists" : "";
         if (this.props.modalActionState === "success") {
-            console.log("Attempted submission");
             if (feedbackString.length === 0) {
-                console.log("Successful submission");
                 this.props.createNewSchedule(this.state.currentName);
                 this.props.close();
             } else {
-                console.log("Unsuccessful submission");
                 this.props.triggerModalAction(null);
             }
         }
@@ -45,6 +43,20 @@ export default class NewScheduleModalInterior extends Component {
                 {feedbackString}
             </div>
         </div>;
+    }
+
+}
+
+export default class NewScheduleModal extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {currentName: ""};
+    }
+
+    render() {
+        return <GenericModal modalName={"new_schedule_modal"} title={"New Schedule"}
+                             containedContent={[<NewScheduleModalInterior/>]} successButton={"Ok"}/>;
     }
 
 }
