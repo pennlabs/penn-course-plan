@@ -1,4 +1,12 @@
-import {ADD_SCHED_ITEM, CHANGE_SCHEDULE, CREATE_SCHEDULE, DELETE_SCHEDULE, REMOVE_SCHED_ITEM, RENAME_SCHEDULE} from "../actions";
+import {
+    ADD_SCHED_ITEM,
+    CHANGE_SCHEDULE,
+    CREATE_SCHEDULE,
+    DELETE_SCHEDULE,
+    REMOVE_SCHED_ITEM,
+    RENAME_SCHEDULE,
+    DUPLICATE_SCHEDULE
+} from "../actions";
 
 const DEFAULT_SCHEDULE_NAME = "Schedule";
 
@@ -35,6 +43,14 @@ export const schedule = (state = initialState, action) => {
                     [action.scheduleName]: state.schedules[state.scheduleSelected]
                 },
                 scheduleSelected: action.scheduleName
+            };
+        case DUPLICATE_SCHEDULE:
+            return {
+                ...state,
+                schedules: {
+                    ...state.schedules,
+                    [action.scheduleName]: state.schedules[state.scheduleSelected]
+                }
             };
         case CREATE_SCHEDULE:
             return {

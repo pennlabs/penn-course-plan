@@ -11,6 +11,14 @@ export const CLOSE_MODAL = "CLOSE_MODAL";
 export const ACTION_BUTTON_PRESSED = "ACTION_BUTTON_PRESSED";
 export const DELETE_SCHEDULE = "DELETE_SCHEDULE";
 export const RENAME_SCHEDULE = "RENAME_SCHEDULE";
+export const DUPLICATE_SCHEDULE = "DUPLICATE_SCHEDULE";
+
+export const duplicateSchedule = scheduleName => (
+    {
+        type: DUPLICATE_SCHEDULE,
+        scheduleName
+    }
+);
 
 export const deleteSchedule = () => (
     {
