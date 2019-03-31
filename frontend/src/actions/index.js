@@ -13,6 +13,9 @@ export const DELETE_SCHEDULE = "DELETE_SCHEDULE";
 export const RENAME_SCHEDULE = "RENAME_SCHEDULE";
 export const DUPLICATE_SCHEDULE = "DUPLICATE_SCHEDULE";
 export const CLEAR_SCHEDULE = "CLEAR_SCHEDULE";
+export const COURSE_SEARCH_ERROR = "COURSE_SEARCH_ERROR";
+export const COURSE_SEARCH_LOADING = "COURSE_SEARCH_LOADING";
+export const COURSE_SEARCH_SUCCESS = "COURSE_SEARCH_SUCCESS";
 
 export const duplicateSchedule = scheduleName => (
     {
@@ -117,3 +120,22 @@ export const clearSchedule = () => (
         type: CLEAR_SCHEDULE
     }
 );
+
+export function courseSearchError(bool) {
+    return {
+        type: COURSE_SEARCH_ERROR,
+        hasErrored: bool
+    };
+}
+export function courseSearchLoading(bool) {
+    return {
+        type: COURSE_SEARCH_LOADING,
+        isLoading: bool
+    };
+}
+export function courseSearchSuccess(items) {
+    return {
+        type: COURSE_SEARCH_SUCCESS,
+        items
+    };
+}
