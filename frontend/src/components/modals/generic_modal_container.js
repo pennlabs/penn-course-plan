@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import connect from "react-redux/es/connect/connect";
 import {
+    clearSchedule,
     closeModal,
     createSchedule,
     deleteSchedule,
@@ -33,6 +34,7 @@ class ModalContainer extends Component {
                 deleteSchedule: this.props.deleteSchedule,
                 renameSchedule: this.props.renameSchedule,
                 duplicateSchedule: this.props.duplicateSchedule,
+                clearSchedule: this.props.clearSchedule,
                 close: this.props.close,
                 clearAction: ()=> this.state.hasAction ? self.setState({hasAction: false}) : null,
                 restoreAction: ()=> !this.state.hasAction ? self.setState({hasAction: true}) : null,
@@ -78,6 +80,7 @@ const mapDispatchToProps = (dispatch) => ({
     deleteSchedule: () => dispatch(deleteSchedule()),
     renameSchedule: name => dispatch(renameSchedule(name)),
     duplicateSchedule: name => dispatch(duplicateSchedule(name)),
+    clearSchedule: () => dispatch(clearSchedule()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ModalContainer);

@@ -14,8 +14,8 @@ export class OutClickable extends React.Component {
      * Alert if clicked on outside of element
      */
     handleClickOutside(event) {
-        if (this.wrapperRef && !this.wrapperRef.contains(event.target)){
-            if (this.props.allowed){
+        if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
+            if (this.props.allowed) {
                 const allowedElements = this.props.allowed.map(id => document.getElementById(id));
                 if (allowedElements.reduce((acc, item) => acc || item.contains(event.target), false)) {
                     return;

@@ -5,7 +5,8 @@ import {
     DELETE_SCHEDULE,
     REMOVE_SCHED_ITEM,
     RENAME_SCHEDULE,
-    DUPLICATE_SCHEDULE
+    DUPLICATE_SCHEDULE,
+    CLEAR_SCHEDULE
 } from "../actions";
 
 const DEFAULT_SCHEDULE_NAME = "Schedule";
@@ -34,6 +35,17 @@ const removeSchedule = (scheduleKey, initialSchedule) => {
 export const schedule = (state = initialState, action) => {
     console.log(action);
     switch (action.type) {
+        case CLEAR_SCHEDULE:
+            return {
+                ...state,
+                schedules: {
+                    ...state.schedules,
+                    [state.scheduleSelected]: {
+                        ...[state.scheduleSelected],
+                        meetings: []
+                    }
+                }
+            };
         case RENAME_SCHEDULE:
             return {
                 ...state,

@@ -13,6 +13,7 @@ import NewScheduleModal from "./components/modals/new_schedule_modal";
 import DeleteScheduleModal from "./components/modals/delete_schedule_modal";
 import RenameScheduleModal from "./components/modals/rename_schedule_modal_container";
 import DuplicateScheduleModal from "./components/modals/duplicate_schedule_modal_container";
+import ClearScheduleModal from "./components/modals/clear_schedule_modal";
 
 
 const previousState = localStorage.getItem("coursePlanState");
@@ -39,6 +40,7 @@ class App extends Component {
                 <DeleteScheduleModal/>
                 <RenameScheduleModal/>
                 <DuplicateScheduleModal/>
+                <ClearScheduleModal/>
                 <nav className="navbar is-link" role="navigation">
                     <div className="navbar-brand">
                         <div className="navbar-item nav-header">

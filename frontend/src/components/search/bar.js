@@ -7,6 +7,7 @@ import SchedulesDropdown from "./SchedulesDropdown";
 import {DELETE_SCHEDULE_MODAL_NAME} from "../modals/delete_schedule_modal";
 import {RENAME_SCHEDULE_MODAL_NAME} from "../modals/rename_schedule_modal_container";
 import {DUPLICATE_SCHEDULE_MODAL_NAME} from "../modals/duplicate_schedule_modal_container";
+import {CLEAR_SCHEDULE_MODAL_NAME} from "../modals/clear_schedule_modal";
 
 class SearchBar extends Component {
 
@@ -58,6 +59,7 @@ class SearchBar extends Component {
                             self.props.showRenameScheduleModal();
                         }],
                         ["Clear", () => {
+					        self.props.showClearScheduleModal();
                         }],
                         ["Delete", () => {
                             self.props.showDeleteScheduleModal();
@@ -108,6 +110,7 @@ const mapDispatchToProps = (dispatch) => ({
     showDeleteScheduleModal: () => dispatch(openModal(DELETE_SCHEDULE_MODAL_NAME)),
     showRenameScheduleModal: () => dispatch(openModal(RENAME_SCHEDULE_MODAL_NAME)),
     showDuplicateScheduleModal: () => dispatch(openModal(DUPLICATE_SCHEDULE_MODAL_NAME)),
-    changeSchedule: scheduleName => dispatch(changeSchedule(scheduleName))
+    changeSchedule: scheduleName => dispatch(changeSchedule(scheduleName)),
+    showClearScheduleModal: () => dispatch(openModal(CLEAR_SCHEDULE_MODAL_NAME)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(SearchBar);
