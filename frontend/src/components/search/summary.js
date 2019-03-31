@@ -76,6 +76,9 @@ class SummaryDropdown extends OutClickable {
     }
 
     parseTime(time) {
+        if (time === "N/A") {
+            return time;
+        }
         if (time > 11) {
             if (time > 12) {
                 return (time - 12) + " PM";
@@ -92,9 +95,8 @@ class SummaryDropdown extends OutClickable {
         if (this.state.active) {
             addition = " is-active";
         }
-
-
-
+        let earlyt = data.earlyt === 100 ? "N/A" : data.earlyt;
+        let latet = data.latet === -1 ? "N/A" : data.latet;
         return (
             <div className={"dropdown " + addition} ref={this.setWrapperRef}>
                 <div className={"dropdown-trigger"} onClick={this.toggle_dropdown}>
@@ -109,12 +111,11 @@ class SummaryDropdown extends OutClickable {
                 </div>
                 <div className="dropdown-menu" role="menu">
                     <div className="dropdown-content">
-                        {/* {Remember to check if data.earlyt === initialValue} */}
-                        <p className={"dropdown-item"}>{"Earliest Class: " + this.parseTime(data.earlyt)}</p>
-                        <p className={"dropdown-item"}>{"Latest Class: " + this.parseTime(data.latet)}</p>
+                        <p className={"dropdown-item"}>{"Earliest Class: " + this.parseTime(earlyt)}</p>
+                        <p className={"dropdown-item"}>{"Latest Class: " + this.parseTime(latet)}</p>
                         <p className={"dropdown-item"}>{"Longest Day: " + data.maxhoursd + " hours"}</p>
-                        <p className={"dropdown-item"}>{"Average Hours/Day: " + data.avghr}</p>
-                        <p className={"dropdown-item"}>{"Average Difficulty: " + data.avgdf}</p>
+                        <p className={"dropdown-item"}>{"Average Hours/Day: " + (data.avghr === 0 ? "N/A" : data.avghr.toFixed(2))}</p>
+                        <p className={"dropdown-item"}>{"Average Difficulty: " + (isNaN(data.avgdf) ? "N/A" : data.avgdf.toFixed(2))}</p>
                     </div>
                 </div>
                 
