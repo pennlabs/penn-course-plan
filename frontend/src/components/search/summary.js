@@ -1,34 +1,15 @@
 import React, {Component} from 'react';
-import {OutClickable} from "../dropdown";
+import {Dropdown} from "../dropdown";
 import connect from "react-redux/es/connect/connect";
 
-class SummaryDropdown extends OutClickable {
+class SummaryDropdown extends Component {
     constructor(props) {
         super(props);
-        this.collapse = this.collapse.bind(this);
-        this.toggle_dropdown = this.toggle_dropdown.bind(this);
-        this.computeStats = this.computeStats.bind(this);
-        this.parseTime = this.parseTime.bind(this);
-        this.state = {active: false};
     }
 
-    collapse() {
-        this.setState({active: false});
-    }
 
-    activate_dropdown() {
-        this.setState({active: true});
-    }
 
-    toggle_dropdown() {
-        if (this.state.active) {
-            this.collapse();
-        } else {
-            this.activate_dropdown();
-        }
-    }
-
-    computeStats() {
+    computeStats = () => {
         // Computes the following statistics from schedule from props
         // 1. Average hours per day
         // 2. Average difficulty 
@@ -43,9 +24,9 @@ class SummaryDropdown extends OutClickable {
             "latet" : -1, 
             "maxhoursd" : 0
         };
-
-        if (!this.props.schedData) {
-            return data;
+        
+        if (this.props.schedData.meetings.length === 0) {
+            return null;
         }
         
         let courseList = this.props.schedData.meetings;
@@ -75,10 +56,7 @@ class SummaryDropdown extends OutClickable {
         return data;
     }
 
-    parseTime(time) {
-        if (time === "N/A") {
-            return time;
-        }
+    parseTime = (time) => {
         if (time > 11) {
             if (time > 12) {
                 return (time - 12) + " PM";
@@ -92,36 +70,15 @@ class SummaryDropdown extends OutClickable {
     render() {
         let addition = "";
         let data = this.computeStats();
-        if (this.state.active) {
-            addition = " is-active";
-        }
-        let earlyt = data.earlyt === 100 ? "N/A" : data.earlyt;
-        let latet = data.latet === -1 ? "N/A" : data.latet;
+        console.log(data);
         return (
-            <div className={"dropdown " + addition} ref={this.setWrapperRef}>
-                <div className={"dropdown-trigger"} onClick={this.toggle_dropdown}>
-                    <button className={"button"} aria-haspopup={true} aria-controls={"dropdown-menu"}>
-                        <span>
-                            <span className={"selected_name"}>Summary</span>
-                            <span className="icon is-small">
-                                <i className="fa fa-angle-down" aria-hidden="true"/>
-                            </span>
-                        </span>
-                    </button>
-                </div>
-                <div className="dropdown-menu" role="menu">
-                    <div className="dropdown-content">
-                        <p className={"dropdown-item"}>{"Earliest Class: " + this.parseTime(earlyt)}</p>
-                        <p className={"dropdown-item"}>{"Latest Class: " + this.parseTime(latet)}</p>
-                        <p className={"dropdown-item"}>{"Longest Day: " + data.maxhoursd + " hours"}</p>
-                        <p className={"dropdown-item"}>{"Average Hours/Day: " + (data.avghr === 0 ? "N/A" : data.avghr.toFixed(2))}</p>
-                        <p className={"dropdown-item"}>{"Average Difficulty: " + (isNaN(data.avgdf) ? "N/A" : data.avgdf.toFixed(2))}</p>
-                    </div>
-                </div>
-                
-
-            </div>
-
+            <Dropdown def_text={"Summary"} contents={[
+                ["Earliest Class: " + (data === null ? "N/A" : this.parseTime(data.earlyt)), () => {}], 
+                ["Latest Class: " + (data === null ? "N/A" : this.parseTime(data.latet)), () => {}],
+                ["Longest Day: " + (data === null ? "N/A" : data.maxhoursd + " hours") , () => {}], 
+                ["Average Hours/Day: " + (data === null ? "N/A" : data.avghr.toFixed(2)), () => {}], 
+                ["Average Difficulty: " + (data === null ? "N/A" : data.avgdf.toFixed(2)), () => {}]
+            ]} />
         )
     }
 

@@ -77,18 +77,13 @@ class SearchBar extends Component {
 					</div>
 					<div className="dropdown-menu" id="dropdown-menu" role="menu">
 					    <div className="dropdown-content ng-pristine ng-untouched ng-valid ng-not-empty"
-                             id="sched-select" role="menu"
-                        >
-						<a
-                              onClick="activate_dropdown_item(this);change_schedule(this);"
-                              className="dropdown-item ng-binding ng-scope"
-                        >
+                             id="sched-select" role="menu">
+						<a  onClick="activate_dropdown_item(this);change_schedule(this);"
+                            className="dropdown-item ng-binding ng-scope">
 							Schedule
 						</a>
-						<a
-                                onClick="activate_dropdown_item(this);change_schedule(this);"
-                                className="dropdown-item ng-binding ng-scope"
-                        >
+						<a  onClick="activate_dropdown_item(this);change_schedule(this);"
+                            className="dropdown-item ng-binding ng-scope">
 						    Imported
 						</a>
 						</div>
