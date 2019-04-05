@@ -24,7 +24,7 @@ export default class SectionDisplay extends Component {
         const section = this.section;
         if (!this.props.inSchedule) {
             onClick = () => {
-                addSchedItem(section.fullSchedInfo[0]);
+                addSchedItem({...section.fullSchedInfo[0], revs: section.revs});
             };
         } else {
             onClick = function () {
