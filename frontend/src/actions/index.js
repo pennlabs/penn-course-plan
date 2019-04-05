@@ -159,7 +159,7 @@ export function fetchSearch(searchData) {
         dispatch(requestSearch(searchData));
         // placeholder URL
         return fetch(buildSearchUrl(searchData)).then(
-            response =>  response.json().then(json => console.log(json)),
+            response =>  response.json().then(json => dispatch(updateSearch(json))),
             error => console.log("ERROR", error)
         );
     }
