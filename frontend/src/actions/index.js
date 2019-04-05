@@ -129,21 +129,39 @@ export const clearSchedule = () => (
     }
 );
 
-export function requestSearch(searchTerm) {
+export function requestSearch(searchData) {
     return {
         type: REQUEST_SEARCH,
-        searchTerm
+        searchData
     }
 }
 
-export function fetchSearch(searchTerm) {
+
+function buildSearchUrl(searchData) {
+    const base = "/Search?";
+    let type = "instructorSearch";
+    let queryParam = "instructor";
+    let queryVal = searchData.instructor;
+    if (searchData.courseId) {
+        type = "courseIDSearch";
+        queryVal = searchData.courseId;
+    } else if (searchData.description) {
+        type = "descriptionSearch";
+        queryVal = searchData.description;
+    }
+    const url = base + "searchType="+type+"&searchParam="+queryVal+"&resultType=numbSearch";
+    console.log(url);
+    return url;
+}
+
+export function fetchSearch(searchData) {
     return (dispatch) => {
-        dispatch(requestSearch(searchTerm));
+        dispatch(requestSearch(searchData));
         // placeholder URL
-        return fetch("google.com").then(
-            response => response.json(),
-            error => console.log(error)
-        ).then(json=> dispatch(updateSearch(json)));
+        return fetch(buildSearchUrl(searchData)).then(
+            response =>  response.json().then(json => console.log(json)),
+            error => console.log("ERROR", error)
+        );
     }
 }
 

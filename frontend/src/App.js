@@ -4,7 +4,7 @@ import 'bulma/css/bulma.css'
 import Sections from "./components/selector/Sections";
 import Schedule from './components/schedule/Schedule'
 import Provider from "react-redux/es/components/Provider";
-import {createStore} from "redux";
+import {applyMiddleware, createStore} from "redux";
 import coursePlanApp from "./reducers";
 import {SearchResults} from "./components/search/search_results"
 import SearchBar from "./components/search/bar"
@@ -14,15 +14,28 @@ import DeleteScheduleModal from "./components/modals/delete_schedule_modal";
 import RenameScheduleModal from "./components/modals/rename_schedule_modal_container";
 import DuplicateScheduleModal from "./components/modals/duplicate_schedule_modal_container";
 import ClearScheduleModal from "./components/modals/clear_schedule_modal";
+import {fetchSearch} from "./actions";
+import thunkMiddleware from 'redux-thunk'
+import { createLogger } from 'redux-logger'
 
 
 const previousState = localStorage.getItem("coursePlanState");
 const previousStateJSON = previousState ? JSON.parse(previousState) : undefined;
+const loggerMiddleware = createLogger();
 
 if (previousStateJSON !== undefined) {
     previousStateJSON.sections.showSearchFilter = false;
 }
-const store = createStore(coursePlanApp, previousStateJSON);
+const store = createStore(
+    coursePlanApp,
+    previousStateJSON,
+    applyMiddleware(
+        thunkMiddleware,
+        loggerMiddleware
+    )
+);
+
+store.dispatch(fetchSearch({courseId: "cis121"}));
 
 store.subscribe(() => {
     localStorage.setItem("coursePlanState", JSON.stringify(store.getState()));
