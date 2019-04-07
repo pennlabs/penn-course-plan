@@ -149,7 +149,7 @@ function buildSearchUrl(searchData) {
         type = "descriptionSearch";
         queryVal = searchData.description;
     }
-    const url = base + "searchType="+type+"&searchParam="+queryVal+"&resultType=numbSearch";
+    const url = base + "searchType=" + type + "&searchParam=" + queryVal + "&resultType=numbSearch";
     console.log(url);
     return url;
 }
@@ -157,17 +157,20 @@ function buildSearchUrl(searchData) {
 export function fetchSearch(searchData) {
     return (dispatch) => {
         dispatch(requestSearch(searchData));
-        // placeholder URL
         return fetch(buildSearchUrl(searchData)).then(
-            response =>  response.json().then(json => console.log(json)),
-            error => console.log("ERROR", error)
+            response => response.json().then(
+                json => dispatch(updateSearch(json[0])),
+                error => dispatch(courseSearchError(error))
+            ),
+            error => dispatch(courseSearchError(error))
         );
     }
 }
 
-export function courseSearchError() {
+export function courseSearchError(error) {
     return {
         type: COURSE_SEARCH_ERROR,
+        error
     };
 }
 

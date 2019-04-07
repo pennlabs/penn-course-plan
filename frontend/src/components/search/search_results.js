@@ -1,28 +1,25 @@
 import * as React from "react";
 import {SearchResult} from "./search_result";
+import connect from "react-redux/es/connect/connect";
 
-let searchResultsPane = null;
 
-let offset = 0;
-
-export class SearchResults extends React.Component {
+class SearchResults extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {searchResults: []};
-        searchResultsPane = this;
     }
 
     render() {
         let items = [];
-        for (let i = 0; i < this.state.searchResults.length; i++) {
-            const searchResult = this.state.searchResults[i];
-            // todo: requirements stuff
-            const searchResultComponent = <SearchResult key={i + offset} course={searchResult}>
-            </SearchResult>;
-            items.push(searchResultComponent);
+        if (this.props.searchResults) {
+            for (let i = 0; i < this.props.searchResults.length; i++) {
+                const searchResult = this.props.searchResults[i];
+                // todo: requirements stuff
+                const searchResultComponent = <SearchResult key={i} course={searchResult}>
+                </SearchResult>;
+                items.push(searchResultComponent);
+            }
         }
-        offset += this.state.searchResults.length;
         return <div id={"CourseList"} className={"box column"}>
             <div id="CourseHeader">
                 <span className={"PCR Qual tooltip ng-scope"}
@@ -44,3 +41,10 @@ export class SearchResults extends React.Component {
 
 
 }
+
+const mapStateToProps = (state) => (
+    {
+        searchResults: state.sections.searchResults
+    }
+);
+export default connect(mapStateToProps)(SearchResults);

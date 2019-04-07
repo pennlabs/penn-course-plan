@@ -70,7 +70,6 @@ class SummaryDropdown extends Component {
     render() {
         let addition = "";
         let data = this.computeStats();
-        console.log(data);
         return (
             <Dropdown def_text={"Summary"} contents={[
                 ["Earliest Class: " + (data === null ? "N/A" : this.parseTime(data.earlyt)), () => {}], 

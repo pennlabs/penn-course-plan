@@ -1,4 +1,4 @@
-import {OPEN_SECTION_INFO, TOGGLE_SEARCH_FILTER, UPDATE_SEARCH, UPDATE_SECTIONS} from "../actions";
+import {COURSE_SEARCH_ERROR, OPEN_SECTION_INFO, TOGGLE_SEARCH_FILTER, UPDATE_SEARCH, UPDATE_SECTIONS} from "../actions";
 import {sections_data_a} from "../sections_data";
 
 const initialState = {
@@ -22,6 +22,7 @@ export const sections = (state = initialState, action) => {
                 sections: action.sections
             };
         case UPDATE_SEARCH:
+            console.log(action);
             return {
                 ...state,
                 searchResults: action.searchResults,
@@ -33,9 +34,10 @@ export const sections = (state = initialState, action) => {
                 showSearchFilter : ! state.showSearchFilter,
                 showSearchFilterLocation :  action.location
             };
+        case COURSE_SEARCH_ERROR:
+            console.log(action.error);
+            return state;
         default:
-            return {
-                ...state,
-            };
+            return state;
     }
 };

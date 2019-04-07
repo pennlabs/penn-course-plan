@@ -6,7 +6,7 @@ import Schedule from './components/schedule/Schedule'
 import Provider from "react-redux/es/components/Provider";
 import {applyMiddleware, createStore} from "redux";
 import coursePlanApp from "./reducers";
-import {SearchResults} from "./components/search/search_results"
+import SearchResults from "./components/search/search_results"
 import SearchBar from "./components/search/bar"
 import SearchFilter from "./components/search/filter"
 import NewScheduleModal from "./components/modals/new_schedule_modal";
@@ -23,7 +23,7 @@ const previousState = localStorage.getItem("coursePlanState");
 const previousStateJSON = previousState ? JSON.parse(previousState) : undefined;
 const loggerMiddleware = createLogger();
 
-if (previousStateJSON !== undefined) {
+if (previousStateJSON) {
     previousStateJSON.sections.showSearchFilter = false;
 }
 const store = createStore(
@@ -35,11 +35,12 @@ const store = createStore(
     )
 );
 
-store.dispatch(fetchSearch({courseId: "cis121"}));
-
 store.subscribe(() => {
+    console.log(store.getState());
     localStorage.setItem("coursePlanState", JSON.stringify(store.getState()));
 });
+
+store.dispatch(fetchSearch({courseId: "cis"}));
 
 class App extends Component {
     constructor(props) {
