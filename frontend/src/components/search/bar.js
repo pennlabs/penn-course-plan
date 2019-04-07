@@ -60,7 +60,7 @@ class SearchBar extends Component {
                             self.props.showRenameScheduleModal();
                         }],
                         ["Clear", () => {
-					        self.props.showClearScheduleModal();
+                            self.props.showClearScheduleModal();
                         }],
                         ["Delete", () => {
                             self.props.showDeleteScheduleModal();
@@ -68,12 +68,11 @@ class SearchBar extends Component {
                     ]}/>
 				</div>
 				<button className="button"><span>Show Stars</span></button>
-				<a className="button" href="#UploadModal" id="ImportButton" onClick="ga('send', 'event', 'UI interaction', 'import');
-																				  activate_modal(document.getElementById('UploadModal'))">
+				<a className="button" href="#UploadModal" id="ImportButton">
 					Import
 				</a>
 				<button className="button"><span>Clear Search</span></button>
-				<div className="dropdown" onClick="toggle_activation(this)">
+				<div className="dropdown">
 					<div className="dropdown-trigger">
 						<button className="button" aria-haspopup="true" aria-controls="dropdown-menu">
 							<span>
@@ -86,11 +85,11 @@ class SearchBar extends Component {
 					<div className="dropdown-menu" id="dropdown-menu" role="menu">
 					    <div className="dropdown-content ng-pristine ng-untouched ng-valid ng-not-empty"
                              id="sched-select" role="menu">
-						<a  onClick="activate_dropdown_item(this);change_schedule(this);"
+						<a
                             className="dropdown-item ng-binding ng-scope">
 							Schedule
 						</a>
-						<a  onClick="activate_dropdown_item(this);change_schedule(this);"
+						<a
                             className="dropdown-item ng-binding ng-scope">
 						    Imported
 						</a>

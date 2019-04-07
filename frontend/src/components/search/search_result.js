@@ -17,7 +17,7 @@ export class SearchResult extends React.Component {
                       background: "rgba(45, 160, 240, " + this.course.pcrQShade + ")",
                       color: this.course.pcrQColor
                   }}>
-                {this.course.revs.cQT}
+                {this.props.course.revs.cQT}
             </span>
 
             <span className="PCR Diff"
@@ -25,15 +25,15 @@ export class SearchResult extends React.Component {
                       background: "rgba(231, 76, 60, " + this.course.pcrDShade + ")",
                       color: this.course.pcrDColor
                   }}>
-                {this.course.revs.cDT}
+                {this.props.course.revs.cDT}
             </span>
 
             <span className="cID">
-                {this.course.idSpaced}
+                {this.props.course.idSpaced}
             </span>
 
             <span className="cTitle">
-                {this.course.courseTitle}
+                {this.props.course.courseTitle}
             </span>
 
         </li>
