@@ -1,29 +1,29 @@
-import {CLOSE_MODAL, OPEN_MODAL, ACTION_BUTTON_PRESSED} from "../actions";
+import { CLOSE_MODAL, OPEN_MODAL, ACTION_BUTTON_PRESSED } from "../actions";
 
 const initialState = {
     modalShown: null,
-    modalAction: null
+    modalAction: null,
 };
 
 export const modals = (state = initialState, action) => {
-    switch(action.type) {
+    switch (action.type) {
         case OPEN_MODAL:
             return {
-                ... state,
-                modalShown: action.modalShown
+                ...state,
+                modalShown: action.modalShown,
             };
         case CLOSE_MODAL:
             return {
-                ... state,
+                ...state,
                 modalShown: null,
-                modalAction: null
+                modalAction: null,
             };
         case ACTION_BUTTON_PRESSED:
             return {
-                ... state,
-                modalAction: action.modalAction
+                ...state,
+                modalAction: action.modalAction,
             };
         default:
-            return state
+            return state;
     }
 };
