@@ -70,7 +70,9 @@ class ModalContainer extends Component {
 }
 
 ModalContainer.propTypes = {
+    // The name of the modal this container is used for; should be consistent with the name used in Redux state
     modalName: PropTypes.string,
+    // The text contained within the success button. There will be no success button if this is set to undefined.
     successButton: PropTypes.string,
     // The following props are set through React-Redux and should not be set elsewhere
     openModal: PropTypes.string,
