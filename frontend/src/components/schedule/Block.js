@@ -2,8 +2,10 @@ import React, {Component} from 'react'
 
 export default class Block extends Component {
     render() {
+        // Display a warning if the class requires another section
         let warning = <div className={"NeedAssc"}
                            title={"Registration is required for an associated section."}><b>!</b></div>;
+        // The showWarning prop is passed down from the Schedule component
         if (!this.props.showWarning) {
             warning = null;
         }

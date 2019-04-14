@@ -30,6 +30,7 @@ class ModalContainer extends Component {
         const self = this;
 
         const containedContent = React.Children.map(this.props.containedContent, child =>
+            // provides all necessary functionality to contents of modal
             React.cloneElement(child, {
                 existingScheduleNames: this.props.existingScheduleNames,
                 triggerModalAction: this.props.triggerModalAction,
@@ -74,6 +75,9 @@ ModalContainer.propTypes = {
     modalName: PropTypes.string,
     // The text contained within the success button. There will be no success button if this is set to undefined.
     successButton: PropTypes.string,
+    // The components to display within the modal. Should be an array of components or an individual component
+    // TODO: replace this with the more standard 'children' prop
+    containedContent: undefined,
     // The following props are set through React-Redux and should not be set elsewhere
     openModal: PropTypes.string,
     triggerModalAction: PropTypes.func,
