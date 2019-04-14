@@ -160,7 +160,7 @@ export function fetchSearch(searchData) {
         return fetch(buildSearchUrl(searchData)).then(
             response => response.json().then(
                 json => dispatch(updateSearch(json[0])),
-                error => dispatch(courseSearchError(error))
+                error => dispatch(courseSearchError(response.status))
             ),
             error => dispatch(courseSearchError(error))
         );
