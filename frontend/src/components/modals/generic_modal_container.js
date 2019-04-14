@@ -11,6 +11,10 @@ import {
     triggerModalAction
 } from "../../actions";
 
+/**
+ * A generic container for modals
+ * Pass in one or more components as the containedContent prop that will be displayed within the modal container
+ */
 class ModalContainer extends Component {
 
     constructor(props) {
@@ -63,8 +67,18 @@ class ModalContainer extends Component {
             </div>
         </div>
     }
-
 }
+
+ModalContainer.propTypes = {
+    modalName: PropTypes.string,
+    successButton: PropTypes.string,
+    // The following props are set through React-Redux and should not be set elsewhere
+    openModal: PropTypes.string,
+    triggerModalAction: PropTypes.func,
+    close: PropTypes.func
+};
+
+
 
 const mapStateToProps = (state) => ({
     openModal: state.modals.modalShown,
