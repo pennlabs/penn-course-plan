@@ -11,6 +11,8 @@ import {
     triggerModalAction
 } from "../../actions";
 
+import PropTypes from "prop-types";
+
 /**
  * A generic container for modals
  * Pass in one or more components as the containedContent prop that will be displayed within the modal container
