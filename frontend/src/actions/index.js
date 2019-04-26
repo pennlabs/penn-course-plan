@@ -137,8 +137,20 @@ export function requestSearch(searchData) {
 }
 
 
+const preprocessSearchData = (searchData) => {
+    searchData.param = searchData.param.replace(/\s/, "");
+    if (/\d/.test(searchData.param)) {
+        searchData.resultType = "numbSearch";
+    } else {
+        searchData.resultType = "deptSearch";
+    }
+    return searchData;
+};
+
+
 function buildSearchUrl(searchData) {
-    let url = '/Search?searchType=' + searchData.searchType + '&resultType=deptSearch&searchParam=' + searchData.dept;
+    searchData = preprocessSearchData(searchData);
+    let url = '/Search?searchType=' + searchData.searchType + "&resultType=" + searchData.resultType + "&searchParam=" + searchData.param;
     console.log(url);
     return url;
 }

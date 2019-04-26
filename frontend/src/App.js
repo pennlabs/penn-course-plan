@@ -16,7 +16,7 @@ import DuplicateScheduleModal from "./components/modals/duplicate_schedule_modal
 import ClearScheduleModal from "./components/modals/clear_schedule_modal";
 import {fetchSearch} from "./actions";
 import thunkMiddleware from 'redux-thunk'
-import { createLogger } from 'redux-logger'
+import {createLogger} from 'redux-logger'
 
 
 const previousState = localStorage.getItem("coursePlanState");
@@ -36,11 +36,15 @@ const store = createStore(
 );
 
 store.subscribe(() => {
-    console.log(store.getState());
     localStorage.setItem("coursePlanState", JSON.stringify(store.getState()));
 });
 
-store.dispatch(fetchSearch({searchType: "courseIDSearch", dept: "cis"}));
+store.dispatch(fetchSearch(
+    {
+        searchType: "courseIDSearch",
+        param: "cis",
+    }
+));
 
 class App extends Component {
     constructor(props) {
