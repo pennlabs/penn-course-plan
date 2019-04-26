@@ -40,7 +40,7 @@ store.subscribe(() => {
     localStorage.setItem("coursePlanState", JSON.stringify(store.getState()));
 });
 
-store.dispatch(fetchSearch({courseId: "cis"}));
+store.dispatch(fetchSearch({searchType: "courseIDSearch", dept: "cis"}));
 
 class App extends Component {
     constructor(props) {

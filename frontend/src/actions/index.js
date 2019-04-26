@@ -138,18 +138,7 @@ export function requestSearch(searchData) {
 
 
 function buildSearchUrl(searchData) {
-    const base = "/Search?";
-    let type = "instructorSearch";
-    let queryParam = "instructor";
-    let queryVal = searchData.instructor;
-    if (searchData.courseId) {
-        type = "courseIDSearch";
-        queryVal = searchData.courseId;
-    } else if (searchData.description) {
-        type = "descriptionSearch";
-        queryVal = searchData.description;
-    }
-    const url = base + "searchType=" + type + "&searchParam=" + queryVal + "&resultType=numbSearch";
+    let url = '/Search?searchType=' + searchData.searchType + '&resultType=deptSearch&searchParam=' + searchData.dept;
     console.log(url);
     return url;
 }
@@ -159,7 +148,7 @@ export function fetchSearch(searchData) {
         dispatch(requestSearch(searchData));
         return fetch(buildSearchUrl(searchData)).then(
             response => response.json().then(
-                json => dispatch(updateSearch(json[0])),
+                json => dispatch(updateSearch(json)),
                 error => dispatch(courseSearchError(response.status))
             ),
             error => dispatch(courseSearchError(error))

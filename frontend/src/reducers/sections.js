@@ -30,7 +30,7 @@ export const sections = (state = initialState, action) => {
                 sections: action.sections
             };
         case UPDATE_SEARCH:
-            console.log(action);
+            console.log("UPDATING SEARCH");
             return {
                 ...state,
                 searchResults: action.searchResults,
