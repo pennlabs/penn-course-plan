@@ -19,16 +19,13 @@ import thunkMiddleware from 'redux-thunk'
 import {createLogger} from 'redux-logger'
 
 
-const previousState = localStorage.getItem("coursePlanState");
+const previousState = localStorage.getItem("coursePlanSchedules");
 const previousStateJSON = previousState ? JSON.parse(previousState) : undefined;
 const loggerMiddleware = createLogger();
 
-if (previousStateJSON) {
-    previousStateJSON.sections.showSearchFilter = false;
-}
 const store = createStore(
     coursePlanApp,
-    previousStateJSON,
+    {schedule: previousStateJSON},
     applyMiddleware(
         thunkMiddleware,
         loggerMiddleware
@@ -36,22 +33,8 @@ const store = createStore(
 );
 
 store.subscribe(() => {
-    localStorage.setItem("coursePlanState", JSON.stringify(store.getState()));
+    localStorage.setItem("coursePlanSchedules", JSON.stringify(store.getState().schedule));
 });
-
-store.dispatch(fetchCourseSearch(
-    {
-        searchType: "courseIDSearch",
-        param: "cis",
-    }
-));
-
-store.dispatch(fetchSectionInfo(
-    {
-        searchType: "courseIDSearch",
-        param: "cis120",
-    }
-));
 
 class App extends Component {
     constructor(props) {
