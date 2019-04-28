@@ -137,30 +137,73 @@ export function requestSearch(searchData) {
 }
 
 
-function buildSearchUrl(searchData) {
-    const base = "/Search?";
-    let type = "instructorSearch";
-    let queryParam = "instructor";
-    let queryVal = searchData.instructor;
-    if (searchData.courseId) {
-        type = "courseIDSearch";
-        queryVal = searchData.courseId;
-    } else if (searchData.description) {
-        type = "descriptionSearch";
-        queryVal = searchData.description;
+const preprocessSearchData = (searchData) => {
+    searchData.param = searchData.param.replace(/\s/, "");
+    if (/\d/.test(searchData.param)) {
+        searchData.resultType = "numbSearch";
+    } else {
+        searchData.resultType = "deptSearch";
     }
-    const url = base + "searchType=" + type + "&searchParam=" + queryVal + "&resultType=numbSearch";
+    return searchData;
+};
+
+
+function buildSearchUrl(searchData) {
+    searchData = preprocessSearchData(searchData);
+    let url = '/Search?searchType=' + searchData.searchType + "&resultType=" + searchData.resultType + "&searchParam=" + searchData.param;
     console.log(url);
     return url;
 }
+
+const processSearchData = (searchData) => searchData.map(item => {
+    let qFrac = item.revs.cQ / 4;
+    let dFrac = item.revs.cD / 4;
+    let iFrac = item.revs.cI / 4;
+    item.pcrQShade = Math.pow(qFrac, 3) * 2; // This is the opacity of the PCR block
+    item.pcrDShade = Math.pow(dFrac, 3) * 2;
+    item.pcrIShade = Math.pow(iFrac, 3) * 2;
+    if (qFrac < 0.50) {
+        item.pcrQColor = 'black';
+    } else {
+        item.pcrQColor = 'white';
+    } // It's hard to see white text on a light background
+    if (dFrac < 0.50) {
+        item.pcrDColor = 'black';
+    } else {
+        item.pcrDColor = 'white';
+    }
+    if (iFrac < 0.50) {
+        item.pcrIColor = 'black';
+    } else {
+        item.pcrIColor = 'white';
+    }
+    item.revs.QDratio = item.revs.cQ - item.revs.cD; // This is my way of calculating if a class is "good and easy." R > 1 means good and easy, < 1 means bad and hard
+
+    // Cleanup to keep incomplete data on the bottom;
+    if (isNaN(item.revs.QDratio) || !isFinite(item.revs.QDratio)) {
+        item.revs.QDratio = 0;
+    }
+    // the rating as a string - let's us make the actual rating something else and still show the correct number
+    item.revs.cQT = item.revs.cQ.toFixed(2);
+    if (item.revs.cQ === 0) {
+        item.revs.cQT = '';
+    }
+    item.revs.cDT = item.revs.cD.toFixed(2);
+    if (item.revs.cD === 0) {
+        item.revs.cDT = '';
+        item.revs.QDratio = -100;
+        item.revs.cD = 100;
+    }
+    return item;
+});
 
 export function fetchSearch(searchData) {
     return (dispatch) => {
         dispatch(requestSearch(searchData));
         return fetch(buildSearchUrl(searchData)).then(
             response => response.json().then(
-                json => dispatch(updateSearch(json[0])),
-                error => dispatch(courseSearchError(error))
+                json => dispatch(updateSearch(processSearchData(json))),
+                error => dispatch(courseSearchError(response.status))
             ),
             error => dispatch(courseSearchError(error))
         );

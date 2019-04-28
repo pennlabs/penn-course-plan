@@ -11,6 +11,12 @@ import {
     triggerModalAction
 } from "../../actions";
 
+import PropTypes from "prop-types";
+
+/**
+ * A generic container for modals
+ * Pass in one or more components as the containedContent prop that will be displayed within the modal container
+ */
 class ModalContainer extends Component {
 
     constructor(props) {
@@ -26,6 +32,7 @@ class ModalContainer extends Component {
         const self = this;
 
         const containedContent = React.Children.map(this.props.containedContent, child =>
+            // provides all necessary functionality to contents of modal
             React.cloneElement(child, {
                 existingScheduleNames: this.props.existingScheduleNames,
                 triggerModalAction: this.props.triggerModalAction,
@@ -63,8 +70,23 @@ class ModalContainer extends Component {
             </div>
         </div>
     }
-
 }
+
+ModalContainer.propTypes = {
+    // The name of the modal this container is used for; should be consistent with the name used in Redux state
+    modalName: PropTypes.string,
+    // The text contained within the success button. There will be no success button if this is set to undefined.
+    successButton: PropTypes.string,
+    // The components to display within the modal. Should be an array of components or an individual component
+    // TODO: replace this with the more standard 'children' prop
+    containedContent: undefined,
+    // The following props are set through React-Redux and should not be set elsewhere
+    openModal: PropTypes.string,
+    triggerModalAction: PropTypes.func,
+    close: PropTypes.func
+};
+
+
 
 const mapStateToProps = (state) => ({
     openModal: state.modals.modalShown,

@@ -1,6 +1,14 @@
 import {COURSE_SEARCH_ERROR, OPEN_SECTION_INFO, TOGGLE_SEARCH_FILTER, UPDATE_SEARCH, UPDATE_SECTIONS} from "../actions";
 import {sections_data_a} from "../sections_data";
 
+// This file contains the reducers for everything related to sections and courses
+
+// The state contains the following:
+// 1. The list of sections displayed in the sections display
+// 2. The list of search results displayed in the search results display
+// 3. The SectionInfo object displayed under the sections list
+// 4. Whether to display the search filter
+// 5. The coordinates of the search filter button
 const initialState = {
     sections: sections_data_a,
     searchResults: [],
@@ -22,7 +30,7 @@ export const sections = (state = initialState, action) => {
                 sections: action.sections
             };
         case UPDATE_SEARCH:
-            console.log(action);
+            console.log("UPDATING SEARCH");
             return {
                 ...state,
                 searchResults: action.searchResults,
