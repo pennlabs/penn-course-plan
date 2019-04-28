@@ -3,7 +3,7 @@ import connect from "react-redux/es/connect/connect";
 import { Dropdown } from "../dropdown";
 import SummaryDropdown from "./summary";
 import {
-    changeSchedule, fetchSearch, openModal, toggleSearchFilterShown,
+    changeSchedule, fetchCourseSearch, openModal, toggleSearchFilterShown,
 } from "../../actions";
 import { NEW_SCHEDULE_MODAL_NAME } from "../modals/new_schedule_modal";
 import SchedulesDropdown from "./SchedulesDropdown";
@@ -168,6 +168,6 @@ const mapDispatchToProps = dispatch => ({
     showDuplicateScheduleModal: () => dispatch(openModal(DUPLICATE_SCHEDULE_MODAL_NAME)),
     changeSchedule: scheduleName => dispatch(changeSchedule(scheduleName)),
     showClearScheduleModal: () => dispatch(openModal(CLEAR_SCHEDULE_MODAL_NAME)),
-    startSearch: searchObj => dispatch(fetchSearch(searchObj)),
+    startSearch: searchObj => dispatch(fetchCourseSearch(searchObj)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(SearchBar);

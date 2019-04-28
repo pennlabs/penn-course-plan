@@ -25,6 +25,12 @@ export const COURSE_SEARCH_LOADING = "COURSE_SEARCH_LOADING";
 export const COURSE_SEARCH_SUCCESS = "COURSE_SEARCH_SUCCESS";
 export const REQUEST_SEARCH = "REQUEST_SEARCH";
 
+export const SECTION_INFO_SEARCH_ERROR = "SECTION_INFO_SEARCH_ERROR";
+export const SECTION_INFO_SEARCH_LOADING = "SECTION_INFO_SEARCH_LOADING";
+export const SECTION_INFO_SEARCH_SUCCESS = "SECTION_INFO_SEARCH_SUCCESS";
+export const REQUEST_SECTION_INFO_SEARCH = "REQUEST_SECTION_INFO_SEARCH";
+
+
 export const duplicateSchedule = scheduleName => (
     {
         type: DUPLICATE_SCHEDULE,
@@ -137,6 +143,14 @@ export function requestSearch(searchData) {
 }
 
 
+export function requestSectionInfo(courseData) {
+    return {
+        type: REQUEST_SECTION_INFO_SEARCH,
+        courseData,
+    };
+}
+
+
 const preprocessSearchData = (searchData) => {
     searchData.param = searchData.param.replace(/\s/, "");
     if (/\d/.test(searchData.param)) {
@@ -148,7 +162,16 @@ const preprocessSearchData = (searchData) => {
 };
 
 
-function buildSearchUrl(searchData) {
+function buildCourseSearchUrl(initSearchData) {
+    let searchData = initSearchData;
+    searchData = preprocessSearchData(searchData);
+    const url = `/Search?searchType=${searchData.searchType}&resultType=${searchData.resultType}&searchParam=${searchData.param}`;
+    console.log(url);
+    return url;
+}
+
+function buildSectionInfoSearchUrl(initCourseData) {
+    let searchData = initCourseData;
     searchData = preprocessSearchData(searchData);
     const url = `/Search?searchType=${searchData.searchType}&resultType=${searchData.resultType}&searchParam=${searchData.param}`;
     console.log(url);
@@ -205,12 +228,32 @@ export function courseSearchError(error) {
     };
 }
 
-export function fetchSearch(searchData) {
+export function sectionInfoSearchError(error) {
+    return {
+        type: SECTION_INFO_SEARCH_ERROR,
+        error,
+    };
+}
+
+export function fetchCourseSearch(searchData) {
     return (dispatch) => {
         dispatch(requestSearch(searchData));
-        return fetch(buildSearchUrl(searchData)).then(
+        return fetch(buildCourseSearchUrl(searchData)).then(
             response => response.json().then(
                 json => dispatch(updateSearch(processSearchData(json))),
+                error => dispatch(courseSearchError(error)),
+            ),
+            error => dispatch(courseSearchError(error)),
+        );
+    };
+}
+
+export function fetchSectionInfo(searchData) {
+    return (dispatch) => {
+        dispatch(requestSectionInfo(searchData));
+        return fetch(buildSectionInfoSearchUrl(searchData)).then(
+            response => response.json().then(
+                json => dispatch(updateSectionInfo(json)),
                 error => dispatch(courseSearchError(error)),
             ),
             error => dispatch(courseSearchError(error)),

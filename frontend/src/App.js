@@ -14,7 +14,7 @@ import DeleteScheduleModal from "./components/modals/delete_schedule_modal";
 import RenameScheduleModal from "./components/modals/rename_schedule_modal_container";
 import DuplicateScheduleModal from "./components/modals/duplicate_schedule_modal_container";
 import ClearScheduleModal from "./components/modals/clear_schedule_modal";
-import {fetchSearch} from "./actions";
+import {fetchCourseSearch} from "./actions";
 import thunkMiddleware from 'redux-thunk'
 import {createLogger} from 'redux-logger'
 
@@ -39,7 +39,7 @@ store.subscribe(() => {
     localStorage.setItem("coursePlanState", JSON.stringify(store.getState()));
 });
 
-store.dispatch(fetchSearch(
+store.dispatch(fetchCourseSearch(
     {
         searchType: "courseIDSearch",
         param: "cis",
