@@ -14,7 +14,7 @@ import DeleteScheduleModal from "./components/modals/delete_schedule_modal";
 import RenameScheduleModal from "./components/modals/rename_schedule_modal_container";
 import DuplicateScheduleModal from "./components/modals/duplicate_schedule_modal_container";
 import ClearScheduleModal from "./components/modals/clear_schedule_modal";
-import {fetchCourseSearch} from "./actions";
+import {fetchCourseSearch, fetchSectionInfo} from "./actions";
 import thunkMiddleware from 'redux-thunk'
 import {createLogger} from 'redux-logger'
 
@@ -43,6 +43,13 @@ store.dispatch(fetchCourseSearch(
     {
         searchType: "courseIDSearch",
         param: "cis",
+    }
+));
+
+store.dispatch(fetchSectionInfo(
+    {
+        searchType: "courseIDSearch",
+        param: "cis120",
     }
 ));
 

@@ -151,7 +151,7 @@ export function requestSectionInfo(courseData) {
 }
 
 
-const preprocessSearchData = (searchData) => {
+const preprocessCourseSearchData = (searchData) => {
     searchData.param = searchData.param.replace(/\s/, "");
     if (/\d/.test(searchData.param)) {
         searchData.resultType = "numbSearch";
@@ -161,10 +161,16 @@ const preprocessSearchData = (searchData) => {
     return searchData;
 };
 
+const preprocessSectionSearchData = (searchData) => {
+    searchData.param = searchData.param.replace(/\s/, "");
+    searchData.resultType = "sectSearch";
+    return searchData;
+};
+
 
 function buildCourseSearchUrl(initSearchData) {
     let searchData = initSearchData;
-    searchData = preprocessSearchData(searchData);
+    searchData = preprocessCourseSearchData(searchData);
     const url = `/Search?searchType=${searchData.searchType}&resultType=${searchData.resultType}&searchParam=${searchData.param}`;
     console.log(url);
     return url;
@@ -172,7 +178,7 @@ function buildCourseSearchUrl(initSearchData) {
 
 function buildSectionInfoSearchUrl(initCourseData) {
     let searchData = initCourseData;
-    searchData = preprocessSearchData(searchData);
+    searchData = preprocessSectionSearchData(searchData);
     const url = `/Search?searchType=${searchData.searchType}&resultType=${searchData.resultType}&searchParam=${searchData.param}`;
     console.log(url);
     return url;
@@ -254,9 +260,9 @@ export function fetchSectionInfo(searchData) {
         return fetch(buildSectionInfoSearchUrl(searchData)).then(
             response => response.json().then(
                 json => dispatch(updateSectionInfo(json)),
-                error => dispatch(courseSearchError(error)),
+                error => dispatch(sectionInfoSearchError(error)),
             ),
-            error => dispatch(courseSearchError(error)),
+            error => dispatch(sectionInfoSearchError(error)),
         );
     };
 }
