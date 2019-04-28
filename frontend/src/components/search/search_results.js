@@ -1,6 +1,7 @@
 import * as React from "react";
 import connect from "react-redux/es/connect/connect";
 import {SearchResult} from "./search_result";
+import {fetchSectionInfo} from "../../actions";
 
 
 class SearchResults extends React.Component {
@@ -15,7 +16,7 @@ class SearchResults extends React.Component {
                 const searchResult = this.props.searchResults[i];
                 // todo: requirements stuff
                 const searchResultComponent = (
-                    <SearchResult key={i} course={searchResult}/>
+                    <SearchResult key={i} course={searchResult} requestSectionInfo={() => this.props.requestSectionInfo(searchResult.idSpaced)}/>
                 );
                 items.push(searchResultComponent);
             }
@@ -59,5 +60,8 @@ const mapStateToProps = state => (
     }
 );
 
-export default connect(mapStateToProps, () => {
-})(SearchResults);
+const mapDispatchToProps = dispatch => ({
+    requestSectionInfo: courseId => dispatch(fetchSectionInfo({ searchType: "courseIDSearch", param: courseId }))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(SearchResults);

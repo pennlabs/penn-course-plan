@@ -10,8 +10,7 @@ export class SearchResult extends React.Component {
         return (
             <li
                 id={this.course.idDashed}
-                onClick={() => {
-                }}
+                onClick={() => this.props.requestSectionInfo()}
             >
 
                 <span

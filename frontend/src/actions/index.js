@@ -162,7 +162,7 @@ const preprocessCourseSearchData = (searchData) => {
 };
 
 const preprocessSectionSearchData = (searchData) => {
-    searchData.param = searchData.param.replace(/\s/, "");
+    searchData.param = searchData.param.toLowerCase().replace(/\s/, "");
     searchData.resultType = "sectSearch";
     return searchData;
 };
