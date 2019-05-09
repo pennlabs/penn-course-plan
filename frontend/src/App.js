@@ -3,6 +3,8 @@ import './styles/App.css';
 import 'bulma/css/bulma.css'
 import Sections from "./components/selector/Sections";
 import Schedule from './components/schedule/Schedule'
+import ScheduleNew from './components/schedule/ScheduleNew'
+
 import Provider from "react-redux/es/components/Provider";
 import {applyMiddleware, createStore} from "redux";
 import coursePlanApp from "./reducers";
@@ -81,7 +83,7 @@ class App extends Component {
                             </div>
                         </div>
                         <div id="InfoPanel" className="column">
-                            <Schedule/>
+                            <ScheduleNew/>
                         </div>
                     </div>
                 </div>

@@ -1,0 +1,10 @@
+.schedule {
+    display: grid;
+    height: 100%;
+}
+.block {
+    background-color: dodgerblue;
+    color: #fff;
+    border-radius: 5px;
+    /* padding: 10px; */
+}
