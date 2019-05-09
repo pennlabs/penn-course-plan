@@ -11,15 +11,12 @@ export default class Times extends Component {
             let hour = Math.floor(t % 12);
             let min = (t % 1) * 60;
             let meridian = t < 12 ? 'AM' : 'PM';
-
             if (hour === 0) {
                 hour = 12;
             }
-
             if (min === 0) {
                 min = '00';
             }
-
             return `${hour}:${min} ${meridian}`
         }
 
@@ -37,8 +34,6 @@ export default class Times extends Component {
             ))
         }
 
-
-        console.log({ startTime, endTime, numRow })
         let style = {
             display: 'grid',
             gridTemplateRows: `repeat(${numRow-1}, 1fr)`,
