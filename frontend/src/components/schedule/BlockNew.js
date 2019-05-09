@@ -7,18 +7,22 @@ export default class BlockNew extends Component {
 
     render() {
         const days = ['M', 'T', 'W', 'R', 'F', 'S', 'U'];
-        let {day, start, end} = this.props.meeting;
-        let {offsets} = this.props;
-
+        let {offsets, meeting, id, color, remove} = this.props;
+        let {day, start, end} = meeting;
         const pos = {
             gridRowStart: (start - offsets.time) * 2 + offsets.row+1,
             gridRowEnd: (end - offsets.time) * 2 + offsets.col+1,
-            gridColumn: days.indexOf(day) + 1 + offsets.col
+            gridColumn: days.indexOf(day) + 1 + offsets.col,
+            position: 'relative',
         }
 
         return (
-            <div className={'block'} style={pos}>
-                {this.props.children}
+            <div className={`block ${color || 'indigo'}`} style={pos}>
+                <span
+                    className={'remove'}
+                    onClick={remove}
+                ><i className="fas fa-times" /></span>
+                <span>{id.replace(/-/g, ' ')}</span>
             </div>
         )
     }

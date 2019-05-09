@@ -1,11 +1,36 @@
 .schedule {
     display: grid;
     height: 100%;
+    margin-right: 20px;
+    grid-gap: 10px;
 }
 .block {
-    background-color: dodgerblue;
-    color: #fff;
-    border-radius: 5px;
+    /*border-radius: 5px;*/
     margin-bottom: 0 !important;
+    color: black;
+    border-top: 3px solid;
+    background-color:#FAFAFA;
+    box-shadow:0 1px 3px 0 lightgrey;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
     /* padding: 10px; */
+}
+
+.block > span {
+    cursor: pointer;
+}
+
+.block > .remove {
+    position: absolute;
+    top: 2px;
+    left: 4px;
+    opacity: 0;
+    cursor: pointer;
+    transition: opacity .25s ease-in-out;
+}
+
+.block:hover > .remove {
+    opacity: 1;
 }

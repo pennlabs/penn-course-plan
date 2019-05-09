@@ -7,7 +7,6 @@ import './schedule.css'
 import Days from './Days'
 import Times from './Times'
 import BlockNew from './BlockNew'
-import Block from "./Block"
 
 class ScheduleNew extends Component {
     constructor(props) {
@@ -15,15 +14,15 @@ class ScheduleNew extends Component {
     }
 
     render() {
-        let sched = this.props.schedData;
-        let { meetings } = sched;
-        meetings = meetings || []
+        let {schedData, removeSection} = this.props;
+        console.log('props', schedData)
+        let sections = schedData.meetings || [];
 
         let startHour = 10;
         let endHour = 15.5;
 
-        let startTimes = meetings.map(m => m.meetHour);
-        let endTimes = meetings.map(m => m.meetHour + m.hourLength);
+        let startTimes = sections.map(m => m.meetHour);
+        let endTimes = sections.map(m => m.meetHour + m.hourLength);
         startHour = Math.min(startHour, ...startTimes) - 1;
         endHour = Math.max(endHour, ...endTimes) + 1;
 
@@ -34,42 +33,43 @@ class ScheduleNew extends Component {
             return (endHour - startHour) * 2 + rowOffset
         }
 
-        let dims = {
-            gridTemplateColumns: `.4fr repeat(${5}, 1fr)`,
-            gridTemplateRows: `repeat(${getNumRows()}, 1fr)`,
-        }
-
-
-        const offsets = {
-            time: startHour,
-            row: rowOffset,
-            col: colOffset,
-        }
-
-        let blockData = [];
-        meetings.forEach(m => {
+        let meetings = [];
+        sections.forEach(m => {
             let days = m.meetDay.split('');
-            blockData.push(...days.map(d => {
+            meetings.push(...days.map(d => {
                 return {
                     data: {
                         day: d,
                         start: m.meetHour,
                         end: m.meetHour + m.hourLength
                     },
-                    course: m.idDashed,
+                    course: {
+                        id: m.idDashed,
+                        fullID: m.fullID,
+                        color: 'dodgerblue'
+                    },
                 }
             }))
         })
-
-        let blocks = blockData.map(b => (
+        let blocks = meetings.map(meeting => (
             <BlockNew
-                meeting={b.data}
-                offsets={offsets}
-                key={`${b.course}-${b.data.day}`}
-            >
-                {b.course}
-            </BlockNew>
+                meeting={meeting.data}
+                offsets={{
+                    time: startHour,
+                    row: rowOffset,
+                    col: colOffset,
+                }}
+                key={`${meeting.course.id}-${meeting.data.day}`}
+                id={meeting.course.id}
+                color={meeting.course.color}
+                remove={() => removeSection(meeting.course.fullID)}
+            />
         ))
+
+        let dims = {
+            gridTemplateColumns: `.4fr repeat(${5}, 1fr)`,
+            gridTemplateRows: `repeat(${getNumRows()}, 1fr)`,
+        }
 
         return (
             <div className={'schedule'} style={dims}>
@@ -78,10 +78,10 @@ class ScheduleNew extends Component {
                     startTime={startHour}
                     endTime={endHour}
                     numRow={getNumRows()}
-                    offset={rowOffset} />
+                    offset={rowOffset}
 
+                />
                 {blocks}
-
             </div>
         )
     }
@@ -95,7 +95,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => (
     {
-        removeSchedItem: idDashed => dispatch(removeSchedItem(idDashed))
+        removeSection: idDashed => dispatch(removeSchedItem(idDashed))
     }
 );
 
