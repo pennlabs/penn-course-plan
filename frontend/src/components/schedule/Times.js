@@ -23,6 +23,7 @@ export default class Times extends Component {
         for (let i = startTime; i < endTime; i++) {
             timestamps.push((
                 <span
+                    className={'time'}
                     style={{
                         gridRow: ((i - startTime) * 2) + 1,
                         gridColumn: 1
@@ -39,10 +40,11 @@ export default class Times extends Component {
             gridTemplateRows: `repeat(${numRow-1}, 1fr)`,
             gridColumn: 1,
             gridRowStart: 1 + offset,
-            gridRowEnd: numRow+1
+            gridRowEnd: numRow+1,
+            position: 'relative',
         }
         return (
-            <div style={style}>
+            <div  style={style}>
                 {timestamps}
             </div>
         )

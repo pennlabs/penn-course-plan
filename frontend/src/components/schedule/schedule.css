@@ -34,3 +34,8 @@
 .block:hover > .remove {
     opacity: 1;
 }
+
+.time {
+    position: absolute;
+    top: -6px;
+}
