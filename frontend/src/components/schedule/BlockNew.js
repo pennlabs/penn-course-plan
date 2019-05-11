@@ -17,12 +17,14 @@ export default class BlockNew extends Component {
         }
 
         return (
-            <div className={`block ${color || 'indigo'}`} style={pos}>
-                <span
-                    className={'remove'}
-                    onClick={remove}
-                ><i className="fas fa-times" /></span>
-                <span>{id.replace(/-/g, ' ')}</span>
+            <div className={`block ${color}`} style={pos}>
+                <div className={'inner-block'}>
+                    <span
+                        className={'remove'}
+                        onClick={remove}
+                    ><i className="fas fa-times" /></span>
+                    <span>{id.replace(/-/g, ' ')}</span>
+                </div>
             </div>
         )
     }

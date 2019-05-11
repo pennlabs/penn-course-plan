@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import './styles/App.css';
 import 'bulma/css/bulma.css'
+import './styles/App.css';
 import Sections from "./components/selector/Sections";
 import Schedule from './components/schedule/Schedule'
 import ScheduleNew from './components/schedule/ScheduleNew'

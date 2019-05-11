@@ -7,7 +7,7 @@ export default class Days extends Component {
 
     render() {
         let { offset } = this.props
-        let days = this.props.days || ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
+        let days = this.props.days || ['MON', 'TUE', 'WED', 'THU', 'FRI']
         let style = {
             display: 'grid',
             gridColumnStart: 1 + offset,
@@ -18,7 +18,7 @@ export default class Days extends Component {
         }
         return (
             <div style={style}>
-                {days.map(e => <span key={e}>{e}</span>)}
+                {days.map(e => <span className={'day'} key={e}>{e}</span>)}
             </div>
         )
     }

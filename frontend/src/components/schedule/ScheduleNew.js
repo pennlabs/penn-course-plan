@@ -7,6 +7,7 @@ import './schedule.css'
 import Days from './Days'
 import Times from './Times'
 import BlockNew from './BlockNew'
+import GridLines from './GridLines'
 
 class ScheduleNew extends Component {
     constructor(props) {
@@ -15,16 +16,13 @@ class ScheduleNew extends Component {
 
     render() {
         let {schedData, removeSection} = this.props;
-        console.log('props', schedData)
         let sections = schedData.meetings || [];
 
         let startHour = 10;
         let endHour = 15.5;
 
-        let startTimes = sections.map(m => m.meetHour);
-        let endTimes = sections.map(m => m.meetHour + m.hourLength);
-        startHour = Math.min(startHour, ...startTimes) - 1;
-        endHour = Math.max(endHour, ...endTimes) + 1;
+        startHour = Math.min(startHour, ...sections.map(m => m.meetHour)) - 1;
+        endHour = Math.max(endHour, ...sections.map(m => m.meetHour + m.hourLength)) + 1;
 
         let rowOffset = 1;
         let colOffset = 1;
@@ -33,9 +31,16 @@ class ScheduleNew extends Component {
             return (endHour - startHour) * 2 + rowOffset
         }
 
+        const getColor = (() => {
+            const colors = ["blue", "red", "aqua", "orange", "green", "pink", "sea", "indigo"];
+            let i = 0;
+            return () => colors[i++ % colors.length]
+        })()
+
         let meetings = [];
         sections.forEach(m => {
             let days = m.meetDay.split('');
+            const color = getColor();
             meetings.push(...days.map(d => {
                 return {
                     data: {
@@ -46,7 +51,7 @@ class ScheduleNew extends Component {
                     course: {
                         id: m.idDashed,
                         fullID: m.fullID,
-                        color: 'dodgerblue'
+                        color: color
                     },
                 }
             }))
@@ -72,7 +77,7 @@ class ScheduleNew extends Component {
         }
 
         return (
-            <div className={'schedule'} style={dims}>
+            <div className={'schedule box'} style={dims}>
                 <Days offset={colOffset} />
                 <Times
                     startTime={startHour}
@@ -80,6 +85,10 @@ class ScheduleNew extends Component {
                     numRow={getNumRows()}
                     offset={rowOffset}
 
+                />
+                <GridLines
+                    numRow={getNumRows()}
+                    numCol={6}
                 />
                 {blocks}
             </div>

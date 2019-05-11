@@ -15,9 +15,10 @@ export default class Times extends Component {
                 hour = 12;
             }
             if (min === 0) {
-                min = '00';
+                return `${hour} ${meridian}`
+            } else {
+                return `${hour}:${min} ${meridian}`
             }
-            return `${hour}:${min} ${meridian}`
         }
 
         for (let i = startTime; i < endTime; i++) {
