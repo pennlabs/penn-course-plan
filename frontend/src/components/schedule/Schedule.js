@@ -93,6 +93,7 @@ class Schedule extends Component {
             Math.max(endHour, ...sections.map(m => m.meetHour + m.hourLength)) + .5
         );
 
+        // show the weekend days only if there's a section which meets on saturday (S) or sunday (U)
         const showWeekend = sections.filter(
             sec => sec.meetDay.indexOf('S') !== -1 || sec.meetDay.indexOf('U') !== -1).length > 0;
 
@@ -129,9 +130,9 @@ class Schedule extends Component {
             }
         })()
         const sectionIds = sections.map(x => x.idDashed);
-        let meetings = [];
+        let meetings = []; // a meeting is the data that represents a single block on the schedule.
         sections.forEach(m => {
-            let days = m.meetDay.split('');
+            let days = m.meetDay.split(''); // generate as many meetings as there are days
             const color = getColor(m.idDashed);
             meetings.push(...days.map(d => {
                 return {
@@ -146,7 +147,7 @@ class Schedule extends Component {
                         color: color,
                         coreqFulfilled: m.SchedAsscSecs.filter(
                             coreq => sectionIds.indexOf(coreq) !== -1
-                        ).length === 0
+                        ).length > 0
                     },
                     style: {
                         width: '100%',
@@ -169,20 +170,20 @@ class Schedule extends Component {
                 }
             }
         }
+        // generate actual block components.
+        // position in grid is determined by the block given the meeting info and grid offsets.
         let blocks = meetings.map(meeting => (
             <Block
                 meeting={meeting.data}
+                course={meeting.course}
+                style={meeting.style}
                 offsets={{
                     time: startHour,
                     row: rowOffset,
                     col: colOffset,
                 }}
                 key={`${meeting.course.id}-${meeting.data.day}`}
-                id={meeting.course.id}
-                color={meeting.course.color}
                 remove={() => removeSection(meeting.course.fullID)}
-                style={meeting.style}
-                showWarning={meeting.course.coreqFulfilled}
             />
         ))
 

@@ -7,8 +7,9 @@ export default class BlockNew extends Component {
 
     render() {
         const days = ['M', 'T', 'W', 'R', 'F', 'S', 'U'];
-        let {offsets, meeting, id, color, remove, style, showWarning} = this.props;
+        let {offsets, meeting, course, remove, style} = this.props;
         let {day, start, end} = meeting;
+        let {id, color, coreqFulfilled} = course;
         const pos = {
             gridRowStart: (start - offsets.time) * 2 + offsets.row+1,
             gridRowEnd: (end - offsets.time) * 2 + offsets.col+1,
@@ -26,7 +27,7 @@ export default class BlockNew extends Component {
                         }}
                     ><i className="fas fa-times" /></span>
                     <span
-                        className={showWarning ? '' : 'hide'}
+                        className={coreqFulfilled ? 'hide' : ''}
                         title={"Registration is required for an associated section."}
                     ><i className="fas fa-exclamation warning" /></span>
                     <span>{id.replace(/-/g, ' ')}</span>
