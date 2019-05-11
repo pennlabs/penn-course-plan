@@ -7,7 +7,7 @@ export default class BlockNew extends Component {
 
     render() {
         const days = ['M', 'T', 'W', 'R', 'F', 'S', 'U'];
-        let {offsets, meeting, id, color, remove} = this.props;
+        let {offsets, meeting, id, color, remove, style} = this.props;
         let {day, start, end} = meeting;
         const pos = {
             gridRowStart: (start - offsets.time) * 2 + offsets.row+1,
@@ -17,7 +17,7 @@ export default class BlockNew extends Component {
         }
 
         return (
-            <div className={`block ${color}`} style={pos}>
+            <div className={`block ${color}`} style={{...pos, ...style}}>
                 <div className={'inner-block'}>
                     <span
                         className={'remove'}
