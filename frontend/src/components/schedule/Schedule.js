@@ -82,8 +82,8 @@ class Schedule extends Component {
             return <EmptySchedule />
         }
 
-        let startHour = 10;
-        let endHour = 15.5;
+        let startHour = 10.5;
+        let endHour = 16;
 
         // get the minimum start hour and the max end hour to set bounds on the schedule.
         startHour = Math.floor(
