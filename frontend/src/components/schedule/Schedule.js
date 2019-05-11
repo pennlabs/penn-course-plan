@@ -89,13 +89,19 @@ class Schedule extends Component {
         startHour = Math.min(startHour, ...sections.map(m => m.meetHour)) - 1;
         endHour = Math.max(endHour, ...sections.map(m => m.meetHour + m.hourLength)) + 1;
 
+        const showWeekend = sections.filter(
+            sec => sec.meetDay.indexOf('S') !== -1 || sec.meetDay.indexOf('U') !== -1).length > 0;
+
         // actual schedule elements are offset by the row/col offset since
         // days/times take up a row/col respectively.
         let rowOffset = 1;
         let colOffset = 1;
 
         const getNumRows = () => {
-            return (endHour - startHour) * 2 + rowOffset
+            return (endHour - startHour) * 2 + rowOffset;
+        }
+        const getNumCol = () => {
+            return 5 + colOffset + (showWeekend ? 2 : 0);
         }
 
         // step 2 in the CIS121 review: hashing with linear probing.
@@ -118,7 +124,6 @@ class Schedule extends Component {
                 return color;
             }
         })()
-        console.log('davis', sections)
         const sectionIds = sections.map(x => x.idDashed);
         let meetings = [];
         sections.forEach(m => {
@@ -178,13 +183,13 @@ class Schedule extends Component {
         ))
 
         let dims = {
-            gridTemplateColumns: `.4fr repeat(${5}, 1fr)`,
+            gridTemplateColumns: `.4fr repeat(${getNumCol() - 1}, 1fr)`,
             gridTemplateRows: `repeat(${getNumRows()}, 1fr)`,
         }
 
         return (
             <div className={'schedule box'} style={dims}>
-                <Days offset={colOffset} />
+                <Days offset={colOffset} weekend={showWeekend} />
                 <Times
                     startTime={startHour}
                     endTime={endHour}
@@ -194,7 +199,7 @@ class Schedule extends Component {
                 />
                 <GridLines
                     numRow={getNumRows()}
-                    numCol={6}
+                    numCol={getNumCol()}
                 />
                 {blocks}
             </div>

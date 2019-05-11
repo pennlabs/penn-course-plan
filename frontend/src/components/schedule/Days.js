@@ -6,14 +6,14 @@ export default class Days extends Component {
     }
 
     render() {
-        let { offset } = this.props
-        let days = this.props.days || ['MON', 'TUE', 'WED', 'THU', 'FRI']
+        let { offset, weekend } = this.props
+        let days = weekend ? ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'] : ['MON', 'TUE', 'WED', 'THU', 'FRI']
         let style = {
             display: 'grid',
             gridColumnStart: 1 + offset,
-            gridColumnEnd: 6 + offset,
+            gridColumnEnd: days.length + 1 + offset,
             gridRow: 1,
-            gridTemplateColumns: 'repeat(5, 1fr)',
+            gridTemplateColumns: `repeat(${days.length}, 1fr)`,
             textAlign: 'center',
         }
         return (
