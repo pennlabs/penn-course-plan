@@ -21,7 +21,10 @@ export default class BlockNew extends Component {
                 <div className={'inner-block'}>
                     <span
                         className={'remove'}
-                        onClick={remove}
+                        onClick={e => {
+                            remove();
+                            e.stopPropagation();
+                        }}
                     ><i className="fas fa-times" /></span>
                     <span>{id.replace(/-/g, ' ')}</span>
                 </div>

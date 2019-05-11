@@ -78,6 +78,10 @@ class ScheduleNew extends Component {
         let {schedData, removeSection} = this.props;
         let sections = schedData.meetings || [];
 
+        if (sections.length < 1) {
+            return <EmptySchedule />
+        }
+
         let startHour = 10;
         let endHour = 15.5;
 
@@ -143,14 +147,6 @@ class ScheduleNew extends Component {
             // for every conflict of size k, make the meetings in that conflict
             // take up (100/k) % of the square, and use `left` to place them
             // next to each other.
-
-            // TODO: Improve Algorithm
-            // This is not a perfect algorithm. Take m1[1,4], m2[1,2] and m3[3,4].
-            // they'll all be in the same conflict group, but m2 and m3 don't overlap.
-            // so, each block should be 50% width. This is tricky, though, since m1 needs
-            // to be on the left (for example) and m2 and m3 should both be on the right.
-            // maybe we could group by strict conflict group now, so we'll get 2 groups,
-            // one m1 with m2 and one m1 with m3?
             const group = Array.from(conflict.values())
             const w = 100 / group.length;
             for (let j = 0; j < group.length; j++) {
@@ -214,3 +210,16 @@ const mapDispatchToProps = (dispatch) => (
 );
 
 export default connect(mapStateToProps, mapDispatchToProps)(ScheduleNew);
+
+const EmptySchedule = () => (
+    <div className={'box'} style={{height: '100%'}}>
+        <p style={{fontSize: "1.5em", marginTop: "7em", display: "block"}}>
+            Search for courses above <br/>then click a section's + icon to add it to the schedule.
+        </p>
+        <p style={{fontSize: "1em"}}>
+            These are mock schedules.
+            <br/>
+            You still need to register for your classes on Penn InTouch.
+        </p>
+    </div>
+);
