@@ -3,12 +3,18 @@ import SectionDisplay from './SectionDisplay'
 import {section_info_a} from "../../sections_data";
 
 export default class SectionList extends Component {
+    constructor(props) {
+        super(props);
+    }
+
     render() {
         let sections = [];
         const self = this;
         const updateSectionInfo = this.props.updateSectionInfo;
-        for (let i = 0; i < this.props.sections.length; i++) {
-            let section = this.props.sections[i];
+        const psections = this.props.sections || [];
+        console.log('davis', psections.length)
+        for (let i = 0; i < psections.length; i++) {
+            let section = psections[i];
             sections.push(<SectionDisplay
                 inSchedule={this.props.scheduleContains(section.idDashed)}
                 overlap={this.props.overlaps(section)}
@@ -25,7 +31,7 @@ export default class SectionList extends Component {
             }*/
         }
 
-        return <div id="SectionList">
+        return <div id="SectionList" ref={this.props.listRef}>
             <ul>
                 {sections}
             </ul>
