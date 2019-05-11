@@ -1,35 +1,37 @@
-import React, {Component} from 'react'
+import React, {Component} from 'react';
 
-export default class Block extends Component {
+export default class BlockNew extends Component {
+    constructor(props) {
+        super(props);
+    }
+
     render() {
-        // Display a warning if the class requires another section
-        let warning = <div className={"NeedAssc"}
-                           title={"Registration is required for an associated section."}><b>!</b></div>;
-        // The showWarning prop is passed down from the Schedule component
-        if (!this.props.showWarning) {
-            warning = null;
+        const days = ['M', 'T', 'W', 'R', 'F', 'S', 'U'];
+        let {offsets, meeting, id, color, remove, style, showWarning} = this.props;
+        let {day, start, end} = meeting;
+        const pos = {
+            gridRowStart: (start - offsets.time) * 2 + offsets.row+1,
+            gridRowEnd: (end - offsets.time) * 2 + offsets.col+1,
+            gridColumn: days.indexOf(day) + 1 + offsets.col,
+            position: 'relative',
         }
-        const removeSchedItem = this.props.removeSchedItem;
-        return <div className={"SchedBlock_container " + this.props.letterDay + " " + this.props.topC}
-                    style={{
-                        left: this.props.x + "%",
-                        top: this.props.y + "%",
-                        width: this.props.width + "%",
-                        height: this.props.height + "%"
-                    }}>
-            <div
-                className={"SchedBlock " + this.props.letterDay + " " + this.props.topC + " " + this.props.assignedClass}
-                id={this.props.id}
-                onClick={() => {
-                }}>
-                <div className={"CloseX"} style={{width: 100 + "%", height: 100 + "%"}}><span
-                    onClick={e => {
-                        removeSchedItem(this.props.id);
-                        e.stopPropagation();
-                    }}>X</span></div>
-                {warning}
-                <span className={"SecName"}>{this.props.name}</span>
+        return (
+            <div className={`block ${color}`} style={{...pos, ...style}}>
+                <div className={'inner-block'}>
+                    <span
+                        className={'remove'}
+                        onClick={e => {
+                            remove();
+                            e.stopPropagation();
+                        }}
+                    ><i className="fas fa-times" /></span>
+                    <span
+                        className={showWarning ? '' : 'hide'}
+                        title={"Registration is required for an associated section."}
+                    ><i className="fas fa-exclamation warning" /></span>
+                    <span>{id.replace(/-/g, ' ')}</span>
+                </div>
             </div>
-        </div>
+        )
     }
 }

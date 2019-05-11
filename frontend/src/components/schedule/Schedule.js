@@ -1,267 +1,204 @@
 import React, {Component} from 'react';
-import Line from './Line'
-import Block from './Block'
 import connect from "react-redux/es/connect/connect";
+
 import {removeSchedItem} from "../../actions";
 
+import './schedule.css'
+import Days from './Days'
+import Times from './Times'
+import Block from './Block'
+import GridLines from './GridLines'
 
-//possible color classes (corresponds with CSS classes)
-const top_colors_recitation_save = ["red", "orange", "pink"];
-const top_colors_other_save = ["blue", "aqua", "green", "sea", "indigo"];
-
-//available color classes
-let top_colors_recitation = [];
-let top_colors_other = [];
-
-//makes all recitation colors available
-const reset_recitation_colors = () => {
-    top_colors_recitation = top_colors_recitation_save.slice();
+// Used for box coloring, from StackOverflow:
+// https://stackoverflow.com/questions/7616461/generate-a-hash-from-string-in-javascript
+String.prototype.hashCode = function() {
+    let hash = 0, i, chr;
+    if (this.length === 0) return hash;
+    for (i = 0; i < this.length; i++) {
+        chr   = this.charCodeAt(i);
+        hash  = ((hash << 5) - hash) + chr;
+        hash |= 0; // Convert to 32bit integer
+    }
+    return hash;
 };
 
-//makes all other colors available
-const resetOtherColors = () => {
-    top_colors_other = top_colors_other_save.slice();
-};
+// From an array of meetings, get the groups which conflict in timing.
+export const getConflictGroups = (meetings) => {
+    // returns true if the two meetings conflict.
+    const overlap = (m1, m2) => {
+        let start1 = m1.data.start;
+        let start2 = m2.data.start;
+        let end1 = m1.data.end;
+        let end2 = m2.data.end;
+        return m1.data.day === m2.data.day && !(end1 <= start2 || end2 <= start1)
+    }
+    // get a unique ID for a course's meeting
+    const id = m => {
+        return `${m.course.id}-${m.data.day}-${m.data.start}-${m.data.end}`
+    }
 
-//dictionary associating class name with color
-let class_colors = {};
+    // `conflicts` is a union-find datastructure representing "conflict sets".
+    // https://en.wikipedia.org/wiki/Disjoint-set_data_structure
+    // meetings m1 and m2 are in the same conflict set if m1 and m2 conflict
+    // with at least one meeting m3 which is also in the set (m3 can be m1 or m2).
+    let conflicts = {};
+    const merge = (m1, m2) => {
+        conflicts[id(m1)] = conflicts[id(m2)] = new Set([...conflicts[id(m1)], ...conflicts[id(m2)]]);
+    }
 
-//makes all colors available
-const resetColors = () => {
-    reset_recitation_colors();
-    resetOtherColors();
-    class_colors = {};
-};
+    meetings.forEach(m => {
+        conflicts[id(m)] = new Set([m])
+    })
 
-//generates a color from a given day of the week, hour, and course name
-const generate_color = (day, hour, name) => {
-    let temp_color = class_colors[name];
-    if (temp_color !== undefined) {
-        return temp_color;
-    } else {
-        let chosen_list = null;
-        if (parseInt(name.substring(name.length - 3, name.length)) >= 100) {
-            chosen_list = top_colors_recitation;
-            if (chosen_list.length === 0) {
-                reset_recitation_colors();
-                chosen_list = top_colors_recitation;
-            }
-        } else {
-            chosen_list = top_colors_other;
-            if (chosen_list.length === 0) {
-                resetOtherColors();
-                chosen_list = top_colors_other;
+    // compare every pair of meetings. if they overlap, merge their sets.
+    for (let i = 0; i < meetings.length-1; i++) {
+        for (let j = i+1; j < meetings.length; j++) {
+            if (overlap(meetings[i], meetings[j])) {
+                merge(meetings[i], meetings[j])
             }
         }
-        const index = (["M", "T", "W", "H", "F"].indexOf(day) % 2 + Math.round(hour * 2)) % chosen_list.length;
-        const result = chosen_list[index];
-        chosen_list.splice(index, 1);
-        class_colors[name] = result;
-        return result;
     }
-};
+
+    // remove sets of size 1 from the results; they're not conflicting with anything.
+    for (const key of Object.keys(conflicts)) {
+        if (conflicts[key].size <= 1) {
+            delete conflicts[key]
+        }
+    }
+    // use a Set to remove duplicates, so we get only unique conflict sets.
+    return Array.from(new Set(Object.values(conflicts)).values());
+}
 
 class Schedule extends Component {
-
     constructor(props) {
         super(props);
     }
 
     render() {
-        if (!this.props.schedData) {
-            return EmptySchedule();
-        }
-        const courseSched = this.props.schedData.meetings;
-        let weekdays = ['M', 'T', 'W', 'R', 'F'];
-        let fullWeekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
-        let startHour = 10; // start at 10
-        let endHour = 15; // end at 3pm
-        let incSun = 0; // no weekends
-        let incSat = 0;
+        let {schedData, removeSection} = this.props;
+        let sections = schedData.meetings || [];
 
-        if (courseSched) {
-            courseSched.forEach(function (sec) {
-                var secMeetHour = sec.meetHour;
-                if (secMeetHour <= startHour) {
-                    // If there are classes earlier than the default start
-                    startHour = Math.floor(secMeetHour); // push back the earliest hour
-                }
-                if (secMeetHour + sec.hourLength >= endHour) {
-                    // Push back latest hour if necessary
-                    endHour = Math.ceil(secMeetHour + sec.hourLength);
-                }
-                if (sec.meetDay === 'U') {
-                    // If there are sunday classes
-                    incSun = 1;
-                }
-                if (sec.meetDay === 'S') {
-                    // If there are saturday classes
-                    incSat = 1;
-                }
-            });
+        if (sections.length < 1) {
+            return <EmptySchedule />
         }
 
-        if (incSun === 1) {
-            weekdays.unshift('U');
-            fullWeekdays.unshift('Sunday');
-        } // Update weekdays array if necessary
-        if (incSat === 1) {
-            weekdays.push('S');
-            fullWeekdays.push('Saturday');
+        let startHour = 10;
+        let endHour = 15.5;
+
+        // get the minimum start hour and the max end hour to set bounds on the schedule.
+        startHour = Math.min(startHour, ...sections.map(m => m.meetHour)) - 1;
+        endHour = Math.max(endHour, ...sections.map(m => m.meetHour + m.hourLength)) + 1;
+
+        // actual schedule elements are offset by the row/col offset since
+        // days/times take up a row/col respectively.
+        let rowOffset = 1;
+        let colOffset = 1;
+
+        const getNumRows = () => {
+            return (endHour - startHour) * 2 + rowOffset
         }
-        let percentWidth = 100 / weekdays.length; // Update the block width if necessary
-        let halfScale = 95 / (endHour - startHour + 1); // This defines the scale to be used throughout the scheduling process
 
-        let timeblocks = [];
-        let lines = [];
-
-        if (courseSched && courseSched.length) {
-            for (let h = 0; h <= endHour - startHour; h++) {
-                // for each hour
-                let toppos = h * halfScale + 7.5; // each height value is linearly spaced with an offset
-                let hourtext = Math.round(h + startHour); // If startHour is not an integer, make it pretty
-                if (hourtext >= 12) {
-                    if (hourtext !== 12) {
-                        hourtext -= 12;
-                    }
-                    hourtext += "PM";
-                } else {
-                    hourtext += "AM";
+        // step 2 in the CIS121 review: hashing with linear probing.
+        // hash every section to a color, but if that color is taken, try the next color in the
+        // colors array. Only start reusing colors when all the colors are used.
+        const getColor = (() => {
+            const colors = ["blue", "red", "aqua", "orange", "green", "pink", "sea", "indigo"];
+            let used = []; // some CIS120: `used` is a *closure* storing the colors currently in the schedule
+            return c => {
+                if (used.length === colors.length) {
+                    // if we've used all the colors, it's acceptable to start reusing colors.
+                    used = [];
                 }
-                lines.push(<Line key={h} y={toppos}/>);
-                timeblocks.push(<div className="TimeBlock" style={{top:toppos+"%"}}>{hourtext}</div>);
+                let i = c.hashCode();
+                while (used.indexOf(colors[i % colors.length]) !== -1) {
+                    i++;
+                }
+                const color = colors[i % colors.length]
+                used.push(color)
+                return color;
             }
-        }
-
-        function GenMeetBlocks(sec) {
-            const blocks = [];
-            const meetLetterDay = sec.meetDay; // On which day does this meeting take place?
-            const meetRoom = sec.meetLoc;
-            const newid = sec.idDashed + '-' + meetLetterDay + sec.meetHour.toString().replace(".", "");
-            const asscsecs = sec.SchedAsscSecs;
-
-            const newblock = {
-                'class': sec.idDashed,
-                'letterday': meetLetterDay,
-                'id': newid,
-                'startHr': sec.meetHour,
-                'duration': sec.hourLength,
-                'name': sec.idSpaced,
-                'room': meetRoom,
-                'asscsecs': asscsecs,
-                "topc": "blue",
-                'showWarning': asscsecs.filter(value => -1 !==
-                    courseSched.map((course) => course.idDashed).indexOf(value)).length === 0
-            };
-            blocks.push(newblock);
-            return blocks;
-        }
-
-        var meetBlocks = [];
-        let schedBlocks = [];
-        // Add the blocks
-        if (courseSched) {
-            courseSched.forEach(function (sec) {
-                meetBlocks = meetBlocks.concat(GenMeetBlocks(sec));
-            });
-        }
-
-        function AddSchedAttr(block) {
-            block.left = weekdays.indexOf(block.letterday) * percentWidth;
-            block.top = (block.startHr - startHour) * halfScale + 9; // determine top spacing based on time from startHour (offset for prettiness)
-            block.height = block.duration * halfScale;
-            block.width = percentWidth;
-            block.topc = generate_color(block.letterday, block.startHr, block.name);
-            return block;
-        }
-
-        resetColors();
-
-        meetBlocks.forEach(function (b) {
-            schedBlocks.push(b);
-        });
-
-        /**
-         * @return {boolean}
-         */
-        function TwoOverlap(block1, block2) {
-            // Thank you to Stack Overflow user BC. for the function this is based on.
-            // http://stackoverflow.com/questions/5419134/how-to-detect-if-two-divs-touch-with-jquery
-            var y1 = (block1.startHr || block1.top);
-            var h1 = (block1.duration || block1.height);
-            var b1 = y1 + h1;
-
-            var y2 = (block2.startHr || block2.top);
-            var h2 = (block2.duration || block2.height);
-            var b2 = y2 + h2;
-
-            // This checks if the top of block 2 is lower down (higher value) than the bottom of block 1...
-            // or if the top of block 1 is lower down (higher value) than the bottom of block 2.
-            // In this case, they are not overlapping, so return false
-            return !(b1 <= (y2 + 0.0000001) || b2 <= (y1 + 0.0000001));
-        }
-
-        let newSchedBlocks = [];
-        weekdays.forEach(function (weekday) {
-            let dayblocks = [];
-            schedBlocks.forEach(function (n) {
-                if (n.letterday.indexOf(weekday) !== -1) {
-                    let newObj = JSON.parse(JSON.stringify(n));
-                    newObj.letterday = weekday;
-                    newObj.showWarning = n.showWarning;
-                    dayblocks.push(AddSchedAttr(newObj));
-                }
-            });
-            for (var i = 0; i < dayblocks.length - 1; i++) {
-                for (var j = i + 1; j < dayblocks.length; j++) {
-                    if (TwoOverlap(dayblocks[i], dayblocks[j])) {
-                        dayblocks[i].width = dayblocks[i].width / 2;
-                        dayblocks[j].width = dayblocks[j].width / 2;
-                        dayblocks[j].left = dayblocks[j].left + dayblocks[i].width;
+        })()
+        console.log('davis', sections)
+        const sectionIds = sections.map(x => x.idDashed);
+        let meetings = [];
+        sections.forEach(m => {
+            let days = m.meetDay.split('');
+            const color = getColor(m.idDashed);
+            meetings.push(...days.map(d => {
+                return {
+                    data: {
+                        day: d,
+                        start: m.meetHour,
+                        end: m.meetHour + m.hourLength
+                    },
+                    course: {
+                        id: m.idDashed,
+                        fullID: m.fullID,
+                        color: color,
+                        coreqFulfilled: m.SchedAsscSecs.filter(
+                            coreq => sectionIds.indexOf(coreq) !== -1
+                        ).length === 0
+                    },
+                    style: {
+                        width: '100%',
+                        left: 0,
                     }
                 }
+            }))
+        })
+        let conflicts = getConflictGroups(meetings)
+        for (const conflict of conflicts) {
+            // for every conflict of size k, make the meetings in that conflict
+            // take up (100/k) % of the square, and use `left` to place them
+            // next to each other.
+            const group = Array.from(conflict.values())
+            const w = 100 / group.length;
+            for (let j = 0; j < group.length; j++) {
+                group[j].style = {
+                    width: `${w}%`,
+                    left: `${w*j}%`
+                }
             }
-            newSchedBlocks = newSchedBlocks.concat(dayblocks);
-        });
-
-        schedBlocks = newSchedBlocks;
-
-        let blocks = [];
-        for (let i = 0; i < schedBlocks.length; i++) {
-            const block = schedBlocks[i];
-            // TODO: Check for associated section
-            blocks.push(<Block topC={block.topc} id={block.id}
-                               assignedClass={block.class} letterDay={block.letterday}
-                               key={i} y={block.top} x={block.left} width={block.width}
-                               height={block.height} name={block.name}
-                               showWarning={block.showWarning}
-                               removeSchedItem={this.props.removeSchedItem}/>);
         }
-        if (blocks.length === 0) {
-            return <EmptySchedule/>
-        } else {
-            let weekdays = [];
-            const weekdayNames = fullWeekdays;
-            for (let i = 0; i < weekdayNames.length; i++) {
-                var weekday = weekdayNames[i];
-                let label = <div key={i} className="DayName"
-                                 style={{width: percentWidth + "%"}}>
-                    {weekday}
-                </div>;
-                weekdays.push(label);
-            }
-            return <div id={"SchedGraph"} className={"box"}>
-                <div id={"TimeCol"} style={{position:"relative"}}>
-                    {timeblocks}
-                </div>
-                <div id="Schedule" style={{position: 'relative'}}>
-                    {weekdays}
-                    <div id={"SchedGrid"}>
-                        {lines}{blocks}
-                    </div>
-                </div>
-            </div>;
+        let blocks = meetings.map(meeting => (
+            <Block
+                meeting={meeting.data}
+                offsets={{
+                    time: startHour,
+                    row: rowOffset,
+                    col: colOffset,
+                }}
+                key={`${meeting.course.id}-${meeting.data.day}`}
+                id={meeting.course.id}
+                color={meeting.course.color}
+                remove={() => removeSection(meeting.course.fullID)}
+                style={meeting.style}
+                showWarning={meeting.course.coreqFulfilled}
+            />
+        ))
+
+        let dims = {
+            gridTemplateColumns: `.4fr repeat(${5}, 1fr)`,
+            gridTemplateRows: `repeat(${getNumRows()}, 1fr)`,
         }
+
+        return (
+            <div className={'schedule box'} style={dims}>
+                <Days offset={colOffset} />
+                <Times
+                    startTime={startHour}
+                    endTime={endHour}
+                    numRow={getNumRows()}
+                    offset={rowOffset}
+
+                />
+                <GridLines
+                    numRow={getNumRows()}
+                    numCol={6}
+                />
+                {blocks}
+            </div>
+        )
     }
 }
 
@@ -273,14 +210,14 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => (
     {
-        removeSchedItem: idDashed => dispatch(removeSchedItem(idDashed))
+        removeSection: idDashed => dispatch(removeSchedItem(idDashed))
     }
 );
 
 export default connect(mapStateToProps, mapDispatchToProps)(Schedule);
 
 const EmptySchedule = () => (
-    <div>
+    <div className={'box'} style={{height: '100%'}}>
         <p style={{fontSize: "1.5em", marginTop: "7em", display: "block"}}>
             Search for courses above <br/>then click a section's + icon to add it to the schedule.
         </p>
