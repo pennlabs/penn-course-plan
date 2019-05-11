@@ -86,8 +86,12 @@ class Schedule extends Component {
         let endHour = 15.5;
 
         // get the minimum start hour and the max end hour to set bounds on the schedule.
-        startHour = Math.min(startHour, ...sections.map(m => m.meetHour)) - 1;
-        endHour = Math.max(endHour, ...sections.map(m => m.meetHour + m.hourLength)) + 1;
+        startHour = Math.floor(
+            Math.min(startHour, ...sections.map(m => m.meetHour)) - .5
+        );
+        endHour = Math.ceil(
+            Math.max(endHour, ...sections.map(m => m.meetHour + m.hourLength)) + .5
+        );
 
         const showWeekend = sections.filter(
             sec => sec.meetDay.indexOf('S') !== -1 || sec.meetDay.indexOf('U') !== -1).length > 0;
@@ -98,7 +102,7 @@ class Schedule extends Component {
         let colOffset = 1;
 
         const getNumRows = () => {
-            return (endHour - startHour) * 2 + rowOffset;
+            return (Math.ceil(endHour) - Math.floor(startHour)) * 2 + rowOffset;
         }
         const getNumCol = () => {
             return 5 + colOffset + (showWeekend ? 2 : 0);

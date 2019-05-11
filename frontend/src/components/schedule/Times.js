@@ -21,7 +21,7 @@ export default class Times extends Component {
             }
         }
 
-        for (let i = startTime; i < endTime; i++) {
+        for (let i = Math.ceil(startTime); i < Math.floor(endTime); i++) {
             timestamps.push((
                 <span
                     className={'time'}
