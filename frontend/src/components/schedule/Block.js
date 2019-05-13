@@ -1,35 +1,63 @@
-import React, {Component} from 'react'
+import React from "react";
+import PropTypes from "prop-types";
 
-export default class Block extends Component {
-    render() {
-        // Display a warning if the class requires another section
-        let warning = <div className={"NeedAssc"}
-                           title={"Registration is required for an associated section."}><b>!</b></div>;
-        // The showWarning prop is passed down from the Schedule component
-        if (!this.props.showWarning) {
-            warning = null;
-        }
-        const removeSchedItem = this.props.removeSchedItem;
-        return <div className={"SchedBlock_container " + this.props.letterDay + " " + this.props.topC}
-                    style={{
-                        left: this.props.x + "%",
-                        top: this.props.y + "%",
-                        width: this.props.width + "%",
-                        height: this.props.height + "%"
-                    }}>
-            <div
-                className={"SchedBlock " + this.props.letterDay + " " + this.props.topC + " " + this.props.assignedClass}
-                id={this.props.id}
-                onClick={() => {
-                }}>
-                <div className={"CloseX"} style={{width: 100 + "%", height: 100 + "%"}}><span
-                    onClick={e => {
-                        removeSchedItem(this.props.id);
+export default function Block(props) {
+    const days = ["M", "T", "W", "R", "F", "S", "U"];
+    const {
+        offsets, meeting, course, remove, style,
+    } = props;
+    const { day, start, end } = meeting;
+    const { id, color, coreqFulfilled } = course;
+    const pos = {
+        gridRowStart: (start - offsets.time) * 2 + offsets.row + 1,
+        gridRowEnd: (end - offsets.time) * 2 + offsets.col + 1,
+        gridColumn: days.indexOf(day) + 1 + offsets.col,
+        position: "relative",
+    };
+    return (
+        <div className={`block ${color}`} style={{ ...pos, ...style }}>
+            <div className="inner-block">
+                <span
+                    role="button"
+                    className="remove"
+                    onClick={(e) => {
+                        remove();
                         e.stopPropagation();
-                    }}>X</span></div>
-                {warning}
-                <span className={"SecName"}>{this.props.name}</span>
+                    }}
+                >
+                    <i className="fas fa-times" />
+                </span>
+                <span
+                    className={coreqFulfilled ? "hide" : ""}
+                    title="Registration is required for an associated section."
+                >
+                    <i className="fas fa-exclamation warning" />
+                </span>
+                <span>{id.replace(/-/g, " ")}</span>
             </div>
         </div>
-    }
+    );
 }
+
+Block.propTypes = {
+    offsets: PropTypes.shape({
+        time: PropTypes.number,
+        row: PropTypes.number,
+        col: PropTypes.number,
+    }),
+    meeting: PropTypes.shape({
+        day: PropTypes.string,
+        start: PropTypes.number,
+        end: PropTypes.number,
+    }),
+    course: PropTypes.shape({
+        id: PropTypes.string,
+        color: PropTypes.string,
+        coreqFulfilled: PropTypes.bool,
+    }),
+    remove: PropTypes.func,
+    style: PropTypes.shape({
+        width: PropTypes.string,
+        left: PropTypes.string,
+    }),
+};
