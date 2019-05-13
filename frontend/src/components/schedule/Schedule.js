@@ -74,13 +74,6 @@ export const getConflictGroups = (meetings) => {
 };
 
 class Schedule extends Component {
-    propTypes = {
-        schedData: PropTypes.shape({
-            meetings: PropTypes.array,
-        }),
-        removeSection: PropTypes.func,
-    }
-
     render() {
         const { schedData, removeSection } = this.props;
         const sections = schedData.meetings || [];
@@ -217,6 +210,13 @@ class Schedule extends Component {
         );
     }
 }
+
+Schedule.propTypes = {
+    schedData: PropTypes.shape({
+        meetings: PropTypes.array,
+    }),
+    removeSection: PropTypes.func,
+};
 
 const mapStateToProps = state => (
     {
