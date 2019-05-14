@@ -486,14 +486,6 @@ ul {
   border-bottom-right-radius: 5px;
 }
 
-.TimeBlock,
-hr {
-  position: absolute;
-  text-align: right;
-  margin: 5px;
-  color: #87a2aa;
-}
-
 .TimeBlock {
   width: 3.2em;
   margin-right: 0;
@@ -555,68 +547,79 @@ hr {
 
 
 
-.SchedBlock.red{
+.block.red{
   border-top-color:#D0021B;
-}
-
-.SchedBlock.red .SecName{
   color:#D0021B;
 }
 
-.SchedBlock.orange{
-  border-top-color:#F5A623;
+.block.red > div {
+  background-color: rgba(207, 2, 29, 0.2);
 }
 
-.SchedBlock.orange .SecName{
+
+.block.orange{
+  border-top-color:#F5A623;
   color:#F5A623;
 }
-
-.SchedBlock.blue{
-  border-top-color:#00BFDD;
+.block.orange > div {
+  background-color: rgba(245, 166, 35, 0.2);
 }
 
-.SchedBlock.blue .SecName{
+.block.blue{
+  border-top-color:#00BFDD;
   color:#00BFDD;
 }
 
-.SchedBlock.aqua{
-  border-top-color:#35E1BB;
+.block.blue > div {
+  background-color: rgba(0, 191, 221, 0.21);
 }
 
-.SchedBlock.aqua .SecName{
+
+.block.aqua{
+  border-top-color:#35E1BB;
   color:#35E1BB;
 }
 
-.SchedBlock.green{
-  border-top-color:#7ED321;
+.block.aqua > div {
+  background-color: rgba(53, 225, 187, 0.2);
 }
 
-.SchedBlock.green .SecName{
+
+.block.green{
+  border-top-color:#7ED321;
   color:#7ED321;
 }
 
-.SchedBlock.pink{
-  border-top-color:#FF34CC;
+.block.green > div {
+  background-color: rgba(126, 211, 33, 0.2);
 }
 
-.SchedBlock.pink .SecName{
+
+.block.pink{
+  border-top-color:#FF34CC;
   color:#FF34CC;
 }
 
-.SchedBlock.sea{
-  border-top-color:#3055CC;
+.block.pink > div {
+  background-color: rgba(255, 52, 204, 0.21);
 }
 
-.SchedBlock.sea .SecName{
+.block.sea{
+  border-top-color:#3055CC;
   color:#3055CC;
 }
 
-.SchedBlock.indigo{
-  border-top-color:#7874CF;
+.block.sea > div {
+  background-color: rgba(48, 85, 204, 0.21);
 }
 
-.SchedBlock.indigo .SecName{
+.block.indigo{
+  border-top-color:#7874CF;
   color:#7874CF;
+}
+
+.block.indigo > div {
+  background-color: rgba(120, 116, 207, 0.2);
 }
 
 .SchedBlock > span {

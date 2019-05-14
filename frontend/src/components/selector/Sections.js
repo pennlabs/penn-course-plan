@@ -29,6 +29,24 @@ class Sections extends Component {
         super(props);
         const self = this;
         this.iteration = 0;
+        this.listRef = React.createRef();
+    }
+
+    // fixing scroll on re-render:
+    // https://reactjs.org/docs/react-component.html#getsnapshotbeforeupdate
+    getSnapshotBeforeUpdate(prevProps, prevState) {
+        const list = this.listRef.current;
+        return list.scrollHeight - list.scrollTop;
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        // If we have a snapshot value, we've just added new items.
+        // Adjust scroll so these new items don't push the old ones out of view.
+        // (snapshot here is the value returned from getSnapshotBeforeUpdate)
+        if (snapshot !== null) {
+            const list = this.listRef.current;
+            list.scrollTop = list.scrollHeight - snapshot;
+        }
     }
 
     render() {
@@ -51,7 +69,8 @@ class Sections extends Component {
                     <div className={"tooltip column is-one-fifth"} title={"Section ID"}>Sect</div>
                     <div className={"tooltip column"} title={"Meeting Time"}>Time</div>
                 </div>
-                {this.props.sections && <SectionList
+                <SectionList
+                    listRef={this.listRef}
                     sectionInfo={this.props.sectionInfo}
                     updateSectionInfo={this.props.updateSectionInfo}
                     scheduleContains={(sectionID) => {
@@ -70,7 +89,7 @@ class Sections extends Component {
                     }}
                     key={this.iteration} sections={this.props.sections}
                     addSchedItem={this.props.addSchedItem}
-                    removeSchedItem={this.props.removeSchedItem}/>}
+                    removeSchedItem={this.props.removeSchedItem}/>
             </div>
             {this.props.sectionInfo &&
             <SectionInfoDisplay key={this.iteration + 1} sectionInfo={this.props.sectionInfo}/>}

@@ -11,6 +11,7 @@ import {
 
 const DEFAULT_SCHEDULE_NAME = "Schedule";
 
+// returns the default empty schedule
 const generateDefaultSchedule = () => (
     {
         term: "2019A",
@@ -20,11 +21,19 @@ const generateDefaultSchedule = () => (
     }
 );
 
+// the state contains the following two pieces of data:
+//  1. An object associating each schedule name with the schedule objecct
+//  2. The name of the currently selected schedule
 const initialState = {
     schedules: { [DEFAULT_SCHEDULE_NAME]: generateDefaultSchedule() },
     scheduleSelected: DEFAULT_SCHEDULE_NAME,
 };
 
+/**
+ * A helper method for removing a schedule from a schedules object
+ * @param scheduleKey The name of the schedule
+ * @param initialSchedule The initial schedules object
+ */
 const removeSchedule = (scheduleKey, initialSchedule) => {
     const newSchedules = {};
     Object.keys(initialSchedule).filter(schedName => schedName !== scheduleKey)

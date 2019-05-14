@@ -7,6 +7,14 @@ import {
 } from "../actions";
 import { sectionsDataA } from "../sections_data";
 
+// This file contains the reducers for everything related to sections and courses
+
+// The state contains the following:
+// 1. The list of sections displayed in the sections display
+// 2. The list of search results displayed in the search results display
+// 3. The SectionInfo object displayed under the sections list
+// 4. Whether to display the search filter
+// 5. The coordinates of the search filter button
 const initialState = {
     sections: sectionsDataA,
     searchResults: [],
@@ -28,7 +36,7 @@ export const sections = (state = initialState, action) => {
                 sections: action.sections,
             };
         case UPDATE_SEARCH:
-            console.log(action);
+            console.log("UPDATING SEARCH");
             return {
                 ...state,
                 searchResults: action.searchResults,

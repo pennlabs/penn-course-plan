@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
-import './styles/App.css';
 import 'bulma/css/bulma.css'
+import './styles/App.css';
 import Sections from "./components/selector/Sections";
 import Schedule from './components/schedule/Schedule'
+
 import Provider from "react-redux/es/components/Provider";
 import {applyMiddleware, createStore} from "redux";
 import coursePlanApp from "./reducers";
@@ -14,21 +15,18 @@ import DeleteScheduleModal from "./components/modals/delete_schedule_modal";
 import RenameScheduleModal from "./components/modals/rename_schedule_modal_container";
 import DuplicateScheduleModal from "./components/modals/duplicate_schedule_modal_container";
 import ClearScheduleModal from "./components/modals/clear_schedule_modal";
-import {fetchSearch} from "./actions";
+import {fetchCourseSearch, fetchSectionInfo} from "./actions";
 import thunkMiddleware from 'redux-thunk'
-import { createLogger } from 'redux-logger'
+import {createLogger} from 'redux-logger'
 
 
-const previousState = localStorage.getItem("coursePlanState");
+const previousState = localStorage.getItem("coursePlanSchedules");
 const previousStateJSON = previousState ? JSON.parse(previousState) : undefined;
 const loggerMiddleware = createLogger();
 
-if (previousStateJSON) {
-    previousStateJSON.sections.showSearchFilter = false;
-}
 const store = createStore(
     coursePlanApp,
-    previousStateJSON,
+    {schedule: previousStateJSON},
     applyMiddleware(
         thunkMiddleware,
         loggerMiddleware
@@ -36,11 +34,8 @@ const store = createStore(
 );
 
 store.subscribe(() => {
-    console.log(store.getState());
-    localStorage.setItem("coursePlanState", JSON.stringify(store.getState()));
+    localStorage.setItem("coursePlanSchedules", JSON.stringify(store.getState().schedule));
 });
-
-store.dispatch(fetchSearch({courseId: "cis"}));
 
 class App extends Component {
     constructor(props) {
