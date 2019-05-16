@@ -87,7 +87,7 @@ export default class SectionDisplay extends Component {
             className += " activeItem";
         }
         if (overlap) {
-            className += "hideSec";
+            className += " hideSec";
         }
         /* if((!$scope.sched.SecOverlap(this.section)
             && $scope.schedSections.indexOf(this.section.idDashed) === -1)){
