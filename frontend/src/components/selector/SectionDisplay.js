@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
-
 export default class SectionDisplay extends Component {
     stripTime = (s) => {
         let newS = s.replace(" to ", "-");
@@ -90,7 +89,7 @@ export default class SectionDisplay extends Component {
         if (overlap) {
             className += "hideSec";
         }
-        /* if((!$scope.sched.SecOverlap(this.section) 
+        /* if((!$scope.sched.SecOverlap(this.section)
             && $scope.schedSections.indexOf(this.section.idDashed) === -1)){
             className += "hideSec";
         } */
@@ -144,9 +143,9 @@ SectionDisplay.propTypes = {
     openSection: PropTypes.func.isRequired,
     inSchedule: PropTypes.bool.isRequired,
     overlap: PropTypes.bool.isRequired,
-    section: {
-        revs: PropTypes.number,
+    section: PropTypes.shape({
+        revs: PropTypes.object,
         pcrIShade: PropTypes.number,
-        pcrIColor: PropTypes.number,
-    },
+        pcrIColor: PropTypes.string,
+    }),
 };
