@@ -27,31 +27,11 @@ const mapStateToProps = (state) => (
 class Sections extends Component {
     constructor(props) {
         super(props);
-        const self = this;
         this.iteration = 0;
         this.listRef = React.createRef();
     }
 
-    // fixing scroll on re-render:
-    // https://reactjs.org/docs/react-component.html#getsnapshotbeforeupdate
-    getSnapshotBeforeUpdate(prevProps, prevState) {
-        const list = this.listRef.current;
-        return list.scrollHeight - list.scrollTop;
-    }
-
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        // If we have a snapshot value, we've just added new items.
-        // Adjust scroll so these new items don't push the old ones out of view.
-        // (snapshot here is the value returned from getSnapshotBeforeUpdate)
-        if (snapshot !== null) {
-            const list = this.listRef.current;
-            list.scrollTop = list.scrollHeight - snapshot;
-        }
-    }
-
     render() {
-        this.iteration++;
-        const self = this;
         return <div id={"SectionCol"} className={"box column is-half"}>
             <div id={"Sections"}>
                 <div className="columns is-gapless"
@@ -87,12 +67,12 @@ class Sections extends Component {
                         });
                         return meetingTimeIntersection(otherMeetingTimes, meetingTimes);
                     }}
-                    key={this.iteration} sections={this.props.sections}
+                    sections={this.props.sections}
                     addSchedItem={this.props.addSchedItem}
                     removeSchedItem={this.props.removeSchedItem}/>
             </div>
             {this.props.sectionInfo &&
-            <SectionInfoDisplay key={this.iteration + 1} sectionInfo={this.props.sectionInfo}/>}
+            <SectionInfoDisplay sectionInfo={this.props.sectionInfo}/>}
         </div>;
     }
 
