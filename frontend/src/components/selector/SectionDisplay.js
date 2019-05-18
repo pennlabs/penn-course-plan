@@ -21,7 +21,7 @@ export default class SectionDisplay extends Component {
             inSchedule,
         } = this.props;
 
-        let className = "fa";
+        let className = "fas";
         if (!inSchedule) {
             className += " fa-plus";
         } else {
@@ -39,7 +39,11 @@ export default class SectionDisplay extends Component {
             };
         }
 
-        return <i className={className} onClick={onClick} role="button" />;
+        return (
+            <span className="icon">
+                <i className={className} onClick={onClick} role="button" />
+            </span>
+        );
     }
 
     getPcaButton = () => {
@@ -108,11 +112,14 @@ export default class SectionDisplay extends Component {
                 <div className="columns is-gapless">
                     <div className="column is-one-fifth">
                         { this.getAddRemoveIcon() }
-                        <span
-                            className={`statusClass ${section.isOpen ? "openSec" : "closedSec"}`}
-                        >
-                            { (!section.isOpen) && this.getPcaButton() }
+                        <span className="icon">
+                            {!section.isOpen ? this.getPcaButton()
+                                : (
+                                    <i className="fas fa-square has-text-success" />
+                                )
+                            }
                         </span>
+
                     </div>
 
                     <div className="column is-one-fifth">

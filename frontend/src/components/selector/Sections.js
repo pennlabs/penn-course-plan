@@ -59,7 +59,16 @@ const meetingTimeIntersection = (meetingTimesA, meetingTimesB) => {
     return false;
 };
 
+
 class Sections extends Component {
+    scheduleContains = (sectionID) => {
+        const {
+            scheduleMeetings,
+        } = this.props;
+
+        return scheduleMeetings.map(section => section.idDashed).indexOf(sectionID) !== -1;
+    }
+
     render() {
         /* eslint-disable no-shadow */
         const {
@@ -111,9 +120,11 @@ class Sections extends Component {
                     </div>
                     <SectionList
                         updateSectionInfo={updateSectionInfo}
-                        scheduleContains={sectionID => scheduleMeetings
-                            .map(section => section.idDashed).indexOf(sectionID) !== -1}
+                        scheduleContains={this.scheduleContains}
                         overlaps={(meeting) => {
+                            if (this.scheduleContains(meeting.idDashed)) {
+                                return false;
+                            }
                             let meetingTimes = [];
                             meeting.fullSchedInfo.forEach((meetingInfo) => {
                                 meetingTimes = meetingTimes
