@@ -72,9 +72,9 @@ class SearchBar extends Component {
                     <div id="searchSelectContainer">
                         <Dropdown
                             id="searchSelect"
-                            update_label={true}
-                            def_active={0}
-                            def_text="Search By"
+                            updateLabel={true}
+                            defActive={0}
+                            defText="Search By"
                             contents={[
                                 ["Course ID", () => {
                                 }],
@@ -105,7 +105,7 @@ class SearchBar extends Component {
                     <div id="scheduleOptionsContainer">
                         <Dropdown
                             id="scheduleDropdown"
-                            def_text="Schedule Options"
+                            defText="Schedule Options"
                             contents={[
                                 ["New", () => {
                                     showNewScheduleModal();

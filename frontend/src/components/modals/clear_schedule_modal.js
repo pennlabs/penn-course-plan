@@ -12,6 +12,7 @@ class ClearScheduleModalInterior extends Component {
     }
 
     render() {
+        console.log(this.props);
         if (this.props.modalActionState === "success") {
             this.props.clearSchedule();
             this.props.close();

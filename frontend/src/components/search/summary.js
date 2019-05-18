@@ -73,7 +73,7 @@ class SummaryDropdown extends Component {
         const data = this.computeStats();
         return (
             <Dropdown
-                def_text="Summary"
+                defText="Summary"
                 contents={[
                     [`Earliest Class: ${(data === null ? "N/A" : this.parseTime(data.earlyt))}`, () => {}],
                     [`Latest Class: ${(data === null ? "N/A" : this.parseTime(data.latet))}`, () => {}],
