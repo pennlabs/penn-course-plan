@@ -91,7 +91,7 @@ form > input[type="text"] {
 
 #CSearch {
   width: 100%;
-  min-width:25rem;
+  min-width: 17rem;
   padding:0.5rem;
   background-color: white;
 }
