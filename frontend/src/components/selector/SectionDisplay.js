@@ -81,11 +81,14 @@ export default class SectionDisplay extends Component {
             openSection,
         } = this.props;
 
-        let className = section.actType;
+        // let className = section.actType;
+        let className = "";
         // Not quite sure why className is actType
-        if (section === section.idSpaced.replace(" ", "").replace(" ", "")) {
-            className += " activeItem";
-        }
+        // TODO: implement activeItem based on sectionInfo schema in the future
+        // if (section === section.idSpaced.replace(" ", "").replace(" ", "")) {
+        //     className += " activeItem";
+        // }
+
         if (overlap) {
             className += " hideSec";
         }
