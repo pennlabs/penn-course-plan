@@ -1,3 +1,7 @@
+# Notice
+
+Development has moved to the [`penn-courses`](https://github.com/pennlabs/penn-courses) repository, where the Penn Course Plan frontend can be found at [`frontend/plan/`](https://github.com/pennlabs/penn-courses/tree/master/frontend/plan).
+
 # PennCourseSearch
 
 Fed up with the bloated, inefficient, and slow excuse for an online portal that is Penn InTouch, I decided to make a cleaner and simpler way for Quakers to find classes and make schedules. While this is not a full replacement for Penn InTouch, it acts as an improvement of the "Course Search" and "Mock Schedules" features.
