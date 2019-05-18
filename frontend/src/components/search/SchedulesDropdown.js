@@ -1,12 +1,20 @@
-import React, {Component} from 'react';
-import {Dropdown} from "../dropdown";
+import React from "react";
+import PropTypes from "prop-types";
+import { Dropdown } from "../dropdown";
 
-export default class SchedulesDropdown extends Component {
-
-    render() {
-        return <Dropdown contents={this.props.scheduleNames.map(name => [name, () => this.props.changeSchedule(name)])}
-                         update_label={true} def_active={this.props.scheduleNames.indexOf(this.props.scheduleSelected)}
-                         def_text={this.props.scheduleSelected}/>
-    }
+export default function SchedulesDropdown({ scheduleNames, changeSchedule, scheduleSelected }) {
+    return (
+        <Dropdown
+            contents={scheduleNames.map(name => [name, () => changeSchedule(name)])}
+            updateLabel={true}
+            defActive={scheduleNames.indexOf(scheduleSelected)}
+            defText={scheduleSelected}
+        />
+    );
 }
 
+SchedulesDropdown.propTypes = {
+    scheduleNames: PropTypes.arrayOf(PropTypes.string).isRequired,
+    changeSchedule: PropTypes.func.isRequired,
+    scheduleSelected: PropTypes.string.isRequired,
+};

@@ -1,23 +1,27 @@
-import * as React from "react";
+/* eslint-disable react/prop-types */
+// This file should be refactored
+import React, { Component } from "react";
 
-export class OutClickable extends React.Component {
+export class OutClickable extends Component {
     // a component that you can "click out" of
-    //requires that ref={this.setWrapperRef} is added as an attribute
+    // requires that ref={this.setWrapperRef} is added as an attribute
     constructor(props) {
         super(props);
-        this.setWrapperRef = this.setWrapperRef.bind(this);
-        this.handleClickOutside = this.handleClickOutside.bind(this);
         document.addEventListener("click", this.handleClickOutside);
     }
 
     /**
      * Alert if clicked on outside of element
      */
-    handleClickOutside(event) {
+    handleClickOutside = (event) => {
+        const {
+            allowed,
+        } = this.props;
         if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
-            if (this.props.allowed) {
-                const allowedElements = this.props.allowed.map(id => document.getElementById(id));
-                if (allowedElements.reduce((acc, item) => acc || item.contains(event.target), false)) {
+            if (allowed) {
+                const allowedElements = allowed.map(id => document.getElementById(id));
+                if (allowedElements.reduce((acc, item) => acc
+                    || item.contains(event.target), false)) {
                     return;
                 }
             }
@@ -25,135 +29,166 @@ export class OutClickable extends React.Component {
         }
     }
 
-    setWrapperRef(node) {
+    setWrapperRef = (node) => {
         this.wrapperRef = node;
     }
-
 }
 
 export class Dropdown extends OutClickable {
     constructor(props) {
         super(props);
-        let starting_activity = -1;
-        //if props.def_active is not defined, it is assumed that the dropdown does not control
-        //state and instead initiates an action
-        if (props.def_active) {
-            starting_activity = props.def_active;
+        const {
+            defActive,
+            defText,
+        } = this.props;
+        let startingActivity = -1;
+        // if props.defActive is not defined, it is assumed that the dropdown does not control
+        // state and instead initiates an action
+        if (defActive) {
+            startingActivity = defActive;
         }
-        this.state = {active: false, activity: starting_activity, label_text: props.def_text};
-        this.activate_dropdown = this.activate_dropdown.bind(this);
-        this.activate_item = this.activate_item.bind(this);
-        this.collapse = this.collapse.bind(this);
-        this.toggle_dropdown = this.toggle_dropdown.bind(this);
+        this.state = { active: false, activity: startingActivity, label_text: defText };
     }
 
+    // Instead of doing this, can just read props directly
     componentWillReceiveProps(props) {
-        let starting_activity = -1;
-        //if props.def_active is not defined, it is assumed that the dropdown does not control
-        //state and instead initiates an action
-        if (props.def_active) {
-            starting_activity = props.def_active;
+        let startingActivity = -1;
+        // if props.defActive is not defined, it is assumed that the dropdown does not control
+        // state and instead initiates an action
+        if (props.defActive) {
+            startingActivity = props.defActive;
         }
-        this.setState({activity: starting_activity, label_text: props.def_text});
+        this.setState({ activity: startingActivity, label_text: props.defText });
     }
 
-    collapse() {
-        this.setState(state => ({active: false}));
+    collapse = () => {
+        this.setState(state => ({ active: false }));
     }
 
-    toggle_dropdown() {
+    toggleDropdown = () => {
         if (this.state.active) {
             this.collapse();
         } else {
-            this.activate_dropdown();
+            this.activateDropdown();
         }
     }
 
-    activate_dropdown() {
-        this.setState(state => ({active: true}));
+    activateDropdown = () => {
+        this.setState(state => ({ active: true }));
     }
 
-    activate_item(i) {
-        this.setState(state => ({activity: i}));
-        if (this.props.update_label) {
-            //updates the label for the dropdown if this property is applied in JSX
-            this.setState(state => ({label_text: this.props.contents[i][0]}));
+    activateItem = (i) => {
+        const {
+            updateLabel,
+            contents,
+            defActive,
+        } = this.props;
+        this.setState(state => ({ activity: i }));
+        if (updateLabel) {
+            // updates the label for the dropdown if this property is applied in JSX
+            this.setState(state => ({ label_text: contents[i][0] }));
         }
         this.collapse();
-        //if no default activity was selected, assumes that the item in the dropdown should not remain highlighted
-        //This is because if props.def_active is not defined, it is assumed that the dropdown does not control
-        //state and instead initiates an action
-        if (this.props.def_active === undefined) {
-            this.setState(state => ({activity: -1}));
+        // if no default activity was selected, assumes that the item in the
+        // dropdown should not remain highlighted
+        // This is because if props.defActive is not defined,
+        // it is assumed that the dropdown does not control
+        // state and instead initiates an action
+        if (defActive === undefined) {
+            this.setState(state => ({ activity: -1 }));
         }
     }
 
     render() {
-        const a_list = [];
-        let self = this;
-        for (let i = 0; i < this.props.contents.length; i++) {
+        const {
+            contents,
+            id,
+        } = this.props;
+        const aList = [];
+        for (let i = 0; i < contents.length; i += 1) {
             let addition = "";
             if (this.state.activity === i) {
                 addition = " is-active";
             }
-            const selected_contents = this.props.contents[i];
-            a_list.push(<a onClick={() => {
-                if (selected_contents.length > 1) {
-                    //this means that a function for onclick is provided
-                    selected_contents[1]();
-                }
-                self.activate_item(i)
-            }} className={"dropdown-item" + addition} key={i}>{selected_contents[0]}</a>);
+            const selectedContents = contents[i];
+            aList.push(
+                <button
+                    onClick={() => {
+                        if (selectedContents.length > 1) {
+                            // this means that a function for onclick is provided
+                            selectedContents[1]();
+                        }
+                        this.activateItem(i);
+                    }}
+                    type="button"
+                    className={`dropdown-item${addition} button`}
+                    style={{ border: "none", marginBottom: "0.2em" }}
+                    key={i}
+                >
+                    {selectedContents[0]}
+                </button>
+            );
         }
         let addition = "";
         if (this.state.active) {
             addition = " is-active";
         }
         return (
-            <div id={this.props.id} ref={this.setWrapperRef} className={"dropdown" + addition}>
-                <div className={"dropdown-trigger"} onClick={self.toggle_dropdown}>
-                    <button className={"button"} aria-haspopup={true} aria-controls={"dropdown-menu"}>
+            <div id={id} ref={this.setWrapperRef} className={`dropdown${addition}`}>
+                <div className="dropdown-trigger" onClick={this.toggleDropdown} role="button">
+                    <button
+                        className="button"
+                        aria-haspopup={true}
+                        aria-controls="dropdown-menu"
+                        type="button"
+                    >
                         <span>
-                            <span className={"selected_name"}>{this.state.label_text}</span>
+                            <span className="selected_name">{this.state.label_text}</span>
                             <span className="icon is-small">
-                                <i className="fa fa-angle-down" aria-hidden="true"/>
+                                <i className="fa fa-angle-down" aria-hidden="true" />
                             </span>
                         </span>
                     </button>
                 </div>
-                <div className={"dropdown-menu"} role={"menu"}>
-                    <div className={"dropdown-content"}>
-                        {a_list}
+                <div className="dropdown-menu" role="menu">
+                    <div className="dropdown-content">
+                        {aList}
                     </div>
                 </div>
             </div>
-        )
+        );
     }
 }
 
-class ToggleButton extends OutClickable {
-    //not a dropdown itself, but interacts with adjacent elements via css
-    constructor(props) {
-        super(props);
-        this.props = props;
-        this.containerHTML = props.parent.innerHTML;
-        this.state = {active: false};
-        this.closeDropdown = this.closeDropdown.bind(this);
-        this.activateDropdown = this.activateDropdown.bind(this);
 
-    }
+// export class ToggleButton extends OutClickable {
+//     // not a dropdown itself, but interacts with adjacent elements via css
+//     constructor(props) {
+//         super(props);
+//         this.props = props;
+//         this.containerHTML = props.parent.innerHTML;
+//         this.state = { active: false };
+//         this.closeDropdown = this.closeDropdown.bind(this);
+//         this.activateDropdown = this.activateDropdown.bind(this);
+//     }
 
-    activateDropdown() {
-        this.setState(state => ({active: true}));
-    }
+//     activateDropdown() {
+//         this.setState(state => ({ active: true }));
+//     }
 
-    closeDropdown() {
-        this.setState(state => ({active: false}));
-    }
+//     closeDropdown() {
+//         this.setState(state => ({ active: false }));
+//     }
 
-    render() {
-        return <button ref={this.setWrapperRef}
-                       className={"toggle_button " + this.state.active}>{this.props.name}</button>;
-    }
-
-}
+//     render() {
+//         return (
+//             <button
+//                 ref={this.setWrapperRef}
+//                 className={`toggle_button ${this.state.active}`}
+//                 type="button"
+//             >
+//                 {this.props.name}
+//             </button>
+//         );
+//     }
+// }

@@ -17,7 +17,7 @@ const generateDefaultSchedule = () => (
         term: "2019A",
         meetings: [],
         colorPalette: [],
-        LocAdded: false
+        LocAdded: false,
     }
 );
 
@@ -25,8 +25,8 @@ const generateDefaultSchedule = () => (
 //  1. An object associating each schedule name with the schedule objecct
 //  2. The name of the currently selected schedule
 const initialState = {
-    schedules: {[DEFAULT_SCHEDULE_NAME]: generateDefaultSchedule()},
-    scheduleSelected: DEFAULT_SCHEDULE_NAME
+    schedules: { [DEFAULT_SCHEDULE_NAME]: generateDefaultSchedule() },
+    scheduleSelected: DEFAULT_SCHEDULE_NAME,
 };
 
 /**
@@ -36,13 +36,13 @@ const initialState = {
  */
 const removeSchedule = (scheduleKey, initialSchedule) => {
     const newSchedules = {};
-    Object.keys(initialSchedule).filter(schedName => schedName !== scheduleKey).forEach(schedName =>
-        newSchedules[schedName] = initialSchedule[schedName]);
+    Object.keys(initialSchedule).filter(schedName => schedName !== scheduleKey)
+        .forEach((schedName) => { newSchedules[schedName] = initialSchedule[schedName]; });
     return newSchedules;
 };
 
 export const schedule = (state = initialState, action) => {
-    console.log(action);
+    // console.log(action);
     switch (action.type) {
         case CLEAR_SCHEDULE:
             return {
@@ -51,49 +51,48 @@ export const schedule = (state = initialState, action) => {
                     ...state.schedules,
                     [state.scheduleSelected]: {
                         ...[state.scheduleSelected],
-                        meetings: []
-                    }
-                }
+                        meetings: [],
+                    },
+                },
             };
         case RENAME_SCHEDULE:
             return {
                 ...state,
                 schedules: {
-                    ...
-                        removeSchedule(state.scheduleSelected, state.schedules),
-                    [action.scheduleName]: state.schedules[state.scheduleSelected]
+                    ...removeSchedule(state.scheduleSelected, state.schedules),
+                    [action.scheduleName]: state.schedules[state.scheduleSelected],
                 },
-                scheduleSelected: action.scheduleName
+                scheduleSelected: action.scheduleName,
             };
         case DUPLICATE_SCHEDULE:
             return {
                 ...state,
                 schedules: {
                     ...state.schedules,
-                    [action.scheduleName]: state.schedules[state.scheduleSelected]
-                }
+                    [action.scheduleName]: state.schedules[state.scheduleSelected],
+                },
             };
         case CREATE_SCHEDULE:
             return {
                 ...state,
                 schedules: {
-                    ...
-                        state.schedules,
+                    ...state.schedules,
                     [action.scheduleName]: generateDefaultSchedule(),
                 },
-                scheduleSelected: action.scheduleName
+                scheduleSelected: action.scheduleName,
             };
-        case DELETE_SCHEDULE:
+        case DELETE_SCHEDULE: {
             const newSchedule = removeSchedule(state.scheduleSelected, state.schedules);
             return {
                 ...state,
-                schedules: newSchedule,
-                scheduleSelected: Object.keys(newSchedule)[0]
+                schedules: removeSchedule(state.scheduleSelected, state.schedules),
+                scheduleSelected: Object.keys(newSchedule)[0],
             };
+        }
         case CHANGE_SCHEDULE:
             return {
                 ...state,
-                scheduleSelected: action.scheduleId
+                scheduleSelected: action.scheduleId,
             };
         case ADD_SCHED_ITEM:
             return {
@@ -102,9 +101,10 @@ export const schedule = (state = initialState, action) => {
                     ...state.schedules,
                     [state.scheduleSelected]: {
                         ...state[state.scheduleSelected],
-                        meetings: [...state.schedules[state.scheduleSelected].meetings, action.courseObj]
-                    }
-                }
+                        meetings: [...state.schedules[state.scheduleSelected].meetings,
+                            action.courseObj],
+                    },
+                },
             };
         case REMOVE_SCHED_ITEM:
             return {
@@ -113,13 +113,14 @@ export const schedule = (state = initialState, action) => {
                     ...state.schedules,
                     [state.scheduleSelected]: {
                         ...state[state.scheduleSelected],
-                        meetings: state.schedules[state.scheduleSelected].meetings.filter(m => m.fullID !== action.idDashed)
-                    }
-                }
+                        meetings: state.schedules[state.scheduleSelected].meetings
+                            .filter(m => m.fullID !== action.idDashed),
+                    },
+                },
             };
         default:
             return {
                 ...state,
-            }
+            };
     }
 };

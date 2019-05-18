@@ -1,5 +1,11 @@
-import {COURSE_SEARCH_ERROR, OPEN_SECTION_INFO, TOGGLE_SEARCH_FILTER, UPDATE_SEARCH, UPDATE_SECTIONS} from "../actions";
-import {sections_data_a} from "../sections_data";
+import {
+    COURSE_SEARCH_ERROR,
+    OPEN_SECTION_INFO,
+    TOGGLE_SEARCH_FILTER,
+    UPDATE_SEARCH,
+    UPDATE_SECTIONS
+} from "../actions";
+import { sectionsDataA } from "../sections_data";
 
 // This file contains the reducers for everything related to sections and courses
 
@@ -10,11 +16,11 @@ import {sections_data_a} from "../sections_data";
 // 4. Whether to display the search filter
 // 5. The coordinates of the search filter button
 const initialState = {
-    sections: sections_data_a,
+    sections: sectionsDataA,
     searchResults: [],
     sectionInfo: undefined,
     showSearchFilter: false,
-    searchFilterLocation: undefined
+    searchFilterLocation: undefined,
 };
 
 export const sections = (state = initialState, action) => {
@@ -22,28 +28,28 @@ export const sections = (state = initialState, action) => {
         case OPEN_SECTION_INFO:
             return {
                 ...state,
-                sectionInfo: action.sectionInfo
+                sectionInfo: action.sectionInfo,
             };
         case UPDATE_SECTIONS:
             return {
                 ...state,
-                sections: action.sections
+                sections: action.sections,
             };
         case UPDATE_SEARCH:
-            console.log("UPDATING SEARCH");
+            // console.log("UPDATING SEARCH");
             return {
                 ...state,
                 searchResults: action.searchResults,
-                sections: undefined
+                sections: undefined,
             };
         case TOGGLE_SEARCH_FILTER:
             return {
                 ...state,
-                showSearchFilter : ! state.showSearchFilter,
-                showSearchFilterLocation :  action.location
+                showSearchFilter: !state.showSearchFilter,
+                showSearchFilterLocation: action.location,
             };
         case COURSE_SEARCH_ERROR:
-            console.log(action.error);
+            // console.log(action.error);
             return state;
         default:
             return state;

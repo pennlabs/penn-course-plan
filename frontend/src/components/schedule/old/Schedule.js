@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, {Component} from 'react';
 import Line from './Line'
 import Block from './Block'
