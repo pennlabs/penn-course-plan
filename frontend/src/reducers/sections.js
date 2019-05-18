@@ -36,7 +36,7 @@ export const sections = (state = initialState, action) => {
                 sections: action.sections,
             };
         case UPDATE_SEARCH:
-            console.log("UPDATING SEARCH");
+            // console.log("UPDATING SEARCH");
             return {
                 ...state,
                 searchResults: action.searchResults,
@@ -49,7 +49,7 @@ export const sections = (state = initialState, action) => {
                 showSearchFilterLocation: action.location,
             };
         case COURSE_SEARCH_ERROR:
-            console.log(action.error);
+            // console.log(action.error);
             return state;
         default:
             return state;
