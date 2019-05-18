@@ -1,56 +1,70 @@
-import React, {Component} from 'react';
+/* eslint-disable react/prop-types */
+import React, { Component } from "react";
 import GenericModal from "./generic_modal_container";
-import {validateScheduleName} from "../schedule/schedule_name_validation";
+import { validateScheduleName } from "../schedule/schedule_name_validation";
 
 export const DUPLICATE_SCHEDULE_MODAL_NAME = "duplicate_schedule_modal";
 
 
 class DuplicateScheduleModalInterior extends Component {
-
     constructor(props) {
         super(props);
-        this.state = {currentName: ""};
+        this.state = { currentName: "" };
     }
 
     render() {
-        const self = this;
+        const {
+            currentName,
+        } = this.state;
+
+        const {
+            existingScheduleNames,
+            modalActionState,
+            close,
+            duplicateSchedule,
+            triggerModalAction,
+        } = this.props;
+
         let newScheduleNameInput = null;
         const storeInputRef = (ref) => {
             newScheduleNameInput = ref;
         };
-        const feedbackString = validateScheduleName(this.state.currentName, this.props.existingScheduleNames);
-        if (this.props.modalActionState === "success") {
+        const feedbackString = validateScheduleName(currentName, existingScheduleNames);
+        if (modalActionState === "success") {
             if (feedbackString.length === 0) {
-                this.props.duplicateSchedule(this.state.currentName);
-                this.props.close();
+                duplicateSchedule(currentName);
+                close();
             } else {
-                this.props.triggerModalAction(null);
+                triggerModalAction(null);
             }
         }
-        return <div>
-            <input type={"text"} ref={storeInputRef} onKeyUp={(e) => {
-                self.setState({currentName: newScheduleNameInput.value});
-                if (e.key === "Enter") {
-                    self.props.triggerModalAction("success");
-                }
-            }}/>
+        return (
             <div>
-                {feedbackString}
+                <input
+                    type="text"
+                    ref={storeInputRef}
+                    onKeyUp={(e) => {
+                        this.setState({ currentName: newScheduleNameInput.value });
+                        if (e.key === "Enter") {
+                            triggerModalAction("success");
+                        }
+                    }}
+                />
+                <div>
+                    {feedbackString}
+                </div>
             </div>
-        </div>;
+        );
     }
-
 }
 
-export default class DuplicateScheduleModal extends Component {
-
-    constructor(props) {
-        super(props);
-    }
-
-    render() {
-        return <GenericModal modalName={DUPLICATE_SCHEDULE_MODAL_NAME} title={"Duplicate Schedule"}
-                             containedContent={[<DuplicateScheduleModalInterior/>]} successButton={"Ok"}/>;
-    }
-
+export default function DuplicateScheduleModal() {
+    return (
+        <GenericModal
+            modalName={DUPLICATE_SCHEDULE_MODAL_NAME}
+            title="Duplicate Schedule"
+            containedContent={[<DuplicateScheduleModalInterior />]}
+            successButton="Ok"
+        />
+    );
 }
