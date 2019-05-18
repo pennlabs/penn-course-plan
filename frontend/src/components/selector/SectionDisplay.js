@@ -126,7 +126,7 @@ export default class SectionDisplay extends Component {
                         { this.getInstructorReview() }
                     </div>
 
-                    <div className="column is-one-fifth" style={{ marginLeft: "0.4rem" }}>
+                    <div className="column is-one-fifth" style={{ marginLeft: "0.4rem", marginTop: "2px" }}>
                         <span
                             className="sectionText"
                         >
@@ -134,7 +134,7 @@ export default class SectionDisplay extends Component {
                         </span>
                     </div>
 
-                    <div className="column">
+                    <div className="column" style={{ marginTop: "2px" }}>
                         <span
                             className="sectionText"
                         >
