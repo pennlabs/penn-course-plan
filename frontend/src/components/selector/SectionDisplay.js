@@ -71,7 +71,7 @@ export default class SectionDisplay extends Component {
         return (
             <span
                 className="PCR Inst"
-                style={{ background: bgColor, color: pcrIColor }}
+                style={{ background: bgColor, color: pcrIColor, marginTop: "2px" }}
             >
                 { revs.cI }
             </span>

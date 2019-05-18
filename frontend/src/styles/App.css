@@ -307,7 +307,7 @@ ul {
   display: inline-block;
   border-radius: 15px;
   text-align: center;
-  margin-top: 3px;
+  /* margin-top: 3px; */
   margin-left: 2px;
   margin-right: 2px;
 }
