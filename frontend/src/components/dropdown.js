@@ -120,9 +120,9 @@ export class Dropdown extends OutClickable {
                         }
                         this.activateItem(i);
                     }}
-                    style={{ border: "none", marginBottom: "0.2em" }}
                     type="button"
-                    className={`dropdown-item${addition}`}
+                    className={`dropdown-item${addition} button`}
+                    style={{ border: "none", marginBottom: "0.2em" }}
                     key={i}
                 >
                     {selectedContents[0]}
