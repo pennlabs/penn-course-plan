@@ -1,6 +1,6 @@
 import { CLOSE_MODAL, OPEN_MODAL, ACTION_BUTTON_PRESSED } from "../actions";
 
-//this file contains the reducers for modals
+// this file contains the reducers for modals
 
 // the modal state contains the name of the modal being shown and a string representing the most
 // recent action triggered by the modal
