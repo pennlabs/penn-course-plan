@@ -93,15 +93,15 @@ function App() {
                 <div className="container">
                     <div className="content has-text-centered">
                         <p style={{ fontSize: "0.8rem" }}>
-                            Made with
+                            Made&nbsp;with&nbsp;
                             <span className="icon is-small" style={{ color: "#F56F71" }}>
                                 <i className="fa fa-heart" />
                             </span>
-                            by
+                            &nbsp;by&nbsp;
                             <a href="https://github.com/benb116">
-                                Ben Bernstein
+                                Ben Bernstein&nbsp;
                             </a>
-                            and
+                            and&nbsp;
                             <a href="http://pennlabs.org" target="_blank" rel="noopener noreferrer">
                                 Penn Labs
                             </a>
